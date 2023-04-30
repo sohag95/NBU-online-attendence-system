@@ -1,0 +1,37 @@
+<%- include('includes/header') %>
+<%- include('includes/flash') %>
+<div>
+    <h1 class="text-center mt-5">This is professor home page!!</h1>
+    <h2 class="text-center">Professor name is : <%=user.userName%></h2>
+    <div class="logIn-form-container">
+        <%if(!todaysClasses.length){%>
+            <div class="btn btn-block btn-info btn-lg">You have no class today!</div>
+        <%}else{%>
+            <%todaysClasses.forEach((todayClass)=>{%>
+                <a href="/class/<%=todayClass.classId%>/take-attendence" style="text-decoration: none;">
+                    <div class="m-2" style="background-color: antiquewhite;">
+                      <div class="text-left" style="padding-bottom: 5px;padding-top: 10px;padding-left: 2px;">
+                        <h5 class="bolder text-center"><strong> Period : <%=todayClass.period%></strong></h5>
+                        <h5 class="bolder text-center"><strong> Semester : <%=todayClass.semesterStatus%></strong></h5>
+                        <h5 class="bolder text-center"><strong> Subject : <%=todayClass.subject%></strong></h5>
+                        <h5 class="bolder text-center"><strong> Time : <%=todayClass.timing%></strong></h5>
+                        <div class="btn btn-block btn-info btn-md">Go to class for attendence</div>
+                    </div>
+                    </div>
+                </a>
+            <%})%>
+        <%}%>
+            
+    </div>
+
+</div>
+<%if(user.isHOD){%>
+    <div>
+        <h2 class="text-center mt-5">This section will be shown to HOD</h2>
+        <a class="btn btn-info btn-lg btn-block" href="/HOD-handle/<%=user.regNumber.slice(4,9)%>/page">Go to department handling page</a>
+    </div>
+<%}%>
+
+<hr>
+
+<%- include('includes/footer') %>

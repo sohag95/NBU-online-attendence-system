@@ -1,0 +1,46 @@
+<%- include('includes/header') %>
+<%- include('includes/flash') %>
+<div >
+    <h1 class="text-center mt-5">This is Administartion home page!!</h1>
+    <h2 class="text-center">Administrator name is : <%=user.userName%></h2>
+</div>
+<hr>
+
+
+<div style="display: flex;flex-wrap: wrap;">
+    <div class="col-lg-4 bg-success" >
+      <h3><strong>All Added Departments</strong></h3>
+      <%allDepartments.forEach((department)=>{%>
+        <a href="/administration-handle/department/<%=department.departmentCode%>" class="pb-2">
+          <div class="student-room-container">
+            <div class="ml-2">
+              <span class="d-block"><strong >Department : </strong><%=department.departmentName%></span>
+            </div>
+          </div>
+        </a>
+      <%})%>
+    </div>
+    <div class="col-lg-8 " style="margin-bottom: 2rem;margin: 0;padding: 0;" >
+      <h2 class="uteach text-primary mt-4 mb-2 text-center">NBU Community Membership</h2>
+      <div class="signUp-form-container ">   
+        <h2 class="bolder text-center">Add New Department</h2>
+        <form action="/adding-new-department" method="POST" id="add-department-form">
+          
+            <div class="form-group">
+              <label for="departmentName" class="text-muted"><small>Department Name</small></label>
+              <input name="departmentName" id="departmentName" class="form-control form-control-lg " type="text" placeholder="Department full name."  autocomplete="off" />
+            </div>
+
+            <div class="form-group">
+                <label for="departmentCode" class="text-muted"><small>Department Code (5 unique alphabets)</small></label>
+                <input name="departmentCode" id="departmentCode" class="form-control form-control-lg " type="text" placeholder="5 Alphabets Department Code"  autocomplete="off" />
+            </div>
+            
+            <div style="text-align: center;">
+              <button class="btn btn-success btn-lg ">Add Department</button>
+            </div>
+        </form>
+        </div>
+      </div>
+  </div>
+<%- include('includes/footer') %>

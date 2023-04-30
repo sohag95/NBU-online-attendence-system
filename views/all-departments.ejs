@@ -1,0 +1,29 @@
+
+<%- include('includes/header') %> 
+<%- include('includes/flash') %>
+
+<div style="display: flex;flex-wrap: wrap;">
+  <div class="col-lg notVisibleOnCollapse" >
+  </div>
+  <div class="col-lg-9 pt-2" >
+    <img class="home-cover-image" src="/images/allDepartments-cover.png"/>
+    <hr>
+    <div class="row">
+      
+      <%allDepartments.forEach((department)=>{%>
+        <div class="col-lg-3 col-md-4 col-sm-6 pb-2">
+          <a href="/department/<%=department.departmentCode%>/details" style="display: block; text-decoration: none;">
+            <div class="department-container" style=" background-color:rgb(91, 126, 126)">
+              <div class="department-title"><%=department.departmentName%></div>
+            </div>
+          </a>
+        </div>
+      <%})%>
+      
+    </div>
+
+  </div>
+  <div class="col-lg notVisibleOnCollapse" >
+  </div>
+</div>
+<%- include('includes/footer') %> 

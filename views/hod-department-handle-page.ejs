@@ -1,0 +1,136 @@
+<%- include('includes/header') %>
+<%- include('includes/flash') %>
+<div >
+    <h1 class="text-center mt-2">This is department details page !!</h1>
+    <h2 class="text-center">Department name is : <%=departmentDetails.departmentName%></h2>
+</div>
+<hr>
+<div style="display: flex;flex-wrap: wrap;">
+  <div class="col-lg-4 bg-success" >
+    <h3><strong>Head Of The Department</strong></h3>
+    <%if(!departmentDetails.HOD.userName){%>
+      <div class="btn btn-lg btn-info btn-block">HOD has not added!!</div>
+    <%}else{%>
+      <a href="/professor/<%=departmentDetails.HOD.regNumber%>/details" class="pb-2">
+          <div class="d-flex align-items-center student-room-container" >
+            <div >
+              <img class="avatar-small"  src="/image/<%=departmentDetails.HOD.regNumber%>" alt="">
+            </div>
+            <div class="ml-2">
+              <span class="d-block"><strong >Name : </strong><%=departmentDetails.HOD.userName%></span>
+              <span class="d-block"><strong >Joining Date : </strong><%=departmentDetails.HOD.joiningDate%></span>
+            </div>
+          </div>
+        </a>
+    <%}%>
+    <hr>
+    <h3><strong>All Professors</strong></h3>
+    <%if(departmentDetails.allProfessors.length==0){%>
+      <div class="btn btn-lg btn-info btn-block">No professor added!!</div>
+    <%}else{%>
+      <%departmentDetails.allProfessors.forEach((professor)=>{%>
+        <a href="/professor/<%=professor.regNumber%>/details" class="pb-2">
+          <div class="d-flex align-items-center student-room-container" >
+            <div >
+              <img class="avatar-small"  src="/image/<%=professor.regNumber%>" alt="">
+            </div>
+            <div class="ml-2">
+              <span class="d-block"><strong >Name : </strong><%=professor.userName%></span>
+            </div>
+          </div>
+        </a>
+      <%})%>
+    <%}%>
+    <hr>
+    <h3><strong>Add Official Assistant</strong></h3>
+    <div class="item-container mt-2">
+        <form action="/add-official-assistant/<%=departmentDetails.departmentCode%>" method="POST"  id="sessionCreation-Form">
+          <h6 class="bolder"><strong>Adding Official Assistant</strong></h6>
+          <div class="form-group">
+            <label for="userName" class="text-muted mb-1"><small>Assistant Name :-</small></label>
+            <input  name="userName" id="userName" class="form-control form-control-sm " type="text" placeholder="Enter full name" autocomplete="off">
+          </div>
+          <div class="form-group">
+              <label for="email" class="text-muted mb-1"><small>Email Id :-</small></label>
+              <input  name="email" id="email" class="form-control form-control-sm " type="email" placeholder="Enter email id" autocomplete="off">
+          </div>
+          
+          <button class="btn btn-primary btn-block btn-small">Add Official Assistant</button>
+        </form>
+      </div>     
+    
+  </div>
+    <div class="col-lg-8 " style="margin-bottom: 2rem;margin: 0;padding: 0;" >
+      <h2 class="uteach text-primary mt-4 mb-2 text-center">All Running Batches</h2>
+      <%if(!departmentDetails.runningSessionBatches.length){%>
+        <div class="btn btn-lg btn-info btn-block">No Running Batch Available!!</div>
+      <%}else{%>
+        <div class="teacher-banner-container p-4">
+            <%departmentDetails.runningSessionBatches.forEach((session)=>{%>
+              <a href="/session-batch/<%=session.sessionId%>/details" style="text-decoration: none;">
+                <div class="activity-link-container-small">
+                  <div class="text-left" style="padding-bottom: 5px;padding-top: 10px;padding-left: 2px;">
+                    <h5 class="bolder text-center"><strong> Session : 20<%=session.sessionId.slice(0,2)%>-20<%=session.sessionId.slice(2,4)%></strong></h5>
+                    <h5 class="bolder text-center"><strong> Status : <%=session.semesterStatus%> Semester</strong></h5>
+                </div>
+                </div>
+              </a>
+            <%})%>
+          </div>
+      <%}%>
+      <hr>
+      <div class="signUp-form-container ">   
+        <form action="/add-new-session/<%=departmentDetails.departmentCode%>" method="POST"  id="sessionCreation-Form">
+            <h6 class="bolder"><strong>Adding New Session Batch</strong></h6>
+
+            <div class="form-group">
+              <label for="startYear" class="text-muted mb-1"><small>Starting Year of Session :-</small></label>
+              <input  name="startYear" id="startYear" class="form-control form-control-lg " type="number" placeholder="Enter the year (Exm:2018)" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="endYear" class="text-muted mb-1"><small>End Year of Session :-</small></label>
+                <input  name="endYear" id="endYear" class="form-control form-control-lg " type="number" placeholder="Enter the year (Exm:2020)" autocomplete="off">
+            </div>
+            <%if(departmentDetails.departmentCode=="COMSC"){%>
+                <div class="form-group">
+                    <label for="idLastPart" class="text-muted mb-1"><small>Select Topic :-</small></label>
+                    <select  id="idLastPart" class="form-control " name="idLastPart" form="sessionCreation-Form">
+                      <option value="">----------Select Topic----------</option>
+                        <option value="MCMAP">MCA</option>
+                        <option value="MCMSC">MSC</option>
+                    </select>
+                  </div>
+            <%}%>
+            <div class="form-group">
+              <label for="semesterStatus" class="text-muted mb-1"><small>Select Semester :-</small></label>
+              <select  id="semesterStatus" class="form-control " name="semesterStatus" form="sessionCreation-Form">
+                <option value="">----------Select Semester----------</option>
+                  <option value="1st">1st Semester</option>
+                  <option value="2nd">2nd Semester</option>
+                  <option value="3rd">3rd Semester</option>
+                  <option value="4th">4th Semester</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="activity-body" class="text-muted mb-1"><small>Write all subjects separating by comma(,) :-</small></label>
+              <textarea  name="allSubjects" id="activity-body" class="body-content small-textarea form-control" type="text"></textarea>
+            </div>
+            <input type="hidden" name="departmentName" value="<%=departmentDetails.departmentName%>">
+            <button class="btn btn-primary btn-block btn-small">Create Session Batch</button>
+          </form>
+        </div>
+    </div>
+    <div class="col" ></div>
+  </div>
+<%- include('includes/footer') %>
+
+<!-- <div class="form-group">
+    <label for="topic" class="text-muted mb-1"><small>Select Topic :-</small></label>
+    <select  id="topic" class="form-control " name="topic" form="activity-Form">
+      <option value="">----------Select Topic----------</option>
+        <option value="1st">1st Semester</option>
+        <option value="2nd">2nd Semester</option>
+        <option value="3rd">3rd Semester</option>
+        <option value="4th">4th Semester</option>
+    </select>
+  </div> -->

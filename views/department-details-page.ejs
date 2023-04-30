@@ -1,0 +1,233 @@
+<%- include('includes/header') %>
+<%- include('includes/flash') %>
+<div >
+    <h1 class="text-center mt-2">This is department details page !!</h1>
+    <h2 class="text-center">Department name is : <%=departmentDetails.departmentName%></h2>
+</div>
+<hr>
+<div style="display: flex;flex-wrap: wrap;">
+  <div class="col-lg-2 bg-success" >
+    <h3><strong>Head Of The Department</strong></h3>
+    <%if(!departmentDetails.HOD.userName){%>
+      <div class="btn btn-lg btn-info btn-block">HOD has not added!!</div>
+    <%}else{%>
+      <a href="/professor/<%=departmentDetails.HOD.regNumber%>/details" class="pb-2">
+          <div class="d-flex align-items-center student-room-container" >
+            <div >
+              <img class="avatar-small"  src="/image/<%=departmentDetails.HOD.regNumber%>" alt="">
+            </div>
+            <div class="ml-2">
+              <span class="d-block"><strong >Name : </strong><%=departmentDetails.HOD.userName%></span>
+              <span class="d-block"><strong >joining Date : </strong><%=departmentDetails.HOD.joiningDate%></span>
+            </div>
+          </div>
+        </a>
+    <%}%>
+    <hr>
+    <h3><strong>All Professors</strong></h3>
+    <%if(departmentDetails.allProfessors.length==0){%>
+      <div class="btn btn-lg btn-info btn-block">No professor added!!</div>
+    <%}else{%>
+      <%departmentDetails.allProfessors.forEach((professor)=>{%>
+        <a href="/professor/<%=professor.regNumber%>/details" class="pb-2">
+          <div class="d-flex align-items-center student-room-container" >
+            <div >
+              <img class="avatar-small"  src="/image/<%=professor.regNumber%>" alt="">
+            </div>
+            <div class="ml-2">
+              <span class="d-block"><strong >Name : </strong><%=professor.userName%></span>
+            </div>
+          </div>
+        </a>
+      <%})%>
+    <%}%>
+    <hr>
+              
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Log In Here
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <p type="button" class=" btn-info btn-block p-2" data-toggle="modal" data-target="#professorLogIn" >Professor Log In</p>
+          <p type="button" class=" btn-info btn-block p-2" data-toggle="modal" data-target="#studentLogIn" >Student Log In</p>
+          <p type="button" class=" btn-info btn-block p-2" data-toggle="modal" data-target="#officialAssistantLogIn" >Official Assistant Log In</p>
+        </div>
+      </div>
+  </div>
+    <div class="col-lg-8 " style="margin-bottom: 2rem;margin: 0;padding: 0;" >
+      
+      <h2 class="uteach text-primary mt-4 mb-2 text-center">Today's Attendence</h2>
+      <div class="signUp-form-container ">   
+        
+        <h2 class="bolder text-center"> Students : 120</h2>
+        <h2 class="bolder text-center"> Professors : 12 </h2>
+        <h2 class="bolder text-center">Date : 12 April 2023</h2>
+      </div>
+      <h2 class="uteach text-primary mt-4 mb-2 text-center">All Running Batches</h2>
+      <%if(!departmentDetails.runningSessionBatches.length){%>
+        <div class="btn btn-lg btn-info btn-block">No Running Batch Available!!</div>
+      <%}else{%>
+          <div class="teacher-banner-container p-4">
+            <%departmentDetails.runningSessionBatches.forEach((session)=>{%>
+              <a href="/session-batch/<%=session.sessionId%>/details" style="text-decoration: none;">
+                <div class="activity-link-container-small">
+                  <div class="text-left" style="padding-bottom: 5px;padding-top: 10px;padding-left: 2px;">
+                    <h5 class="bolder text-center"><strong> Session : 20<%=session.sessionId.slice(0,2)%>-20<%=session.sessionId.slice(2,4)%></strong></h5>
+                    <h5 class="bolder text-center"><strong> Status : <%=session.semesterStatus%> Semester</strong></h5>
+                </div>
+                </div>
+              </a>
+            <%})%>
+          </div>
+      <%}%>
+      <hr>
+      <h2 class="uteach text-primary mt-4 mb-2 text-center">Today's All Classes</h2>
+      <%if(!departmentDetails.presentDayActivities.classes.length){%>
+        <div class="btn btn-lg btn-block btn-info">No classes taken till now.</div>
+      <%}else{%>
+        <div class="teacher-banner-container p-4">
+          <%departmentDetails.presentDayActivities.classes.forEach((cls)=>{%>
+            <a href="/class/<%=cls.classId%>/details" style="text-decoration: none;">
+              <div class="activity-link-container-small">
+                <div class="text-left" style="padding-bottom: 5px;padding-top: 10px;padding-left: 2px;">
+                  <p class="bolder"><strong> Semester Status : <%=cls.semesterStatus%></strong></p>
+                  <p class="bolder"><strong> Period : <%=cls.period%></strong></p>
+                  <p class="bolder"><strong> Timing : <%=cls.timing%></strong></p>
+                  <p class="bolder"><strong> Subject : <%=cls.subject%></strong></p>
+                  <p class="bolder"><strong> Professor : <%=cls.professor.userName%></strong></p>
+              </div>
+              </div>
+            </a>
+          <%})%>
+        </div>
+      <%}%>
+      <hr>
+      <h2 class="uteach text-primary mt-4 mb-2 text-center">Last Day's All Classes</h2>
+      <h3 class="uteach text-primary mt-4 mb-2 text-center">Date : 21/04/2023</h3>
+      
+      <%if(!departmentDetails.lastDayActivities.classes.length){%>
+        <div class="btn btn-lg btn-block btn-info">No classes taken till now.</div>
+      <%}else{%>
+        <div class="teacher-banner-container p-4">
+          <%departmentDetails.lastDayActivities.classes.forEach((cls)=>{%>
+            <a href="/class/<%=cls.classId%>/details" style="text-decoration: none;">
+              <div class="activity-link-container-small">
+                <div class="text-left" style="padding-bottom: 5px;padding-top: 10px;padding-left: 2px;">
+                  <p class="bolder"><strong> Semester Status : <%=cls.semesterStatus%></strong></p>
+                  <p class="bolder"><strong> Period : <%=cls.period%></strong></p>
+                  <p class="bolder"><strong> Timing : <%=cls.timing%></strong></p>
+                  <p class="bolder"><strong> Subject : <%=cls.subject%></strong></p>
+                  <p class="bolder"><strong> Professor : <%=cls.professor.userName%></strong></p>
+              </div>
+              </div>
+            </a>
+          <%})%>
+        </div>
+      <%}%>
+      
+    </div>
+                  <!-- Modal professor log in -->
+                  <div class="modal fade" id="professorLogIn" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLongTitle"><strong class="bolder">Professor Log In</strong> </h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/professor-logging-in" method="POST" class="">
+                                <input name="regNumber" class="form-control form-control-lg space" type="text" placeholder="Registration Number :" autocomplete="off">
+                                <hr>
+                                <input name="password" class="form-control form-control-lg space" type="password" placeholder="Password :" required>
+                                <input type="hidden" name="departmentCode" value="<%=departmentDetails.departmentCode%>">
+                                <button class="btn btn-info btn-block btn-lg">Log in</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- ----------model ends------- -->
+                  <!-- Modal Student log in-->
+                  <div class="modal fade" id="studentLogIn" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLongTitle"><strong class="bolder">Student Log In</strong> </h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/student-logging-in" method="POST" class="">
+                                <input name="regNumber" class="form-control form-control-lg space" type="text" placeholder="Registration Number :" autocomplete="off">
+                                <hr>
+                                <label for="password" class="text-muted mb-1"><small>Password (Your date of birth)</small></label>
+                                <input name="password" class="form-control form-control-lg space" type="date" placeholder="Password :(Your DOB)" required>
+                                <input type="hidden" name="departmentCode" value="<%=departmentDetails.departmentCode%>">
+                                <button class="btn btn-info btn-block btn-lg">Log in</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- ----------model ends------- -->
+                  <!-- Modal Student log in-->
+                  <div class="modal fade" id="officialAssistantLogIn" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLongTitle"><strong class="bolder">Official Assistant Log In</strong> </h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/official-assistant-logging-in" method="POST" class="">
+                                <input name="email" class="form-control form-control-lg space" type="text" placeholder="Email Id:" autocomplete="off">
+                                <hr>
+                                <label for="password" class="text-muted mb-1"><small>Password </small></label>
+                                <input name="password" class="form-control form-control-lg space" type="text" placeholder="Password :" required>
+                                <input type="hidden" name="departmentCode" value="<%=departmentDetails.departmentCode%>">
+                                <button class="btn btn-info btn-block btn-lg">Log in</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- ----------model ends------- -->
+                  <div class="col-lg-2 bg-success" >
+                    
+                    <h3><strong>All Attended Professors</strong></h3>
+                    <%if(departmentDetails.presentDayActivities.professors.length==0){%>
+                      <div class="btn btn-lg btn-info btn-block">No professor arrived!!</div>
+                    <%}else{%>
+                      <%departmentDetails.presentDayActivities.professors.forEach((professor)=>{%>
+                        <a href="/professor/<%=professor.regNumber%>/details" class="pb-2">
+                          <div class="d-flex align-items-center student-room-container" >
+                            <div >
+                              <img class="avatar-small"  src="/image/<%=professor.regNumber%>" alt="">
+                            </div>
+                            <div class="ml-2">
+                              <span class="d-block"><strong >Name : </strong><%=professor.userName%></span>
+                            </div>
+                          </div>
+                        </a>
+                      <%})%>
+                    <%}%>
+                    <hr>
+                              
+                    
+                  </div>
+  </div>
+<%- include('includes/footer') %>

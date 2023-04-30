@@ -1,0 +1,95 @@
+<%- include('includes/header') %>
+<%- include('includes/flash') %>
+<div >
+    <h1 class="text-center mt-2">This is department handle page for administration!!</h1>
+    <h2 class="text-center">Administrator name is : <%=user.userName%></h2>
+</div>
+<hr>
+<div style="display: flex;flex-wrap: wrap;">
+  <div class="col-lg-4 bg-success" >
+    <h3><strong>Head Of The Department</strong></h3>
+    <%if(!departmentDetails.HOD.userName){%>
+      <div class="btn btn-lg btn-info btn-block">HOD has not added!!</div>
+    <%}else{%>
+      <a href="/professor/<%=departmentDetails.HOD.regNumber%>/details" class="pb-2">
+          <div class="d-flex align-items-center student-room-container" >
+            <div >
+              <img class="avatar-small"  src="/image/<%=departmentDetails.HOD.regNumber%>" alt="">
+            </div>
+            <div class="ml-2">
+              <span class="d-block"><strong >Name : </strong><%=departmentDetails.HOD.userName%></span>
+              <span class="d-block"><strong >joiningDate : </strong><%=departmentDetails.HOD.joiningDate%></span>
+            </div>
+          </div>
+        </a>
+    <%}%>
+    <hr>
+    <h3><strong>All Professors</strong></h3>
+    <%if(departmentDetails.allProfessors.length==0){%>
+      <div class="btn btn-lg btn-info btn-block">No professor added!!</div>
+    <%}else{%>
+      <%departmentDetails.allProfessors.forEach((professor)=>{%>
+        <a href="/professor/<%=professor.regNumber%>/details" class="pb-2">
+          <div class="d-flex align-items-center student-room-container" >
+            <div >
+              <img class="avatar-small"  src="/image/<%=professor.regNumber%>" alt="">
+            </div>
+            <div class="ml-2">
+              <span class="d-block"><strong >Name : </strong><%=professor.userName%></span>
+            </div>
+          </div>
+        </a>
+      <%})%>
+    <%}%>
+    <hr>
+    <h2 class="bolder text-center">Add New HOD</h2>
+        <form action="/add-HOD/<%=departmentDetails.departmentCode%>" method="POST" id="add-HOD-form">
+            
+            <div class="form-group">
+              <label for="regNumber" class="text-muted mb-1"><small>Select HOD</small></label>
+              <select id="regNumber" name="regNumber" class="form-control form-control-lg"  form="add-HOD-form">
+                <option value="">---Select New HOD---</option>
+                <%departmentDetails.allProfessors.forEach((professor)=>{%>
+                  <option value="<%=professor.regNumber%>"><%=professor.userName%></option>
+                <%})%>
+              </select>
+            </div>
+            <div class="form-group">
+                <label for="joiningDate" class="text-muted"><small>Joining Date as HOD</small></label>
+                <input name="joiningDate" id="joiningDate" class="form-control form-control-lg " type="date" placeholder="Select joining date"  autocomplete="off" />
+            </div>
+            <div style="text-align: center;">
+              <button class="btn btn-success btn-lg ">Add Professor</button>
+            </div>
+        </form>
+  </div>
+    <div class="col-lg-8 " style="margin-bottom: 2rem;margin: 0;padding: 0;" >
+      <h2 class="uteach text-primary mt-4 mb-2 text-center">Departmental Professor Addition</h2>
+      <div class="signUp-form-container ">   
+        <h2 class="bolder text-center">Add New Professor</h2>
+        <form action="/add-professor/<%=departmentDetails.departmentCode%>" method="POST" id="add-department-form">
+          
+            <div class="form-group">
+              <label for="userName" class="text-muted"><small>Professor Name</small></label>
+              <input name="userName" id="userName" class="form-control form-control-lg " type="text" placeholder="Professor full name."  autocomplete="off" />
+            </div>
+            <div class="form-group">
+                <label for="email" class="text-muted"><small>Email Id</small></label>
+                <input name="email" id="email" class="form-control form-control-lg " type="email" placeholder="Enter Email Id."  autocomplete="off" />
+            </div>
+            <div class="form-group">
+                <label for="joiningDate" class="text-muted"><small>Joining Date</small></label>
+                <input name="joiningDate" id="joiningDate" class="form-control form-control-lg " type="date" placeholder="Select joining date"  autocomplete="off" />
+            </div>
+            <input type="hidden" name="departmentCode" value="<%=departmentDetails.departmentCode%>">
+            <input type="hidden" name="departmentName" value="<%=departmentDetails.departmentName%>">
+            
+            <div style="text-align: center;">
+              <button class="btn btn-success btn-lg ">Add Professor</button>
+            </div>
+        </form>
+        </div>
+      </div>
+    <div class="col" ></div>
+  </div>
+<%- include('includes/footer') %>
