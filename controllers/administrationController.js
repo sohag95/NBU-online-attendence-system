@@ -19,42 +19,13 @@ exports.administratorMustBeLoggedIn=function(req,res,next){
     }
 }
 
-exports.administrationLogInPage =function (req, res) {
-    try{
-        res.render('administrator-log-in-page')
-    }catch{
-        res.render('404')
-    }
-}
-
-exports.administrationLoggingIn =function (req, res) {
-    try{
-        let administration=new Administration(req.body)
-        administration
-          .administrationLoggingIn()
-          .then(function (result) {
-            req.session.user = { regNumber: administration.data.regNumber, userName: administration.data.userName,accountType: "administration" }
-            req.session.save(function () {
-              res.redirect("/administration-home")
-            })
-          })
-          .catch(function (e) {
-            req.flash("error", e)
-            req.session.save(function () {
-              res.redirect("/administration-log-in")
-            })
-          })
-        }catch{
-        res.render('404')
-    }
-}
 
 exports.administrationHomePage=async function(req,res){
     try{
-        let allDepartments=await Administration.getAllDepartments()
-        console.log(allDepartments)
+        let data=await Administration.getAdminHomeData()
+        console.log(data)
         res.render("administration-home-page",{
-          allDepartments:allDepartments
+          data:data
         })
     }catch{
         res.render('404')
@@ -66,9 +37,9 @@ exports.addNewDepartment=function(req,res){
   department
     .addNewDepartment()
     .then(() => {
-      req.flash("success", "New department added successfully.")
+      req.flash("success", "New department added successfully.Please add professors and HOD.")
       req.session.save(function () {
-        res.redirect("/administration-home")
+        res.redirect(`/administration-handle/department/${req.body.departmentCode.toUpperCase()}`)
       })
     })
     .catch(regErrors => {
@@ -83,6 +54,7 @@ exports.addNewDepartment=function(req,res){
 exports.departmentalHandlePage=function(req,res){
   try{
     console.log("Department Details :",req.departmentDetails)
+    req.departmentDetails.departmentOfficial=null
     res.render("handle-department-page",{
       departmentDetails:req.departmentDetails
     })
@@ -93,9 +65,6 @@ exports.departmentalHandlePage=function(req,res){
 
 
 exports.addProfessor=function(req,res){
-  console.log("Data:",req.body)
-  console.log(new Date(req.body.joiningDate))
-  console.log("Year :",req.body.joiningDate.slice(0,4))
   let professor = new Professor(req.body)
   professor
     .addNewProfessor()
@@ -127,6 +96,24 @@ exports.addHOD=function(req,res){
       req.flash("errors", regErrors)
       req.session.save(function () {
         res.redirect(`/administration-handle/department/${req.params.departmentCode}`)
+      })
+    })
+}
+
+exports.addNewSessionYear=function(req,res){
+
+  Administration
+    .addNewSessionYear(req.body)
+    .then(() => {
+      req.flash("success", "New session-year added successfully.")
+      req.session.save(function () {
+        res.redirect("/administration-home")
+      })
+    })
+    .catch(regErrors => {
+      req.flash("errors", regErrors)
+      req.session.save(function () {
+        res.redirect("/administration-home")
       })
     })
 }

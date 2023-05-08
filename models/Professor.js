@@ -209,5 +209,15 @@ Professor.prototype.addNewProfessor=function(){
     })
   }
 
+  Professor.getProfessorDetailsByRegNumber=function(regNumber){
+    return new Promise(async (resolve, reject) => {
+      try{
+        let professorData=await professorsCollection.findOne({regNumber:regNumber})
+        resolve(professorData)
+      }catch{
+        reject()
+      }
+    })
+  }
 
 module.exports=Professor

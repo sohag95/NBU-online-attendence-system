@@ -34,10 +34,10 @@ Department.prototype.dataPreparation=function(){
           classes:[],
           date:null
         },
-        isDepartmentRunning:true,
+        isDepartmentRunning:false,
         //true-during running time.hod/assistant will declare running department.
         //false-->ssistant will declare closing department.
-        departmentOffitial:null,
+        departmentOfficial:null,
         professorSerialNumber:0
     }
     this.departmentalActivities={

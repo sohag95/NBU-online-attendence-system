@@ -2,9 +2,9 @@ const Administration = require('../models/Administration')
 const Department = require('../models/Department')
 
 
-exports.offitialAssistantMustBeLoggedIn=function(req,res,next){
+exports.officialAssistantMustBeLoggedIn=function(req,res,next){
     if(req.session.user){
-      if (req.session.user.accountType == "offitialAssistant") {
+      if (req.session.user.accountType == "officialAssistant") {
         next()
       } else {
         req.flash("errors", "You are not allowed to perform that action!!")
@@ -20,10 +20,13 @@ exports.offitialAssistantMustBeLoggedIn=function(req,res,next){
 
 exports.officialAssistantLogIn = function (req, res) {
     try{
+      
         //regNumber=departmentCode for offitial assistant
-        let assistantData=req.departmentDetails.departmentOffitial
+        let assistantData=req.departmentDetails.departmentOfficial
+        console.log("Data:",req.body)
+        console.log("assistantData Details:",assistantData)
       if(assistantData.email==req.body.email && assistantData.password==req.body.password){
-        req.session.user = { regNumber:req.departmentDetails.departmentCode, userName: assistantData.userName,accountType: "offitialAssistant" }
+        req.session.user = { regNumber:req.departmentDetails.departmentCode, userName: assistantData.userName,accountType: "officialAssistant" }
         req.session.save(function () {
           res.redirect("/official-assistant-home")
         })
@@ -35,11 +38,11 @@ exports.officialAssistantLogIn = function (req, res) {
       }
     }catch{
       req.flash("errors", "There is some problem.")
-      req.session.save(() => res.redirect("/"))
+      req.session.save(() => res.redirect(`/department/${req.body.departmentCode}/details`))
     }
 }
 
-exports.getOffitialAssistantHome =async function (req, res) {
+exports.getOfficialAssistantHome =async function (req, res) {
     try{
     
       //offitial Assistant's : regNumber="departmentCode"
@@ -49,12 +52,15 @@ exports.getOffitialAssistantHome =async function (req, res) {
           departmentName:departmentDetails.departmentName,
           allProfessors:departmentDetails.allProfessors,
           isDepartmentRunning:departmentDetails.isDepartmentRunning,
-          todaysPresentProfessors:departmentDetails.presentDayActivities.professors
+          todaysPresentProfessors:departmentDetails.presentDayActivities.professors,
+          assistantEmail:departmentDetails.departmentOfficial.email
       } 
       let presentProfessors=[]
-      departmentalDetails.todaysPresentProfessors.forEach((professor)=>{
-        presentProfessors.push(professor.regNumber)
-      })
+      if(departmentDetails.isDepartmentRunning){
+        departmentalDetails.todaysPresentProfessors.forEach((professor)=>{
+          presentProfessors.push(professor.regNumber)
+        })
+      } 
       console.log("Department:",departmentalDetails)
 
       res.render("official-assistant-home-page",{

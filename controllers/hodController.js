@@ -2,15 +2,6 @@ const Department = require('../models/Department')
 const SessionBatch = require('../models/SessionBatch')
 const Student = require('../models/Student')
 
-exports.getDepartmentHandlePage =function (req, res) {
-    try{
-        res.render('hod-department-handle-page',{
-            departmentDetails:req.departmentDetails
-        })
-    }catch{
-        res.render('404')
-    }
-}
 
 
 exports.addNewSession =function (req, res) {

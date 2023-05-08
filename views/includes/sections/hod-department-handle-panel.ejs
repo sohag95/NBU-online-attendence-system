@@ -1,0 +1,91 @@
+<div class="colored-container bg-warning">
+    <div>
+      <h3><strong ><i class="fas fa-users"></i> HOD Department Handle Panel</strong></h3>
+    </div>
+    <hr>
+    <div >
+      
+  </div>
+    <div class="row" id="accordionExample">
+      <div class="col-lg-6 mb-2">
+        <div class="btn btn-info btn-block" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">Add New Session Batch</div>
+      </div>
+      <div class="col-lg-6">
+        <div class="btn btn-info btn-block" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Add New Official Assistant</div>
+      </div>
+    </div>
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+        <div class="row">
+          <div class="col-12">
+            <hr>
+            <div class="item-container">
+              <div class="signUp-form-container">
+                  <form action="/add-new-session/<%=departmentDetails.departmentCode%>" method="POST"  id="sessionCreation-Form">
+                      <h6 class="bolder"><strong>Adding New Session Batch</strong></h6>
+          
+                      <div class="form-group">
+                        <label for="startYear" class="text-muted mb-1"><small>Starting Year of Session :-</small></label>
+                        <input  name="startYear" id="startYear" class="form-control form-control-lg " type="number" placeholder="Enter the year (Exm:2018)" autocomplete="off">
+                      </div>
+                      <div class="form-group">
+                          <label for="endYear" class="text-muted mb-1"><small>End Year of Session :-</small></label>
+                          <input  name="endYear" id="endYear" class="form-control form-control-lg " type="number" placeholder="Enter the year (Exm:2020)" autocomplete="off">
+                      </div>
+                      <%if(departmentDetails.departmentCode=="COMSC"){%>
+                          <div class="form-group">
+                              <label for="idLastPart" class="text-muted mb-1"><small>Select Topic :-</small></label>
+                              <select  id="idLastPart" class="form-control " name="idLastPart" form="sessionCreation-Form">
+                                <option value="">----------Select Topic----------</option>
+                                  <option value="MCMAP">MCA</option>
+                                  <option value="MCMSC">MSC</option>
+                              </select>
+                            </div>
+                      <%}%>
+                      <div class="form-group">
+                        <label for="semesterStatus" class="text-muted mb-1"><small>Select Semester :-</small></label>
+                        <select  id="semesterStatus" class="form-control " name="semesterStatus" form="sessionCreation-Form">
+                          <option value="">----------Select Semester----------</option>
+                            <option value="1st">1st Semester</option>
+                            <option value="2nd">2nd Semester</option>
+                            <option value="3rd">3rd Semester</option>
+                            <option value="4th">4th Semester</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="activity-body" class="text-muted mb-1"><small>Write all subjects separating by comma(,) :-</small></label>
+                        <textarea  name="allSubjects" id="activity-body" class="body-content small-textarea form-control" type="text"></textarea>
+                      </div>
+                      <input type="hidden" name="departmentName" value="<%=departmentDetails.departmentName%>">
+                      <button class="btn btn-primary btn-block btn-small">Create Session Batch</button>
+                    </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+          <div class="row">
+            <div class="col-12">
+              <hr>
+              <div class="item-container">
+                <div class="signUp-form-container">
+                  <form action="/add-official-assistant/<%=departmentDetails.departmentCode%>" method="POST"  id="sessionCreation-Form">
+                      <h6 class="bolder"><strong>Adding Official Assistant</strong></h6>
+                      <div class="form-group">
+                        <label for="userName" class="text-muted mb-1"><small>Assistant Name :-</small></label>
+                        <input  name="userName" id="userName" class="form-control form-control-sm " type="text" placeholder="Enter full name" autocomplete="off">
+                      </div>
+                      <div class="form-group">
+                          <label for="email" class="text-muted mb-1"><small>Email Id :-</small></label>
+                          <input  name="email" id="email" class="form-control form-control-sm " type="email" placeholder="Enter email id" autocomplete="off">
+                      </div>
+                      
+                      <button class="btn btn-primary btn-block btn-small">Add Official Assistant</button>
+                    </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  </div>
+  <hr>

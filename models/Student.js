@@ -158,4 +158,16 @@ Student.prototype.studentLoggingIn = function () {
       }
     })
   }
+
+  
+  Student.getStudentDetailsByRegNumber=function(regNumber){
+    return new Promise(async (resolve, reject) => {
+      try{
+        let studentData=await studentsCollection.findOne({regNumber:regNumber})
+        resolve(studentData)
+      }catch{
+        reject()
+      }
+    })
+  }
 module.exports=Student

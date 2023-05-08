@@ -24,23 +24,26 @@ exports.getTodaysSubjectDetails =async function (req, res,next) {
   try{
     let today=new Date()
     let routineDetails=await SessionBatch.getSessionBatchRoutineDetailsBySessionIds([req.regNumber.slice(0,9)])
+
     req.todaysClasses=[]
-    let dayIndex=today.getDay()-1//0,1,2,3,4,5,6
+    var dayIndex=today.getDay()-1;//0,1,2,3,4,5,6
+   
     let dateString=String(today.getDate())+String(today.getMonth()+1)+String(today.getFullYear())
     //classId=sessionId+date+dayIndex+classIndex
     if(dayIndex<=4){
       routineDetails.forEach((routineData)=>{
+        console.log("Day index:",routineData.routine.activities[dayIndex])
         if(routineData.routine){
           routineData.routine.activities[dayIndex].professors.forEach((professor,classIndex)=>{
             if(professor.regNumber!="NAN"){
               let classStatus=""
-              if(classIndex=0){
+              if(classIndex==0){
                 classStatus="1st"
-              }else if(classIndex=1){
+              }else if(classIndex==1){
                 classStatus="2nd"
-              }else if(classIndex=2){
+              }else if(classIndex==2){
                 classStatus="3rd"
-              }else if(classIndex=3){
+              }else if(classIndex==3){
                 classStatus="4th"
               }
               let classData={
@@ -64,14 +67,25 @@ exports.getTodaysSubjectDetails =async function (req, res,next) {
 }
 
 
-exports.studentHomePage =function (req, res) {
+exports.studentHomePage =async function (req, res) {
     try{
+        let studentData=await Student.getStudentDetailsByRegNumber(req.regNumber)
         res.render('student-home-page',{
-          todaysClasses:req.todaysClasses
+          todaysClasses:req.todaysClasses,
+          studentData:studentData
         })
     }catch{
         res.render('404')
     }
+}
+
+
+exports.getStudentActivityDetailsPage = async function (req, res) {
+  try{
+      res.render("student-activity-details-page")
+  }catch{
+      res.render('404')
+  }
 }
 
 exports.studentLoggingIn =function (req, res) {

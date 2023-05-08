@@ -1,46 +1,173 @@
 <%- include('includes/header') %>
 <%- include('includes/flash') %>
-<div >
-    <h1 class="text-center mt-5">This is Administartion home page!!</h1>
-    <h2 class="text-center">Administrator name is : <%=user.userName%></h2>
-</div>
-<hr>
 
 
 <div style="display: flex;flex-wrap: wrap;">
-    <div class="col-lg-4 bg-success" >
-      <h3><strong>All Added Departments</strong></h3>
-      <%allDepartments.forEach((department)=>{%>
-        <a href="/administration-handle/department/<%=department.departmentCode%>" class="pb-2">
-          <div class="student-room-container">
-            <div class="ml-2">
-              <span class="d-block"><strong >Department : </strong><%=department.departmentName%></span>
-            </div>
-          </div>
-        </a>
-      <%})%>
-    </div>
-    <div class="col-lg-8 " style="margin-bottom: 2rem;margin: 0;padding: 0;" >
-      <h2 class="uteach text-primary mt-4 mb-2 text-center">NBU Community Membership</h2>
-      <div class="signUp-form-container ">   
-        <h2 class="bolder text-center">Add New Department</h2>
-        <form action="/adding-new-department" method="POST" id="add-department-form">
-          
-            <div class="form-group">
-              <label for="departmentName" class="text-muted"><small>Department Name</small></label>
-              <input name="departmentName" id="departmentName" class="form-control form-control-lg " type="text" placeholder="Department full name."  autocomplete="off" />
-            </div>
-
-            <div class="form-group">
-                <label for="departmentCode" class="text-muted"><small>Department Code (5 unique alphabets)</small></label>
-                <input name="departmentCode" id="departmentCode" class="form-control form-control-lg " type="text" placeholder="5 Alphabets Department Code"  autocomplete="off" />
-            </div>
-            
-            <div style="text-align: center;">
-              <button class="btn btn-success btn-lg ">Add Department</button>
-            </div>
-        </form>
-        </div>
-      </div>
+  <div class="col-lg notVisibleOnCollapse" >
   </div>
+  <div class="col-lg-9 pt-1" >
+      <div class="">
+          <div style="width: 100%;position: relative;">
+              <img class="home-cover-image" src="/images/banner.jpg"/>
+          <div>
+          <div style="position: relative;display: inline;">
+              <img class="home-profile-image" src="/image/<%=user.regNumber%>" />
+              <div style="position: absolute;right: 7px;top: -25px;">
+                  <h5 type="button" class="text-info" data-toggle="modal" data-target="#profilePicUploadCenter"><i class="fas fa-camera-retro"></i></h5>
+                  <!-- Modal -->
+                  <div class="modal fade" id="profilePicUploadCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLongTitle">Upload Profile Picture</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <form action="/profile-photo-upload" method="post" enctype="multipart/form-data">
+                            <div class="form-group text-left">
+                              <label class="form-label" for="customFile">Choose Profile Photo (jpeg/png)</label>
+                              <input type="file" name="image" class="form-control" id="customFile" />
+                            </div>
+                            <div style="text-align: left;">
+                              <button class="btn btn-success btn-sm ">Upload</button>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- ----------model ends------- -->
+                </div>
+              </div>
+              <div>
+                  <h5 class="bolder text-secondary text-capetalize d-inline">
+                    <strong><%=user.userName%></strong></h5>
+                  <h5 class="bolder d-inline float-right">
+                    <i class="fas fa-user"></i> Administrator
+                  </h5>
+              </div> 
+              <hr> 
+              <!-- <div class="colored-container  bolder">
+                <div class="row">
+                  <div class="col-lg-12 ">
+                    <div class="btn btn-block btn-md btn-info">Go to Department</div>
+                  </div>
+                  
+                </div>
+              </div>
+              <hr> -->
+              <div class="row">
+                <div class="col-lg-5 ">
+                  <div class="item-container">
+                    <div >
+                      <strong ><i class="fas fa-book"></i> All Added Departments (<%=data.allDepartments.length%>)</strong>
+                    </div>
+                    <hr>
+                    <%if(!data.allDepartments.length){%>
+                      <div class="btn btn-info btn-block">No department added</div>
+                    <%}else{%>
+                      <%data.allDepartments.forEach((department)=>{%>
+                        <li class="list-group-item  d-flex align-items-center">
+                          <div class="mr-auto d-flex align-items-center"> 
+                            <div>
+                                <span class="item-text d-block"><strong>Department : </strong><%=department.departmentName%></span>
+                                <!-- <span class="item-text text-warning d-block"><strong>(HOD not added)</strong></span> -->
+                            </div>
+                          </div>
+                          <a href="/administration-handle/department/<%=department.departmentCode%>">
+                            <div class="btn btn-sm btn-info">Details</div>
+                          </a>
+                        </li>
+                      <%})%>
+                    <%}%>
+                  
+                  </div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="item-container mb-2">
+                    <div class="signUp-form-container ">   
+                      <h2 class="bolder text-center">Add New Department</h2>
+                      <form action="/adding-new-department" method="POST" id="add-department-form">
+                        
+                          <div class="form-group">
+                            <label for="departmentName" class="text-muted"><small>Department Name</small></label>
+                            <input name="departmentName" id="departmentName" class="form-control form-control-lg " type="text" placeholder="Department full name."  autocomplete="off" />
+                          </div>
+              
+                          <div class="form-group">
+                              <label for="departmentCode" class="text-muted"><small>Department Code (5 unique alphabets)</small></label>
+                              <input name="departmentCode" id="departmentCode" class="form-control form-control-lg " type="text" placeholder="Example : 'BENGL'"  autocomplete="off" />
+                          </div>
+                          
+                          <div style="text-align: center;">
+                            <button class="btn btn-success btn-lg ">Add Department</button>
+                          </div>
+                      </form>
+                    </div>
+                  </div>
+                  <hr>
+                  
+                </div>
+        
+                
+              </div>
+              <hr>
+              <div class="colored-container  bolder">
+                <div >
+                  <strong><i class="fas fa-user-tie"></i> Other Options</strong>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <p><strong>Running Session Year : <%=data.presentSessionYear%></strong></p>
+                    
+                  </div>
+                  <div class="col-lg-6 mb-2">
+                    <div class="accordion mt-2" id="accordionExample">
+                      <div class="card">        
+                        <h2 class="mb-0">
+                          <button class="btn btn-block btn-info btn-sm" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Add New Session Year
+                          </button>
+                        </h2>
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                          <div class="card-body">
+                            <h4 class="bolder text-center">Add New Session Year</h4>
+                            <form action="/add-new-session-year" method="POST" id="add-HOD-form">
+                                
+                                
+                                <div class="form-group">
+                                    <label for="newSessionYear" class="text-muted"><small>New Session Year</small></label>
+                                    <input name="newSessionYear" id="newSessionYear" class="form-control form-control-lg " type="text" placeholder="Example:2021-2022"  autocomplete="off" />
+                                </div>
+                                <div style="text-align: center;">
+                                  <button class="btn btn-success btn-sm ">Add New Session Year</button>
+                                </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <a href="#">
+                      <div class=" btn btn-md btn-block btn-warning"><strong>See Departmental Performance</strong> </div>
+                    </a>
+                  </div>
+                </div>
+                
+              </div>
+              </div>
+          </div> 
+        </div>    
+    </div>
+    <div class="col-lg notVisibleOnCollapse" >
+    </div>
+</div>
+
 <%- include('includes/footer') %>

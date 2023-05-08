@@ -7,25 +7,12 @@ exports.functionName =function (req, res) {
         res.render('404')
     }
 }
+
 exports.isDepartmentExists = async function (req, res,next) {
     try{
         let departmentDetails=await Department.getDepartmentDetailsByDepartmentCode(req.params.departmentCode)
         if(departmentDetails){
             req.departmentDetails=departmentDetails
-            next()
-        }else{
-            res.render('404') 
-        }
-    }catch{
-        res.render('404')
-    }
-}
-exports.getDepartmentalHODData = async function (req, res,next) {
-    try{
-        let departmentDetails=await Department.getDepartmentDetailsByDepartmentCode(req.body.regNumber.slice(4,9).toUpperCase())
-        if(departmentDetails){
-            req.HODData=departmentDetails.HOD
-            console.log("hod:",req.HODData)
             next()
         }else{
             res.render('404') 
@@ -49,6 +36,14 @@ exports.getDepartmentDetails = async function (req, res,next) {
     }
 }
 
+exports.getDepartmentActivityDetailsPage = async function (req, res) {
+    try{
+        
+        res.render("department-activity-details-page")
+    }catch{
+        res.render('404')
+    }
+}
 
 exports.professorMustBeDepartmentalHOD = async function (req, res,next) {
     try{
@@ -73,11 +68,17 @@ exports.professorMustBeDepartmentalHOD = async function (req, res,next) {
     }
 }
 
-
 exports.getDetailsPage = function (req, res) {
     try{
+        let presentProfessors=[]
+        if(req.departmentDetails.isDepartmentRunning){
+            req.departmentDetails.presentDayActivities.professors.forEach((professor)=>{
+            presentProfessors.push(professor.regNumber)
+            })
+        }
         res.render('department-details-page',{
-            departmentDetails:req.departmentDetails
+            departmentDetails:req.departmentDetails,
+            presentProfessors:presentProfessors
         })
     }catch{
         res.render('404')

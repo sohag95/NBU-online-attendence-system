@@ -19,7 +19,7 @@ const upload = multer({ storage: storage })
 //photo fetching related routers
 //key=user Id/file-name
 router.get('/image/:key',awsS3BucketController.getPhoto)
-router.post("/photo-upload",upload.single('image'),awsS3BucketController.uploadPhoto)
+router.post("/profile-photo-upload",upload.single('image'),userController.userMustBeLoggedIn,awsS3BucketController.uploadProfilePhoto)
 
 //########################
 //guest-user related routers
@@ -29,41 +29,45 @@ router.get('/all-departments',userController.getAllDepartments)
 router.post('/loggingOut',userController.loggingOut)
 
 //########################
+router.get('/log-in',userController.userMustNotLoggedIn,userController.logInPage)
+router.post('/user-logging-in',userController.userMustNotLoggedIn,userController.userLoggingIn)
+
 //Administration related routers
-router.get('/administration-log-in',administrationController.administrationLogInPage)
-router.post('/administration-logging-in',userController.userMustNotLoggedIn,administrationController.administrationLoggingIn)
 router.get('/administration-home',administrationController.administratorMustBeLoggedIn,administrationController.administrationHomePage)
 router.post('/adding-new-department',administrationController.administratorMustBeLoggedIn,administrationController.addNewDepartment)
 router.get('/administration-handle/department/:departmentCode',administrationController.administratorMustBeLoggedIn,departmentController.isDepartmentExists,administrationController.departmentalHandlePage)
 router.post('/add-professor/:departmentCode',administrationController.administratorMustBeLoggedIn,administrationController.addProfessor)
 router.post('/add-HOD/:departmentCode',administrationController.administratorMustBeLoggedIn,professorController.getProfessorDetails,administrationController.addHOD)
+router.post('/add-new-session-year',administrationController.administratorMustBeLoggedIn,administrationController.addNewSessionYear)
 
 //########################
 //Department related routers
 router.get('/department/:departmentCode/details',departmentController.isDepartmentExists,departmentController.getDetailsPage)
+router.get('/department/:departmentCode/activity-details',userController.userMustBeLoggedIn,departmentController.isDepartmentExists,departmentController.getDepartmentActivityDetailsPage)
 
 //########################
 //Session-batch related routers
 router.get('/session-batch/:sessionId/details',sessionBatchController.ifSessionBatchExists,sessionBatchController.getBatchDetailsPage)
+router.get('/session-batch/:sessionId/activity-details',userController.userMustBeLoggedIn,sessionBatchController.ifSessionBatchExists,sessionBatchController.getBatchActivityDetailsPage)
 
 //########################
 //Student related routers
 router.post('/student-logging-in',userController.userMustNotLoggedIn,studentController.studentLoggingIn)
 router.get('/student-home',studentController.studentMustBeLoggedIn,studentController.getTodaysSubjectDetails,studentController.studentHomePage)
-
+router.get('/student/:regNumber/activity-details',studentController.getStudentActivityDetailsPage)
+//--has to add permission middle-check-function
 //########################
 //Professors related routers
-router.post('/professor-logging-in',userController.userMustNotLoggedIn,departmentController.getDepartmentalHODData,professorController.professorLoggingIn)
 router.get('/professor-home',professorController.professorMustBeLoggedIn,professorController.getProfessorDepartmentDetails,professorController.getTodaysSubjectDetails,professorController.professorHomePage)
 router.get('/class/:classId/take-attendence',professorController.professorMustBeLoggedIn,professorController.isClassValidOrNot,professorController.getClassDetails,professorController.getClassAttendencePage)
 router.post('/class/:classId/submit-attendence',professorController.professorMustBeLoggedIn,professorController.isClassValidOrNot,professorController.getClassDetails,professorController.submitClassAttendence)
+router.get('/professor/:regNumber/activity-details',professorController.getProfessorActivityDetailsPage)
 
-//Class-attendence related router
+//Class related router
 router.get('/class/:classId/details',userController.isClassExists,userController.getClassDetailsPage)
 
 //########################
 //HOD related routers
-router.get('/HOD-handle/:departmentCode/page',professorController.professorMustBeLoggedIn,departmentController.professorMustBeDepartmentalHOD,hodController.getDepartmentHandlePage)
 router.post('/add-new-session/:departmentCode',professorController.professorMustBeLoggedIn,departmentController.professorMustBeDepartmentalHOD,hodController.addNewSession)
 router.post('/add-student/:departmentCode/:sessionId',professorController.professorMustBeLoggedIn,departmentController.professorMustBeDepartmentalHOD,sessionBatchController.isSessionIdValid,hodController.addStudent)
 router.post('/add-official-assistant/:departmentCode',professorController.professorMustBeLoggedIn,departmentController.professorMustBeDepartmentalHOD,hodController.addOfficialAssistant)
@@ -74,12 +78,12 @@ router.post('/add-routine-day-activity/:departmentCode/:sessionId',professorCont
 //########################
 //department-Official related routers
 router.post('/official-assistant-logging-in',userController.userMustNotLoggedIn,departmentController.getDepartmentDetails,officialAssistantController.officialAssistantLogIn)
-router.get('/official-assistant-home',officialAssistantController.offitialAssistantMustBeLoggedIn,officialAssistantController.getOffitialAssistantHome)
+router.get('/official-assistant-home',officialAssistantController.officialAssistantMustBeLoggedIn,officialAssistantController.getOfficialAssistantHome)
 
-router.post('/department/:departmentCode/open',officialAssistantController.offitialAssistantMustBeLoggedIn,departmentController.isDepartmentExists,officialAssistantController.checkPreOpeningData,officialAssistantController.openingDepartment)
-router.post('/department/:departmentCode/close',officialAssistantController.offitialAssistantMustBeLoggedIn,departmentController.isDepartmentExists,officialAssistantController.checkPreClosingData,officialAssistantController.closingDepartment)
-router.post('/professor/:departmentCode/attendence',officialAssistantController.offitialAssistantMustBeLoggedIn,departmentController.isDepartmentExists,officialAssistantController.checkPreAttendenceData,officialAssistantController.professorAttendence)
-router.post('/professor/:departmentCode/attendenceUndo',officialAssistantController.offitialAssistantMustBeLoggedIn,departmentController.isDepartmentExists,officialAssistantController.checkPreAttendenceUndoData,officialAssistantController.professorAttendenceUndo)
+router.post('/department/:departmentCode/open',officialAssistantController.officialAssistantMustBeLoggedIn,departmentController.isDepartmentExists,officialAssistantController.checkPreOpeningData,officialAssistantController.openingDepartment)
+router.post('/department/:departmentCode/close',officialAssistantController.officialAssistantMustBeLoggedIn,departmentController.isDepartmentExists,officialAssistantController.checkPreClosingData,officialAssistantController.closingDepartment)
+router.post('/professor/:departmentCode/attendence',officialAssistantController.officialAssistantMustBeLoggedIn,departmentController.isDepartmentExists,officialAssistantController.checkPreAttendenceData,officialAssistantController.professorAttendence)
+router.post('/professor/:departmentCode/attendenceUndo',officialAssistantController.officialAssistantMustBeLoggedIn,departmentController.isDepartmentExists,officialAssistantController.checkPreAttendenceUndoData,officialAssistantController.professorAttendenceUndo)
 
 
 

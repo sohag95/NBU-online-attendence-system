@@ -1466,3 +1466,13 @@ div.feedbackButton{
   font-weight: 700;
   color: #fff;
 }
+
+.logInBtn{
+  position: absolute;
+  top: 72%;
+  right: 1%;
+}
+
+.container-scroll::-webkit-scrollbar{
+  width: 0px;
+}

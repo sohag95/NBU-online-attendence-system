@@ -1,197 +1,207 @@
 <%- include('includes/header') %>
 <%- include('includes/flash') %>
-<div >
-    <h1 class="text-center mt-2">This is session batch details page !!</h1>
-    <h2 class="text-center">Department name is : <%=batchDetails.departmentName%></h2>
-    <h2 class="text-center">Batch session is : <%=batchDetails.sessionYear%></h2>
-    
-</div>
-<hr>
-<div style="display: flex;flex-wrap: wrap;">
-  <div class="col-lg-2 bg-success" >
-    <h3><strong>All Present Students</strong></h3>
-    <%if(batchDetails.allPresentStudents.length==0){%>
-      <div class="btn btn-lg btn-info btn-block">No student added!!</div>
-    <%}else{%>
-      <%batchDetails.allPresentStudents.forEach((student)=>{%>
-        <a href="/student/<%=student.regNumber%>/details" class="pb-2">
-          <div class="d-flex align-items-center student-room-container" >
-            <div >
-              <img class="avatar-small"  src="/image/<%=student.regNumber%>" alt="">
-            </div>
-            <div class="ml-2">
-              <span class="d-block"><strong >Name : </strong><%=student.userName%></span>
-            </div>
-          </div>
-        </a>
-      <%})%>
-    <%}%>
-    <%if(user){%>
-        <%if(user.isHOD){%>
-            <hr>
-            <div class="item-container mt-2">
-              <form action="/add-student/<%=batchDetails.departmentCode%>/<%=batchDetails.sessionId%>" method="POST"  id="sessionCreation-Form">
-                <h6 class="bolder"><strong>Adding New Student</strong></h6>
-                <div class="form-group">
-                  <label for="userName" class="text-muted mb-1"><small>Student Name :-</small></label>
-                  <input  name="userName" id="userName" class="form-control form-control-sm " type="text" placeholder="Enter full name" required autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label for="email" class="text-muted mb-1"><small>Email Id :-</small></label>
-                    <input  name="email" id="email" class="form-control form-control-sm " type="email" placeholder="Enter email id" required autocomplete="off">
-                </div>
-                <div class="form-group">
-                    <label for="dateOfBirth" class="text-muted mb-1"><small>Date of birth :-</small></label>
-                    <input  name="dateOfBirth" id="dateOfBirth" class="form-control form-control-sm " type="date" placeholder="Sellect DOB"required autocomplete="off">
-                </div>
-                <input type="hidden" name="sessionId" value="<%=batchDetails.sessionId%>">
-                <button class="btn btn-primary btn-block btn-small">Add Student</button>
-              </form>
-            </div>
-        <%}%>
-    <%}%>
-    <hr>
-              
-  </div>
-    <div class="col-lg-8 " style="margin-bottom: 2rem;margin: 0;padding: 0;" >
-      <h3 class="bolder text-info text-center"><strong>Today's Attendence</strong></h3>
-      <div class="signUp-form-container ">   
-        <h2 class="bolder text-center">Present Students : 120</h2>
-        <h2 class="bolder text-center"> Total Students : 140 </h2>
-        <h2 class="bolder text-center">Date : 12 April 2023</h2>
-      </div>
-      <hr>
-      <%if(batchDetails.routine){%>
-      <div class="item-container">
-        <h3 class="bolder text-primary text-center"><strong>Class Routine</strong></h3>
-            <table class="table table-bordered text-center">
-                <tbody>
-                  <%if(batchDetails.routine.slotsPerDay=="3"){%>
-                    <tr>
-                      <th rowspan="2" scope="col">Classes</th>
-                      <th scope="col">1st Class</th>
-                      <th scope="col">2nd Class</th>
-                      <th scope="col">3rd Class</th>
-                    </tr>
-                  <%}else if(batchDetails.routine.slotsPerDay=="4"){%>
-                    <tr>
-                      <th rowspan="2" scope="col">Classes</th>
-                      <th scope="col">1st Class</th>
-                      <th scope="col">2nd Class</th>
-                      <th scope="col">3rd Class</th>
-                      <th scope="col">4rd Class</th>
-                    </tr>
-                  <%}%>
-                  <tr>
-                    <%batchDetails.routine.timings.forEach((time)=>{%>
-                      <th ><%=time%></th>
-                    <%})%>
-                  </tr>
 
-                  <%batchDetails.routine.activities.forEach((day,index)=>{%>
-                    <tr>
-                      <th rowspan="2" scope="col"><%=days[index]%></th>
-                      <%day.subjects.forEach((subject)=>{%>
-                        <td><%=subject%></td>
-                      <%})%>
-                    </tr>
-                    <tr>
-                      <%day.professors.forEach((professor)=>{%>
-                        <td><%=professor.userName%></td>
-                      <%})%>
-                    </tr>
-                  <%})%>
-                </tbody>
-              </table>
-            </div>
-          <%}else{%>
-            <h3 class="btn btn-info btn-lg btn-block"><strong>Class routine has not uploaded!!</strong></h3>
-          <%}%>
-      <%if(user){%>
-        <%if(user.isHOD){%>
-            <hr>
-            <div class="item-container text-center mt-2">
-              <%if(!batchDetails.routine){%>
-                <a href="/create/<%=batchDetails.departmentCode%>/<%=batchDetails.sessionId%>/routine">
-                  <div class="btn btn-info btn-lg btn-block">Create New Routine -></div>
-                </a>
+
+<div style="display: flex;flex-wrap: wrap;">
+  <div class="col-lg notVisibleOnCollapse" >
+  </div>
+  <div class="col-lg-9 pt-1" >
+    <%if(user){%>
+      <%if(user.isHOD){%>
+        <%- include('includes/sections/hod-batch-handle-panel') %>
+      <%}%>
+    <%}%>
+    <div style="position: relative;">
+      <img class="header-banner-img"  src="/images/banner3.jpg" alt="">
+      <div class="banner-details-text text-center">
+        <span class="d-block">BATCH : <%=batchDetails.sessionYear%> </span>
+        <span class="d-block">SEMESTER : <%=batchDetails.semesterStatus%></span>
+        <span class="d-block">DEPARTMENT OF <%=batchDetails.departmentName%></span>
+      </div>
+    </div>
+    <hr>
+      <div class="row">
+        <div class="col-lg-7">
+          <div class="item-container mb-2">
+            <div >
+              <%if(batchDetails.isBatchRunning){%>
+                <strong ><i class="fas fa-user-tie"></i> Today's Attendence Details</strong>
               <%}else{%>
-                <a href="/create/<%=batchDetails.departmentCode%>/<%=batchDetails.sessionId%>/routine">
-                  <div class="btn btn-warning btn-lg btn-block">Update Routine -></div>
-                </a>
+                <strong ><i class="fas fa-user-tie"></i> Last Day's Attendence Details</strong>
               <%}%>
             </div>
-        <%}%>
-      <%}%>
-
-      <hr>
-      <h2 class="uteach text-primary mt-4 mb-2 text-center">Today's All Classes</h2>
-      <%if(!batchDetails.presentDayActivities.classes.length){%>
-        <div class="btn btn-lg btn-block btn-info">No classes taken till now.</div>
-      <%}else{%>
-        <div class="teacher-banner-container p-4">
-          <%batchDetails.presentDayActivities.classes.forEach((cls)=>{%>
-            <a href="/class/<%=cls.classId%>/details" style="text-decoration: none;">
-              <div class="activity-link-container-small">
-                <div class="text-left" style="padding-bottom: 5px;padding-top: 10px;padding-left: 2px;">
-                  <p class="bolder"><strong> Period : <%=cls.period%></strong></p>
-                  <p class="bolder"><strong> Timing : <%=cls.timing%></strong></p>
-                  <p class="bolder"><strong> Subject : <%=cls.subject%></strong></p>
-                  <p class="bolder"><strong> Professor : <%=cls.professor.userName%></strong></p>
-              </div>
-              </div>
-            </a>
-          <%})%>
-        </div>
-      <%}%>
-      <hr>
-      <h2 class="uteach text-primary mt-4 mb-2 text-center">Last Day's All Classes</h2>
-      <h3 class="uteach text-primary mt-4 mb-2 text-center">Date : 21/04/2023</h3>
-      
-      <%if(!batchDetails.lastDayActivities.classes.length){%>
-        <div class="btn btn-lg btn-block btn-info">No classes taken till now.</div>
-      <%}else{%>
-        <div class="teacher-banner-container p-4">
-          <%batchDetails.lastDayActivities.classes.forEach((cls)=>{%>
-            <a href="/class/<%=cls.classId%>/details" style="text-decoration: none;">
-              <div class="activity-link-container-small">
-                <div class="text-left" style="padding-bottom: 5px;padding-top: 10px;padding-left: 2px;">
-                  <p class="bolder"><strong> Semester Status : <%=cls.semesterStatus%></strong></p>
-                  <p class="bolder"><strong> Period : <%=cls.period%></strong></p>
-                  <p class="bolder"><strong> Timing : <%=cls.timing%></strong></p>
-                  <p class="bolder"><strong> Subject : <%=cls.subject%></strong></p>
-                  <p class="bolder"><strong> Professor : <%=cls.professor.userName%></strong></p>
-              </div>
-              </div>
-            </a>
-          <%})%>
-        </div>
-      <%}%>
-    </div>
-    
-                  
-    <div class="col-lg-2 bg-success" >
-                    
-      <h3><strong>All Attended Students</strong></h3>
-      <%if(batchDetails.presentDayActivities.students.length==0){%>
-        <div class="btn btn-lg btn-info btn-block">No professor arrived!!</div>
-      <%}else{%>
-        <%batchDetails.presentDayActivities.students.forEach((student)=>{%>
-          <a href="/student/<%=student.regNumber%>/details" class="pb-2">
-            <div class="d-flex align-items-center student-room-container" >
-              <div >
-                <img class="avatar-small"  src="/image/<%=student.regNumber%>" alt="">
-              </div>
-              <div class="ml-2">
-                <span class="d-block"><strong >Name : </strong><%=student.userName%></span>
-              </div>
+            <hr>
+            <div class="p-4 bolder text-success text-center">
+              <h2><strong>Students : 90%</strong></h2>
+              <h2><strong>Date : 12/04/2023</strong></h2>
             </div>
-          </a>
-        <%})%>
-      <%}%>
+          </div>
+          <hr>
+          <div class="item-container">
+            <div >
+              <%if(batchDetails.isBatchRunning){%>
+                <strong ><i class="fas fa-book"></i> Today's All Classes</strong>
+              <%}else{%>
+                <strong ><i class="fas fa-book"></i> Last Day's All Classes</strong>
+              <%}%>
+            </div>
+            <hr>
+              <div class="teacher-banner-container">
+                <%if(batchDetails.isBatchRunning){%>
+                  <%if(!batchDetails.presentDayActivities.classes.length){%>
+                    <div class="btn btn-lg btn-block btn-info">No classes taken till now.</div>
+                  <%}else{%>
+                    <%batchDetails.presentDayActivities.classes.forEach((cls)=>{%>
+                      <div class="activity-link-container-small border ">
+                        <div class="item-container">
+                          <span class=" d-block bolder text-warning text-center"><strong><%=cls.subject%></strong></span>
+                        </div>
+                        <div class="class-text-container bolder">
+                          <p ><strong> Period : <%=cls.period%></strong></p>
+                          <p ><strong> Timing : <%=cls.timing%></strong></p>
+                          <p style="margin-bottom:.4rem;"><strong> Professor : <%=cls.professor.userName%></strong></p>
+                          <div class="m-2">
+                            <a href="/class/<%=cls.classId%>/details">
+                              <div class="btn btn-outline-secondary btn-sm btn-block">Go to class details</div>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    <%})%>
+                  <%}%> 
+                <%}else{%>
+                    <%if(!batchDetails.lastDayActivities.classes.length){%>
+                      <div class="btn btn-lg btn-block btn-info">No classes taken till now.</div>
+                    <%}else{%>
+                      <%batchDetails.lastDayActivities.classes.forEach((cls)=>{%>
+                        <div class="activity-link-container-small border ">
+                          <div class="item-container">
+                            <span class=" d-block bolder text-warning text-center"><strong><%=cls.subject%></strong></span>
+                          </div>
+                          <div class="class-text-container bolder">
+                            <p ><strong> Period : <%=cls.period%></strong></p>
+                            <p ><strong> Timing : <%=cls.timing%></strong></p>
+                            <p style="margin-bottom:.4rem;"><strong> Professor : <%=cls.professor.userName%></strong></p>
+                            <div class="m-2">
+                              <a href="/class/<%=cls.classId%>/details">
+                                <div class="btn btn-outline-secondary btn-sm btn-block">Go to class details</div>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      <%})%>
+                    <%}%> 
+                <%}%>
+              </div>
+          </div>
+        </div>
+
+        <div class="col-lg-5">
+          <div class="item-container">
+            <div >
+              <strong ><i class="fas fa-users"></i> All Students (<%=batchDetails.allPresentStudents.length%>)</strong>
+            </div>
+            <hr>
+            <%if(batchDetails.allPresentStudents.length==0){%>
+              <div class="btn btn-lg btn-info btn-block">No student added!!</div>
+            <%}else{%>
+              <div class="container-scroll" style="max-height: 28rem;overflow: scroll;">
+              <%batchDetails.allPresentStudents.forEach((student)=>{%>
+                <li class="list-group-item  d-flex align-items-center">
+                  <div class="mr-auto d-flex align-items-center"> 
+                    <div class="mr-2">
+                        <img class="member-avatar"  src="/image/<%=student.regNumber%>" alt="">
+                    </div>
+                    <div>
+                        <span class="item-text d-block"><strong>Name : </strong><%=student.userName%></span>
+                    </div>
+                  </div>
+                </li>
+              <%})%>
+            </div>
+            <%}%>
+          </div>
+        </div>
+      </div>
       <hr>
-                
-      
-    </div>
+      <div class="item-container">
+        <div >
+          <strong ><i class="fas fa-users"></i> Class Routine</strong>
+        </div>
+        <hr>
+        <%if(!batchDetails.routine){%>
+          <div class="btn btn-block btn-info btn-lg">Routine has not uploaded yet!!</div>
+        <%}else{%>
+          <table class="table table-bordered text-center">
+            <tbody>
+              <%if(batchDetails.routine.slotsPerDay=="3"){%>
+                <tr>
+                  <th rowspan="2" scope="col">Classes</th>
+                  <th scope="col">1st Class</th>
+                  <th scope="col">2nd Class</th>
+                  <th scope="col">3rd Class</th>
+                </tr>
+              <%}else if(batchDetails.routine.slotsPerDay=="4"){%>
+                <tr>
+                  <th rowspan="2" scope="col">Classes</th>
+                  <th scope="col">1st Class</th>
+                  <th scope="col">2nd Class</th>
+                  <th scope="col">3rd Class</th>
+                  <th scope="col">4rd Class</th>
+                </tr>
+              <%}%>
+              <tr>
+                <%batchDetails.routine.timings.forEach((time)=>{%>
+                  <th ><%=time%></th>
+                <%})%>
+              </tr>
+
+              <%batchDetails.routine.activities.forEach((day,index)=>{%>
+                <tr>
+                  <th rowspan="2" scope="col"><%=days[index]%></th>
+                  <%day.subjects.forEach((subject)=>{%>
+                    <td><%=subject%></td>
+                  <%})%>
+                </tr>
+                <tr>
+                  <%day.professors.forEach((professor)=>{%>
+                    <td><%=professor.userName%></td>
+                  <%})%>
+                </tr>
+              <%})%>
+            </tbody>
+          </table>
+        <%}%>
+      </div>
+      <hr>
+      <div class="colored-container  bolder">
+        <div >
+          <strong><i class="fas fa-user-tie"></i> Batch Details</strong>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-lg-6">
+            <p><strong>Department Name : <%=batchDetails.departmentName%></strong></p>
+            <p><strong>Department Code : <%=batchDetails.sessionId.slice(4,9)%></strong></p>
+          </div>
+          <div class="col-lg-6">
+            <p><strong>Session Year : <%=batchDetails.sessionYear%></strong></p>
+            <p><strong>Semester : <%=batchDetails.semesterStatus%></strong></p>
+          </div>
+          <%if(user){%>
+            <div class="col-12">
+              <a href="/session-batch/<%=batchDetails.sessionId%>/activity-details">
+                <div class=" btn btn-md btn-block btn-warning"><strong>See All Activity Details</strong> </div>
+              </a>
+            </div>
+          <%}%>
+          
+        </div>
+        
+      </div>
   </div>
+  <div class="col-lg notVisibleOnCollapse" >
+  </div>
+</div>
+
 <%- include('includes/footer') %>

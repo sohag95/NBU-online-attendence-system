@@ -5,16 +5,24 @@
   <div class="col-lg-8 text-center" style="margin-bottom: 2rem;margin: 0;padding: 0;" >
     
     <div class="logIn-form-container mt-4 mb-4 text-center">   
-      <h2 class="bolder">Administrator's Login</h2>
-      <form action="/administration-logging-in" method="POST" class="">
-        <input name="regNumber" class="form-control form-control-lg space" type="text" placeholder="Registration Number :" autocomplete="off">
+      <h2 class="bolder">User Log-In</h2>
+      <form action="/user-logging-in" method="POST" id="log-in-form">
+        <br>
+        <div class="form-group">
+          <select id="userType" name="userType" class="form-control form-control-lg"  form="log-in-form">
+            <option value="">---Select User Type---</option>
+            <option value="professor">Professor</option>
+            <option value="admin">Administration</option>
+          </select>
+        </div>
         <hr>
+        <input name="regNumber" class="form-control form-control-lg space" type="text" placeholder="Registration Number :" autocomplete="off">
+        
         <input name="password" class="form-control form-control-lg space" type="password" placeholder="Password :" required>
         <button class="btn btn-info btn-block btn-lg">Log in</button>
       </form>
       <hr>
       <p><a href="/">Forgot password ?</a> </p>
-      <p><a href="/">Apply for an account </a> </p>
     </div>
   </div>
   <div class="col" ></div>

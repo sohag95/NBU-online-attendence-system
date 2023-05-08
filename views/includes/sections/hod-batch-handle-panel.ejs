@@ -1,0 +1,48 @@
+<div class="colored-container bg-warning">
+    <div>
+      <h3><strong ><i class="fas fa-users"></i> HOD Batch Handle Panel</strong></h3>
+    </div>
+    <hr>
+    <div >
+      
+  </div>
+    <div class="row">
+      <div class="col-lg-6 mb-2" id="accordionExample">
+        <div class="btn btn-info btn-block" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Add New Student</div>
+      </div>
+      <div class="col-lg-6">
+        <a href="/create/<%=batchDetails.departmentCode%>/<%=batchDetails.sessionId%>/routine">  
+          <div class="btn btn-info btn-block">Add New Routine</div>
+        </a>
+      </div>
+    </div>
+    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+      <div class="row">
+        <div class="col-12">
+          <hr>
+          <div class="item-container">
+            <div class="signUp-form-container">
+              <form action="/add-student/<%=batchDetails.departmentCode%>/<%=batchDetails.sessionId%>" method="POST"  id="sessionCreation-Form">
+                <h6 class="bolder"><strong>Adding New Student</strong></h6>
+                <div class="form-group">
+                  <label for="userName" class="text-muted mb-1"><small>Student Name :-</small></label>
+                  <input  name="userName" id="userName" class="form-control form-control-sm " type="text" placeholder="Enter full name" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="email" class="text-muted mb-1"><small>Email Id :-</small></label>
+                    <input  name="email" id="email" class="form-control form-control-sm " type="email" placeholder="Enter email id" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label for="dateOfBirth" class="text-muted mb-1"><small>Date of birth :-</small></label>
+                    <input  name="dateOfBirth" id="dateOfBirth" class="form-control form-control-sm " type="date" placeholder="Sellect DOB"required autocomplete="off">
+                </div>
+                <input type="hidden" name="sessionId" value="<%=batchDetails.sessionId%>">
+                <button class="btn btn-primary btn-block btn-small">Add Student</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr>

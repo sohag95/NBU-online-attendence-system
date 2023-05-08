@@ -52,14 +52,20 @@ Administration.prototype.administrationLoggingIn = function () {
 
   
 
-  Administration.increaseStudentSerialNumber=function(){
+  Administration.addNewSessionYear=function(data){
     return new Promise(async(resolve, reject) => {
       try {
+        if (typeof data.newSessionYear != "string") {
+          reject("Try with valide data!")
+        }
+        if (data.newSessionYear.length!=9) {
+          reject("Session-Year format should be :'2021-2022'")
+        }
         await administrationCollection.updateOne(
           { dataType: "neededData" },
           {
-            $inc: {
-              studentSerialNumber: 1
+            $set: {
+              presentSessionYear: data.newSessionYear
             }
           }
         )
@@ -77,6 +83,13 @@ Administration.prototype.administrationLoggingIn = function () {
     })
   }
 
+  Administration.getAdminHomeData= function () {
+    return new Promise(async(resolve, reject) => {
+      let data=await administrationCollection.findOne({dataType:"neededData"})
+      resolve(data)
+    })
+  } 
+
   Administration.getPresentSessionYear = function () {
     return new Promise(async(resolve, reject) => {
       let data=await administrationCollection.findOne({dataType:"neededData"})
@@ -89,12 +102,23 @@ Administration.prototype.administrationLoggingIn = function () {
       try {
         console.log("Count:",newStudents)
         await administrationCollection.updateOne(
-          { dataType: "attendenceCountData" },
+          { dataType: "attendanceCountData" },
           {
-             $inc: { "presentDayAttendence.students": newStudents } 
+             $inc: { "presentDayAttendance.students": newStudents } 
           }
         )
         resolve()
+      } catch {
+        reject()
+      }
+    })
+  }
+
+  Administration.getAttendanceCountData=function(){
+    return new Promise(async(resolve, reject) => {
+      try {
+        let countData=await administrationCollection.findOne({ dataType: "attendanceCountData" })
+        resolve(countData)
       } catch {
         reject()
       }

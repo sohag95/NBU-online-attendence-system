@@ -1,0 +1,226 @@
+                            NBU Online Attendence System
+                    ------------------------------------------
+Our intention to build this application is to convert offline attendence system to
+online attendence system.
+
+Targets to Achieve Through The Application:
+    1.Online attendence system.
+    2.Observation of different departmental activities by administration.
+    3.Creating a platform to create an environment for the feeling of belongingness
+    within NBU students.
+    4.Student's and professor's attendence history storing in organized way.
+    5.Individual batch classes history storing in organized way.
+    6.Indivudual departmental activities history storing in organized way.
+
+SYSTEM BUILDING PROCESS:
+
+Total users for this application is five:
+    1.administration    
+    2.Professor
+    3.HOD
+    4.Departmental Official Assistant
+    5.Student
+
+Functionalities for Each Users:
+    1.Administration:
+        Administration will handle the whole process.All the required data regarding 
+        each department will be provided by the admin.Admin also will be able to monitor
+        any type of activities done by other users.
+        Functionalities are:
+            1.Adding department details:
+                To add a new department,admin has to fill up a form with data like-
+                    i.department name
+                    ii.unique 5 alphabetic departmental code.
+            2.Adding Professors:
+                After creating a department,admin has to add all the professors on that
+                department.To add a professor admin has to provide data like-
+                    i.Professor name
+                    ii.Professor email id
+                    iii.Joining date as professor
+                After submission of the form data professor's account will be created.
+                During creation of professor's account, system will create an auto 
+                generated registration number and 6 digit password for the account 
+                that will be used during professors account log in.The account details
+                will be provided to the professor's email id during creation of the 
+                account.
+                    Example:
+                    Registration Number:2023COMSC0001(Joining Year+department Code+professor serial number)
+                    Password:123456
+            3.Adding HOD:
+                Admin will add the departmental HOD to give the authority to perform
+                departmental tasks.
+                To add the hod, admin has to fill up a form where admin has to select
+                hod name out of all professors and has to provide the joining date as 
+                hod.
+            4.Monitoring a particular departmental activity:
+                Admin can go to a department page and see all the activity details parformed
+                by the department.
+
+    2.HOD :
+        HOD will be the in charge of all activities of a deprtment.Departmental other 
+        functionalities will open by the hod.
+        1.Adding New Session Batch:
+            Each session year new session Batch will be created.To add a new batch,the 
+            data are needed as-
+                a.session-starting year
+                b.session end year
+                c.all subjects on that semester
+            Both data will create an unique sessionId for the batch.
+            Example:
+                start Year:2021
+                End Year:2023
+                Department Code:COMSC(for computer science)
+                Session Id:2123COMSC
+        2.Adding Student:
+            Students will be added to a particular batch with the data like:
+                a.Student name
+                b.Student email-Id
+                c.Student date of birth
+            During creation of the student account,system will generate an unique
+            registration number for the student.The account details will be provided 
+            on students email id.
+            Example:2123COMSC0001
+                (sessionId+student's serial number)
+        3.Removing Student:
+            Hod will be able to remove/delete a student from a batch.
+        4.Adding Class Routine:
+            Hod will upload the routine for weekly basis.Hod has to select the subject 
+            and the professor name for a particular subject on a period for a particular
+            day.
+
+        5.Adding Departmental Official Assistant:
+            Hod has to add an official assistant by providing data like-
+                a.Assistant name
+                b.Email id
+            During addition of the assistant an auto generated password will be created
+            and details of the account will be send to the provided email id.
+        
+    3.Departmental Official Assistant:
+        Official assistant will help the hod to perform few tasks.
+        1.Opening the departmental activity:
+            To start class activities official assistant has to open the departmental
+            lock.To open departmental activity assistant has to fill up a form by
+            typing "OPEN" on it.
+        2.Getting Professor's Attendence:
+            Departmental assistant will get the attendence of each professor.
+            Professor will be able to take class attendence only after giving the 
+            attendence to departmental assistant.
+        3.Closing the department:
+            After complition of all activities departmental assistant has to close the 
+            department by typing "CLOSE" on the closing form.
+
+    4.Professors:
+        1.Logging-In:
+            Professor has to log in his/her account by providing registration number 
+            and password on login form.After logging in professor will be able to perform
+            all other tasks.
+        2.Taking Class Attendence:
+            a.After logging in professor will be redirect on home page.In home page
+            professor can see all his/her classes for the day.
+            b.For a particular class professor has to click the given link to go to
+            the class details.
+            c.Class details page will show all the students enrolled for that class.
+            d.Professor has to select all the present students on attendence list and
+            submit it.
+            e.done
+        3.Seeing Own Activities:
+            Professor wll be able to see his/her all activities for a particular session
+            year.
+        4.Upload Profile picture:
+            Professor will able to upload his/her profile picture.
+        5.Logging-Out:
+            Professor can log out to go out from the system.
+
+    5.Students:
+        1.Logging in:
+            To log in student has to provide his/her registration number and date of birth 
+            as passwort to log in.
+        2.Seeing Day's Clsses:
+            After logging in student will redirected on home page.Home page will show
+            all the classes for the day.
+        3.Seeing Attendence Details:
+            Student can see his/her attendence details for a particular semester.
+        4.Upload Profile picture:
+            Studnet will able to upload his/her profile picture.
+        5.Logging-Out:
+            Studnet can log out to go out from the system.
+
+
+
+INTERFACE DESIGNING:
+
+    1.Guest-home page:
+        The very first page of the application will be the guest home page.This page
+        will contain informations like:
+        1.All professors 
+        2.All Students
+        3.Parcentage of students attendence for the day.
+        4.Parcentage of all professors for the day.
+        5.All departmental batches with 100% attendence for the day.
+        6.log-in page link
+
+    2.All Departments Page:
+        This page will show the list of all present departments on the campus.
+        1.Department name will be linked with departmental details page.
+
+    3.Departmental Details Page:
+        This page will contain all the informations related to the department.
+        Informations are:
+        1.All running batches.
+        2.All professors.
+        3.Head of the department.
+        4.All present students for the day.
+        5.List of all present professors.
+        6.All pass out batches link.
+        7.Department info details.
+        8.All classes taken on the day.
+        9.Logging in link for student and departmental official.
+
+    4.Session Batch Details Page:
+        This page will contain all the informations related to the session-batch.
+        Informations are:
+        1.Batch info details.
+        2.All Students.
+        4.All present students for the day.
+        6.All classes taken on the day.
+
+    5.Departmental Activity Details Page:
+        This page will show all the active days details with all classes for a 
+        particular session year.
+
+    6.Session Batch Activity Details Page:
+        This page will show all the active days details with all classes for a 
+        particular semester.
+
+    7.Professor's Home Page:
+        After logging in professor will appear on the professor's home page.
+        1.Professor's information details with profile photo.
+        2.All classes for the day.
+        3.Link for professor's all activities.
+
+    8.Class Attendence Taking Page:
+        1.Class details.
+        2.List of all enrolled students for that batch.
+        3.Submission of class attended students list.
+
+    9.Professor's Activity Details Page:
+        This page will show all the active days details with all classes for a 
+        particular session year.
+    
+    10.Student's Home Page:
+        After logging in student will appear on the student's home page.
+        1.Students's information details with profile photo.
+        2.All classes for the day.
+        3.Link for students's all activities.
+
+    11.Student's Activity Details Page:
+        This page will show all the active days details with all classes for a 
+        particular semester of a student.
+
+    12.Class Details Page:
+        1.This page will contain class details.
+        2.The list of all attended students on that class.
+
+    13.Log In Page:
+        From this page professor and administration can log in the account by providing
+        registration number and password.

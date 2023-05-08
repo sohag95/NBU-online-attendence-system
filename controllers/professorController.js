@@ -55,40 +55,30 @@ exports.professorMustBeLoggedIn=function(req,res,next){
 
 
 
-exports.professorLoggingIn =function (req, res) {
-    try{
-        let professor=new Professor(req.body)
-        professor
-          .professorLoggingIn()
-          .then(function (result) {
-            req.session.user = { regNumber: professor.data.regNumber, userName: professor.data.userName,accountType: "professor" }
-            if(req.HODData.regNumber==professor.data.regNumber){
-                req.session.user.isHOD=true
-            }else{
-                req.session.user.isHOD=false
-            }
-            req.session.save(function () {
-              res.redirect("/professor-home")
-            })
-          })
-          .catch(function (e) {
-            req.flash("errors", e)
-            req.session.save(function () {
-              res.redirect(`/department/${req.body.departmentCode}/details`)
-            })
-          })
-        }catch{
-        res.render('404')
-    }
-}
+
 
 exports.getProfessorDepartmentDetails =async function (req, res,next) {
   try{
       let departmentDetails=await Department.getDepartmentDetailsByDepartmentCode(req.regNumber.slice(4,9))
+      req.neededData={
+        isDepartmentRunning:departmentDetails.isDepartmentRunning,
+        isProfessorPresent:false,
+        takenClasses:[]
+      }
+      if(departmentDetails.isDepartmentRunning){
+        departmentDetails.presentDayActivities.professors.forEach((professor)=>{
+          if(professor.regNumber==req.regNumber){
+            req.neededData.isProfessorPresent=true
+          }
+        })
+        departmentDetails.presentDayActivities.classes.forEach((cls)=>{
+          req.neededData.takenClasses.push(cls.classId)
+        })
+      }
       req.runningSessionBatches=departmentDetails.runningSessionBatches.map((session)=>{
         return session.sessionId
       })
-      console.log("Running batches:",req.runningSessionBatches)
+      
       next()
   }catch{
       res.render('404')
@@ -102,7 +92,7 @@ exports.getTodaysSubjectDetails =async function (req, res,next) {
     let today=new Date()
     let routineDetails=await SessionBatch.getSessionBatchRoutineDetailsBySessionIds(req.runningSessionBatches)
     req.todaysClasses=[]
-    let dayIndex=today.getDay()-1//0,1,2,3,4,5,6
+    var dayIndex=today.getDay()-1//0,1,2,3,4,5,6
     let dateString=String(today.getDate())+String(today.getMonth()+1)+String(today.getFullYear())
     //classId=sessionId+date+dayIndex+classIndex
     if(dayIndex<=4 && dayIndex>=0){
@@ -145,16 +135,28 @@ exports.getTodaysSubjectDetails =async function (req, res,next) {
 
 
 
-exports.professorHomePage =function (req, res) {
+exports.professorHomePage =async function (req, res) {
   try{
+      
+      let professorData=await Professor.getProfessorDetailsByRegNumber(req.regNumber)
+      console.log("ProfessorData:",req.neededData)
       res.render('professor-home-page',{
-        todaysClasses:req.todaysClasses
+        professorData:professorData,
+        todaysClasses:req.todaysClasses,
+        neededData:req.neededData
       })
   }catch{
       res.render('404')
   }
 }
 
+exports.getProfessorActivityDetailsPage = async function (req, res) {
+  try{
+      res.render("professor-activity-details-page")
+  }catch{
+      res.render('404')
+  }
+}
 
 exports.isClassValidOrNot =async function (req, res,next) {
   try{

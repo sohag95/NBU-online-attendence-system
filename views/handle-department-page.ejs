@@ -1,95 +1,175 @@
 <%- include('includes/header') %>
 <%- include('includes/flash') %>
-<div >
-    <h1 class="text-center mt-2">This is department handle page for administration!!</h1>
-    <h2 class="text-center">Administrator name is : <%=user.userName%></h2>
-</div>
-<hr>
+
 <div style="display: flex;flex-wrap: wrap;">
-  <div class="col-lg-4 bg-success" >
-    <h3><strong>Head Of The Department</strong></h3>
-    <%if(!departmentDetails.HOD.userName){%>
-      <div class="btn btn-lg btn-info btn-block">HOD has not added!!</div>
-    <%}else{%>
-      <a href="/professor/<%=departmentDetails.HOD.regNumber%>/details" class="pb-2">
-          <div class="d-flex align-items-center student-room-container" >
-            <div >
-              <img class="avatar-small"  src="/image/<%=departmentDetails.HOD.regNumber%>" alt="">
-            </div>
-            <div class="ml-2">
-              <span class="d-block"><strong >Name : </strong><%=departmentDetails.HOD.userName%></span>
-              <span class="d-block"><strong >joiningDate : </strong><%=departmentDetails.HOD.joiningDate%></span>
-            </div>
-          </div>
-        </a>
-    <%}%>
-    <hr>
-    <h3><strong>All Professors</strong></h3>
-    <%if(departmentDetails.allProfessors.length==0){%>
-      <div class="btn btn-lg btn-info btn-block">No professor added!!</div>
-    <%}else{%>
-      <%departmentDetails.allProfessors.forEach((professor)=>{%>
-        <a href="/professor/<%=professor.regNumber%>/details" class="pb-2">
-          <div class="d-flex align-items-center student-room-container" >
-            <div >
-              <img class="avatar-small"  src="/image/<%=professor.regNumber%>" alt="">
-            </div>
-            <div class="ml-2">
-              <span class="d-block"><strong >Name : </strong><%=professor.userName%></span>
-            </div>
-          </div>
-        </a>
-      <%})%>
-    <%}%>
-    <hr>
-    <h2 class="bolder text-center">Add New HOD</h2>
-        <form action="/add-HOD/<%=departmentDetails.departmentCode%>" method="POST" id="add-HOD-form">
-            
-            <div class="form-group">
-              <label for="regNumber" class="text-muted mb-1"><small>Select HOD</small></label>
-              <select id="regNumber" name="regNumber" class="form-control form-control-lg"  form="add-HOD-form">
-                <option value="">---Select New HOD---</option>
-                <%departmentDetails.allProfessors.forEach((professor)=>{%>
-                  <option value="<%=professor.regNumber%>"><%=professor.userName%></option>
-                <%})%>
-              </select>
-            </div>
-            <div class="form-group">
-                <label for="joiningDate" class="text-muted"><small>Joining Date as HOD</small></label>
-                <input name="joiningDate" id="joiningDate" class="form-control form-control-lg " type="date" placeholder="Select joining date"  autocomplete="off" />
-            </div>
-            <div style="text-align: center;">
-              <button class="btn btn-success btn-lg ">Add Professor</button>
-            </div>
-        </form>
+  <div class="col-lg notVisibleOnCollapse" >
   </div>
-    <div class="col-lg-8 " style="margin-bottom: 2rem;margin: 0;padding: 0;" >
-      <h2 class="uteach text-primary mt-4 mb-2 text-center">Departmental Professor Addition</h2>
-      <div class="signUp-form-container ">   
-        <h2 class="bolder text-center">Add New Professor</h2>
-        <form action="/add-professor/<%=departmentDetails.departmentCode%>" method="POST" id="add-department-form">
-          
-            <div class="form-group">
-              <label for="userName" class="text-muted"><small>Professor Name</small></label>
-              <input name="userName" id="userName" class="form-control form-control-lg " type="text" placeholder="Professor full name."  autocomplete="off" />
-            </div>
-            <div class="form-group">
-                <label for="email" class="text-muted"><small>Email Id</small></label>
-                <input name="email" id="email" class="form-control form-control-lg " type="email" placeholder="Enter Email Id."  autocomplete="off" />
-            </div>
-            <div class="form-group">
-                <label for="joiningDate" class="text-muted"><small>Joining Date</small></label>
-                <input name="joiningDate" id="joiningDate" class="form-control form-control-lg " type="date" placeholder="Select joining date"  autocomplete="off" />
-            </div>
-            <input type="hidden" name="departmentCode" value="<%=departmentDetails.departmentCode%>">
-            <input type="hidden" name="departmentName" value="<%=departmentDetails.departmentName%>">
-            
-            <div style="text-align: center;">
-              <button class="btn btn-success btn-lg ">Add Professor</button>
-            </div>
-        </form>
-        </div>
-      </div>
-    <div class="col" ></div>
-  </div>
+  <div class="col-lg-9 pt-1" >
+      <div class="">
+          <div style="width: 100%;position: relative;">
+              <img class="home-cover-image" src="/images/banner.jpg"/>
+          <div>
+          <div style="position: relative;display: inline;">
+              <img class="home-profile-image" src="/image/<%=user.regNumber%>" />
+              
+              </div>
+              <div>
+                  <h5 class="bolder text-secondary text-capetalize d-inline">
+                    <strong><%=user.userName%></strong></h5>
+                  <h5 class="bolder d-inline float-right">
+                    <i class="fas fa-user"></i> Administrator
+                  </h5>
+              </div> 
+              <hr> 
+              <h2 class="text-center text-info bolder"><strong>Department of <%=departmentDetails.departmentName%></strong></h2>
+              <hr>
+              <div class="row">
+                <div class="col-lg-5 ">
+                  <div class="item-container">
+                    <div >
+                      <strong ><i class="fas fa-user-tie"></i> Head of the Department</strong>
+                    </div>
+                    <hr>
+                    <%if(!departmentDetails.HOD.regNumber){%>
+                      <div class="btn btn-block btn-info btn-sm">HOD not added yet!</div>
+                      <hr>
+                    <%}else{%>
+                      <li class="list-group-item  d-flex align-items-center">
+                        <div class="mr-auto d-flex align-items-center"> 
+                          <div class="mr-2">
+                              <img class="member-avatar"  src="/image/<%=departmentDetails.HOD.regNumber%>" alt="">
+                          </div>
+                          <div>
+                              <span class="item-text d-block"><strong>Name : </strong><%=departmentDetails.HOD.userName%></span>
+                              <span class="item-text d-block"><strong>Joined as HOD on : </strong>12/04/2023</span>
+                          </div>
+                        </div>
+                      </li>
+                    <%}%>
+                    
+                    
+                    <div class="accordion mt-2" id="accordionExample">
+                      <div class="card">        
+                        <h2 class="mb-0">
+                          <button class="btn btn-block btn-warning btn-sm" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Add New HOD
+                          </button>
+                        </h2>
+                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                          <div class="card-body">
+                            <h4 class="bolder text-center">Add New HOD</h4>
+                            <form action="/add-HOD/<%=departmentDetails.departmentCode%>" method="POST" id="add-HOD-form">
+                                
+                                <div class="form-group">
+                                  <label for="regNumber" class="text-muted mb-1"><small>Select HOD</small></label>
+                                  <select id="regNumber" name="regNumber" class="form-control form-control-lg"  form="add-HOD-form">
+                                    <option value="">---Select New HOD---</option>
+                                    <%departmentDetails.allProfessors.forEach((professor)=>{%>
+                                      <option value="<%=professor.regNumber%>"><%=professor.userName%></option>
+                                    <%})%>
+                                  </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="joiningDate" class="text-muted"><small>Joining Date as HOD</small></label>
+                                    <input name="joiningDate" id="joiningDate" class="form-control form-control-lg " type="date" placeholder="Select joining date"  autocomplete="off" />
+                                </div>
+                                <div style="text-align: center;">
+                                  <button class="btn btn-success btn-sm ">Add Professor</button>
+                                </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr>
+                    <div >
+                      <strong ><i class="fas fa-users"></i> All Professors(<%=departmentDetails.allProfessors.length%>)</strong>
+                    </div>
+                    <hr>
+                    <%if(!departmentDetails.allProfessors.length){%>
+                      <div class="btn btn-block btn-info">No professor added!</div>
+                    <%}else{%>
+                      <%departmentDetails.allProfessors.forEach((professor)=>{%>
+                        <li class="list-group-item  d-flex align-items-center">
+                          <div class="mr-auto d-flex align-items-center"> 
+                            <div class="mr-2">
+                                <img class="member-avatar"  src="/image/<%=professor.regNumber%>" alt="">
+                            </div>
+                            <div>
+                                <span class="item-text d-block"><strong>Name : </strong><%=professor.userName%></span>
+                            </div>
+                          </div>
+                        </li>
+                      <%})%>
+                    <%}%>
+                  </div>
+                </div>
+                <div class="col-lg-7">
+                  <div class="item-container mb-2">
+                    <div class="signUp-form-container ">   
+                      <h2 class="bolder text-center">Add New Professor</h2>
+                      <form action="/add-professor/<%=departmentDetails.departmentCode%>" method="POST" id="add-department-form">
+                        
+                          <div class="form-group">
+                            <label for="userName" class="text-muted"><small>Professor Name</small></label>
+                            <input name="userName" id="userName" class="form-control form-control-lg " type="text" placeholder="Professor full name."  autocomplete="off" />
+                          </div>
+                          <div class="form-group">
+                              <label for="email" class="text-muted"><small>Email Id</small></label>
+                              <input name="email" id="email" class="form-control form-control-lg " type="email" placeholder="Enter Email Id."  autocomplete="off" />
+                          </div>
+                          <div class="form-group">
+                              <label for="joiningDate" class="text-muted"><small>Joining Date</small></label>
+                              <input name="joiningDate" id="joiningDate" class="form-control form-control-lg " type="date" placeholder="Select joining date"  autocomplete="off" />
+                          </div>
+                          <input type="hidden" name="departmentCode" value="<%=departmentDetails.departmentCode%>">
+                          <input type="hidden" name="departmentName" value="<%=departmentDetails.departmentName%>">
+                          
+                          <div style="text-align: center;">
+                            <button class="btn btn-success btn-lg ">Add Professor</button>
+                          </div>
+                      </form>
+                    </div>
+                  </div>
+                  <hr>
+                  
+                </div>
+        
+                
+              </div>
+              <hr>
+              <div class="colored-container  bolder">
+                <div >
+                  <strong><i class="fas fa-user-tie"></i> Department Details</strong>
+                </div>
+                <hr>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <p><strong>Department Name : <%=departmentDetails.departmentName%></strong></p>
+                    <p><strong>Department Code: <%=departmentDetails.departmentCode%></strong></p>
+                  </div>
+                  <div class="col-lg-6">
+                    <p><strong>Departmental Official :</strong></p>
+                    <%if(departmentDetails.departmentOfficial){%>
+                      <p><strong>Name : <%=departmentDetails.departmentOfficial.userName%></strong></p>
+                    <%}else{%>
+                      <p><strong>Name : (not added)</strong></p>
+                    <%}%>
+                  </div>
+                  <div class="col-12">
+                    <a href="/department/<%=departmentDetails.departmentCode%>/details">
+                      <div class=" btn btn-md btn-block btn-warning"><strong>Go to department details page</strong> </div>
+                    </a> 
+                  </div>
+                </div>
+                
+              </div>
+              </div>
+          </div> 
+        </div>    
+    </div>
+    <div class="col-lg notVisibleOnCollapse" >
+    </div>
+</div>
+
 <%- include('includes/footer') %>

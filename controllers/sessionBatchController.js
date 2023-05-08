@@ -96,3 +96,11 @@ exports.addRoutineDayActivity =function (req, res) {
         res.render('404')
     }
 }
+
+exports.getBatchActivityDetailsPage = async function (req, res) {
+    try{
+        res.render("session-batch-activity-details-page")
+    }catch{
+        res.render('404')
+    }
+}

@@ -1,271 +1,301 @@
 <%- include('includes/header') %>
 <%- include('includes/flash') %>
-<div >
-    <h2 class="text-center mt-2">This is session-batch routine creation page !!</h2>
-    <h2 class="text-center">Department name is : <%=batchDetails.departmentName%></h2>
-    <h2 class="text-center">Batch session is : <%=batchDetails.sessionYear%> (<%=batchDetails.semesterStatus%> Semester)</h2>
-    
-</div>
-<hr>
+
 <div style="display: flex;flex-wrap: wrap;">
-  <div class="col-lg-3 bg-success" >
-    <h3><strong>All Subjects</strong></h3>
-    <%if(batchDetails.allSubjects.length==0){%>
-      <div class="btn btn-lg btn-warning btn-block">No student added!!</div>
-    <%}else{%>
-      <%batchDetails.allSubjects.forEach((subject)=>{%>
-        <div class="btn btn-outline-warning btn-block"><%=subject%></div>
-      <%})%>
-    <%}%>
-    <hr>
-    <h3><strong>All Professors</strong></h3>
-    <%if(batchDetails.allProfessors.length==0){%>
-        <div class="btn btn-lg btn-info btn-block">No student added!!</div>
-      <%}else{%>
-        <%batchDetails.allProfessors.forEach((professor)=>{%>
-          <a href="/professor/<%=professor.regNumber%>/details" class="pb-2">
-            <div class="d-flex align-items-center student-room-container" >
-              <div >
-                <img class="avatar-small"  src="/image/<%=professor.regNumber%>" alt="">
-              </div>
-              <div class="ml-2">
-                <span class="d-block"><strong >Name : </strong><%=professor.userName%></span>
-              </div>
-            </div>
-          </a>
-        <%})%>
-      <%}%>
-    <hr>
-              
+  <div class="col-lg notVisibleOnCollapse" >
   </div>
-    <div class="col-lg-9 " style="margin-bottom: 2rem;margin: 0;padding: 0;" >
-      <div class="item-container">
-        <%if(!batchDetails.routine){%>
-          <div class="signUp-form-container ">   
-            <form action="/add-initial-routine-data/<%=batchDetails.departmentCode%>/<%=batchDetails.sessionId%>" method="POST"  id="routine-form">
-                <h6 class="bolder"><strong>Adding Routine Data</strong></h6>
-                
-                <table class="table table-bordered text-center">
-                  <div class="form-group">
-                    <label for="maxSlots" class="text-muted mb-1"><small>Select Maximum Time Slots</small></label>
-                    <select id="maxSlots" name="maxSlots" class="form-control form-control-lg"  form="routine-form">
-                      <option value="">---Select total Slots---</option>
-                      <option value="3">Three (3)</option>
-                      <option value="4">Four (4)</option>
-                    </select>
-                  </div>
-                    <thead>
+  <div class="col-lg-9 pt-1" >
+    <div style="position: relative;">
+      <img class="header-banner-img"  src="/images/banner3.jpg" alt="">
+      <div class="banner-details-text text-center">
+        <span class="d-block">BATCH : <%=batchDetails.sessionYear%> </span>
+        <span class="d-block">SEMESTER : <%=batchDetails.semesterStatus%></span>
+        <span class="d-block">DEPARTMENT OF <%=batchDetails.departmentName%></span>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="item-container mb-2">
+          <strong ><i class="fas fa-user-tie"></i> Routine Details</strong>
+          <hr>
+          <%if(!batchDetails.routine){%>
+            <div class="">   
+              <form action="/add-initial-routine-data/<%=batchDetails.departmentCode%>/<%=batchDetails.sessionId%>" method="POST"  id="routine-form">
+                  <h6 class="bolder"><strong>Adding Routine Data</strong></h6>
+                  
+                  <table class="table table-bordered text-center">
+                    <div class="form-group">
+                      <label for="maxSlots" class="text-muted mb-1"><small>Select Maximum Time Slots</small></label>
+                      <select id="maxSlots" name="maxSlots" class="form-control form-control-lg"  form="routine-form">
+                        <option value="">---Select total Slots---</option>
+                        <option value="3">Three (3)</option>
+                        <option value="4">Four (4)</option>
+                      </select>
+                    </div>
+                      <thead>
+                        <tr>
+                          <th scope="col">Classes:</th>
+                          <th scope="col">1st Class</th>
+                          <th scope="col">2nd Class</th>
+                          <th scope="col">3rd Class</th>
+                          <th scope="col">4th Class (if-required)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row">Timing:</th>
+                          <td>
+                              <div class="form-group">
+                                  <input  name="firstClass" id="firstClass" class="form-control form-control-md " type="text" placeholder="Ex:-10:30am-12:30pm" required autocomplete="off">
+                              </div>
+                          </td>
+                          <td>
+                              <div class="form-group">
+                                  <input  name="secondClass" id="secondClass" class="form-control form-control-md " type="text" placeholder="Ex:-10:30am-12:30pm" required autocomplete="off">
+                              </div>
+                          </td>
+                          <td>
+                              <div class="form-group">
+                                  <input  name="thirdClass" id="thirdClass" class="form-control form-control-md " type="text" placeholder="Ex:-10:30am-12:30pm" required autocomplete="off">
+                              </div>
+                          </td>
+                          <td>
+                            <div class="form-group">
+                                <input  name="fourthClass" id="fourthClass" class="form-control form-control-md " type="text" placeholder="Ex:-10:30am-12:30pm" required autocomplete="off">
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  
+                  <input type="hidden" name="sessionId" value="<%=batchDetails.sessionId%>">
+                  <button class="btn btn-primary btn-block btn-small">Add Routine Data</button>
+                </form>
+            </div>
+          <%}else{%>
+            <div class="">   
+              <h4 class="bolder text-center"><strong>Added Class Routine</strong></h4>
+              <table class="table table-bordered text-center">
+                  <tbody>
+                    <%if(batchDetails.routine.slotsPerDay=="3"){%>
                       <tr>
-                        <th scope="col">Classes:</th>
+                        <th rowspan="2" scope="col">Classes</th>
                         <th scope="col">1st Class</th>
                         <th scope="col">2nd Class</th>
                         <th scope="col">3rd Class</th>
-                        <th scope="col">4th Class (if-required)</th>
                       </tr>
-                    </thead>
-                    <tbody>
+                    <%}else if(batchDetails.routine.slotsPerDay=="4"){%>
                       <tr>
-                        <th scope="row">Timing:</th>
-                        <td>
-                            <div class="form-group">
-                                <input  name="firstClass" id="firstClass" class="form-control form-control-md " type="text" placeholder="Ex:-10:30am-12:30pm" required autocomplete="off">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                <input  name="secondClass" id="secondClass" class="form-control form-control-md " type="text" placeholder="Ex:-10:30am-12:30pm" required autocomplete="off">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                <input  name="thirdClass" id="thirdClass" class="form-control form-control-md " type="text" placeholder="Ex:-10:30am-12:30pm" required autocomplete="off">
-                            </div>
-                        </td>
-                        <td>
-                          <div class="form-group">
-                              <input  name="fourthClass" id="fourthClass" class="form-control form-control-md " type="text" placeholder="Ex:-10:30am-12:30pm" required autocomplete="off">
-                          </div>
-                        </td>
+                        <th rowspan="2" scope="col">Classes</th>
+                        <th scope="col">1st Class</th>
+                        <th scope="col">2nd Class</th>
+                        <th scope="col">3rd Class</th>
+                        <th scope="col">4rd Class</th>
                       </tr>
-                    </tbody>
-                  </table>
-                
-                <input type="hidden" name="sessionId" value="<%=batchDetails.sessionId%>">
-                <button class="btn btn-primary btn-block btn-small">Add Routine Data</button>
-              </form>
-          </div>
-        <%}else{%>
-          <div class="signUp-form-container ">   
-            <h3 class="bolder text-center"><strong>The Routine</strong></h3>
-            <table class="table table-bordered text-center">
-                <tbody>
-                  <%if(batchDetails.routine.slotsPerDay=="3"){%>
+                    <%}%>
                     <tr>
-                      <th rowspan="2" scope="col">Classes</th>
-                      <th scope="col">1st Class</th>
-                      <th scope="col">2nd Class</th>
-                      <th scope="col">3rd Class</th>
+                      <%batchDetails.routine.timings.forEach((time)=>{%>
+                        <th ><%=time%></th>
+                      <%})%>
                     </tr>
-                  <%}else if(batchDetails.routine.slotsPerDay=="4"){%>
-                    <tr>
-                      <th rowspan="2" scope="col">Classes</th>
-                      <th scope="col">1st Class</th>
-                      <th scope="col">2nd Class</th>
-                      <th scope="col">3rd Class</th>
-                      <th scope="col">4rd Class</th>
-                    </tr>
-                  <%}%>
-                  <tr>
-                    <%batchDetails.routine.timings.forEach((time)=>{%>
-                      <th ><%=time%></th>
+  
+                    <%batchDetails.routine.activities.forEach((day,index)=>{%>
+                      <tr>
+                        <th rowspan="2" scope="col"><%=days[index]%></th>
+                        <%day.subjects.forEach((subject)=>{%>
+                          <td><%=subject%></td>
+                        <%})%>
+                      </tr>
+                      <tr>
+                        <%day.professors.forEach((professor)=>{%>
+                          <td><%=professor.userName%></td>
+                        <%})%>
+                      </tr>
                     <%})%>
-                  </tr>
-
-                  <%batchDetails.routine.activities.forEach((day,index)=>{%>
-                    <tr>
-                      <th rowspan="2" scope="col"><%=days[index]%></th>
-                      <%day.subjects.forEach((subject)=>{%>
-                        <td><%=subject%></td>
-                      <%})%>
-                    </tr>
-                    <tr>
-                      <%day.professors.forEach((professor)=>{%>
-                        <td><%=professor.userName%></td>
-                      <%})%>
-                    </tr>
-                  <%})%>
-                </tbody>
-              </table>
-              <hr>
-              <%if(batchDetails.routine.activities.length<5){%>
-                  
-                  <form action="/add-routine-day-activity/<%=batchDetails.departmentCode%>/<%=batchDetails.sessionId%>" method="POST"  id="routineCreation-Form">
-                      <h6 class="bolder"><strong>Add Routine Day Activity</strong></h6>
-                      <table class="table table-bordered text-center">
-                          <tbody>
-                            <%if(batchDetails.routine.slotsPerDay=="3"){%>
-                              <tr>
-                                <th rowspan="2" scope="col">Classes</th>
-                                <th scope="col">1st Class</th>
-                                <th scope="col">2nd Class</th>
-                                <th scope="col">3rd Class</th>
-                              </tr>
-                            <%}else if(batchDetails.routine.slotsPerDay=="4"){%>
-                              <tr>
-                                <th rowspan="2" scope="col">Classes</th>
-                                <th scope="col">1st Class</th>
-                                <th scope="col">2nd Class</th>
-                                <th scope="col">3rd Class</th>
-                                <th scope="col">4rd Class</th>
-                              </tr>
-                            <%}%>
-                            <tr>
-                              <%batchDetails.routine.timings.forEach((time)=>{%>
-                                <th ><%=time%></th>
-                              <%})%>
-                            </tr>
-      
-                            <tr>
-                              <th rowspan="2" scope="col"><%=days[batchDetails.routine.activities.length]%> Activity</th>
-                              <td>
-                                  <select  id="semesterStatus" class="form-control " name="firstClass" required form="routineCreation-Form">
-                                      <option value="">--Select Subject--</option>
-                                      <option class="text-warning" value="No_Class"><strong>No Class</strong> </option>
-                                      <%batchDetails.allSubjects.forEach((subject)=>{%>
-                                          <option value="<%=subject%>"><%=subject%></option>
-                                      <%})%>
-                                  </select>
-                              </td>
-                              <td>
-                                  <select  id="semesterStatus" class="form-control " name="secondClass" required form="routineCreation-Form">
-                                      <option value="">--Select Subject--</option>
-                                      <option class="text-warning" value="No_Class"><strong>No Class</strong></option>
-                                      <%batchDetails.allSubjects.forEach((subject)=>{%>
-                                          <option value="<%=subject%>"><%=subject%></option>
-                                      <%})%>
-                                  </select>
-                              </td>
-                              <td>
-                                  <select  id="semesterStatus" class="form-control " name="thirdClass" required form="routineCreation-Form">
-                                      <option value="">--Select Subject--</option>
-                                      <option class="text-warning" value="No_Class"><strong>No Class</strong></option>
-                                      <%batchDetails.allSubjects.forEach((subject)=>{%>
-                                          <option value="<%=subject%>"><%=subject%></option>
-                                      <%})%>
-                                  </select>
-                              </td>
-                              <%if(batchDetails.routine.slotsPerDay=="4"){%>
-                                <td>
-                                  <select  id="semesterStatus" class="form-control " name="fourthClass" required form="routineCreation-Form">
-                                      <option value="">--Select Subject--</option>
-                                      <option class="text-warning" value="No_Class"><strong>No Class</strong></option>
-                                      <%batchDetails.allSubjects.forEach((subject)=>{%>
-                                          <option value="<%=subject%>"><%=subject%></option>
-                                      <%})%>
-                                  </select>
-                              </td>
+                  </tbody>
+                </table>
+                <hr>
+                <%if(batchDetails.routine.activities.length<5){%>
+                    
+                    <form action="/add-routine-day-activity/<%=batchDetails.departmentCode%>/<%=batchDetails.sessionId%>" method="POST"  id="routineCreation-Form">
+                        <h6 class="bolder"><strong>Add Routine Day Activity</strong></h6>
+                        <table class="table table-bordered text-center">
+                            <tbody>
+                              <%if(batchDetails.routine.slotsPerDay=="3"){%>
+                                <tr>
+                                  <th rowspan="2" scope="col">Classes</th>
+                                  <th scope="col">1st Class</th>
+                                  <th scope="col">2nd Class</th>
+                                  <th scope="col">3rd Class</th>
+                                </tr>
+                              <%}else if(batchDetails.routine.slotsPerDay=="4"){%>
+                                <tr>
+                                  <th rowspan="2" scope="col">Classes</th>
+                                  <th scope="col">1st Class</th>
+                                  <th scope="col">2nd Class</th>
+                                  <th scope="col">3rd Class</th>
+                                  <th scope="col">4rd Class</th>
+                                </tr>
                               <%}%>
-                            </tr>
-                            <tr>
-                              <td>
-                                  <select  id="semesterStatus" class="form-control " name="firstProfessor" required form="routineCreation-Form">
-                                      <option value="">--Select Professor--</option>
-                                      <option class="text-warning" value="NAN"><strong>No Professor</strong></option>
-                                      <%batchDetails.allProfessors.forEach((professor)=>{%>
-                                          <option value="<%=professor.regNumber%>"><%=professor.userName%></option>
-                                      <%})%>
-                                  </select>
-                              </td>
-                              <td>
-                                  <select  id="semesterStatus" class="form-control " name="secondProfessor" required form="routineCreation-Form">
-                                      <option value="">--Select Professor--</option>
-                                      <option class="text-warning" value="NAN"><strong>No Professor</strong></option>
-                                      <%batchDetails.allProfessors.forEach((professor)=>{%>
-                                          <option value="<%=professor.regNumber%>"><%=professor.userName%></option>
-                                      <%})%>
-                                  </select>
-                              </td>
-                              <td>
-                                  <select  id="semesterStatus" class="form-control " name="thirdProfessor" required form="routineCreation-Form">
-                                      <option value="">--Select Professor--</option>
-                                      <option class="text-warning" value="NAN"><strong>No Professor</strong></option>
-                                      <%batchDetails.allProfessors.forEach((professor)=>{%>
-                                          <option value="<%=professor.regNumber%>"><%=professor.userName%></option>
-                                      <%})%>
-                                  </select>
-                              </td>
-                              <%if(batchDetails.routine.slotsPerDay=="4"){%>
+                              <tr>
+                                <%batchDetails.routine.timings.forEach((time)=>{%>
+                                  <th ><%=time%></th>
+                                <%})%>
+                              </tr>
+        
+                              <tr>
+                                <th rowspan="2" scope="col"><%=days[batchDetails.routine.activities.length]%> Activity</th>
                                 <td>
-                                  <select  id="semesterStatus" class="form-control " name="fourthProfessor" required form="routineCreation-Form">
-                                      <option value="">--Select Professor--</option>
-                                      <option class="text-warning" value="NAN"><strong>No Professor</strong></option>
-                                      <%batchDetails.allProfessors.forEach((professor)=>{%>
-                                          <option value="<%=professor.regNumber%>"><%=professor.userName%></option>
-                                      <%})%>
-                                  </select>
+                                    <select  id="semesterStatus" class="form-control " name="firstClass" required form="routineCreation-Form">
+                                        <option value="">--Select Subject--</option>
+                                        <option class="text-warning" value="No_Class"><strong>No Class</strong> </option>
+                                        <%batchDetails.allSubjects.forEach((subject)=>{%>
+                                            <option value="<%=subject%>"><%=subject%></option>
+                                        <%})%>
+                                    </select>
                                 </td>
-                              <%}%>
-                            </tr>
-                          </tbody>
-                        </table>
-                      <input type="hidden" name="slotsPerDay" value="<%=batchDetails.routine.slotsPerDay%>">
-                      <input type="hidden" name="sessionId" value="<%=batchDetails.sessionId%>">
-                      <button class="btn btn-primary btn-block btn-small">Add Day Activity Data</button>
-                    </form>
-                
-              <%}else{%>
-                <div class="btn btn-lg btn-success btn-block">Routine Addition Complited</div>
-              <%}%>
+                                <td>
+                                    <select  id="semesterStatus" class="form-control " name="secondClass" required form="routineCreation-Form">
+                                        <option value="">--Select Subject--</option>
+                                        <option class="text-warning" value="No_Class"><strong>No Class</strong></option>
+                                        <%batchDetails.allSubjects.forEach((subject)=>{%>
+                                            <option value="<%=subject%>"><%=subject%></option>
+                                        <%})%>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select  id="semesterStatus" class="form-control " name="thirdClass" required form="routineCreation-Form">
+                                        <option value="">--Select Subject--</option>
+                                        <option class="text-warning" value="No_Class"><strong>No Class</strong></option>
+                                        <%batchDetails.allSubjects.forEach((subject)=>{%>
+                                            <option value="<%=subject%>"><%=subject%></option>
+                                        <%})%>
+                                    </select>
+                                </td>
+                                <%if(batchDetails.routine.slotsPerDay=="4"){%>
+                                  <td>
+                                    <select  id="semesterStatus" class="form-control " name="fourthClass" required form="routineCreation-Form">
+                                        <option value="">--Select Subject--</option>
+                                        <option class="text-warning" value="No_Class"><strong>No Class</strong></option>
+                                        <%batchDetails.allSubjects.forEach((subject)=>{%>
+                                            <option value="<%=subject%>"><%=subject%></option>
+                                        <%})%>
+                                    </select>
+                                </td>
+                                <%}%>
+                              </tr>
+                              <tr>
+                                <td>
+                                    <select  id="semesterStatus" class="form-control " name="firstProfessor" required form="routineCreation-Form">
+                                        <option value="">--Select Professor--</option>
+                                        <option class="text-warning" value="NAN"><strong>No Professor</strong></option>
+                                        <%batchDetails.allProfessors.forEach((professor)=>{%>
+                                            <option value="<%=professor.regNumber%>"><%=professor.userName%></option>
+                                        <%})%>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select  id="semesterStatus" class="form-control " name="secondProfessor" required form="routineCreation-Form">
+                                        <option value="">--Select Professor--</option>
+                                        <option class="text-warning" value="NAN"><strong>No Professor</strong></option>
+                                        <%batchDetails.allProfessors.forEach((professor)=>{%>
+                                            <option value="<%=professor.regNumber%>"><%=professor.userName%></option>
+                                        <%})%>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select  id="semesterStatus" class="form-control " name="thirdProfessor" required form="routineCreation-Form">
+                                        <option value="">--Select Professor--</option>
+                                        <option class="text-warning" value="NAN"><strong>No Professor</strong></option>
+                                        <%batchDetails.allProfessors.forEach((professor)=>{%>
+                                            <option value="<%=professor.regNumber%>"><%=professor.userName%></option>
+                                        <%})%>
+                                    </select>
+                                </td>
+                                <%if(batchDetails.routine.slotsPerDay=="4"){%>
+                                  <td>
+                                    <select  id="semesterStatus" class="form-control " name="fourthProfessor" required form="routineCreation-Form">
+                                        <option value="">--Select Professor--</option>
+                                        <option class="text-warning" value="NAN"><strong>No Professor</strong></option>
+                                        <%batchDetails.allProfessors.forEach((professor)=>{%>
+                                            <option value="<%=professor.regNumber%>"><%=professor.userName%></option>
+                                        <%})%>
+                                    </select>
+                                  </td>
+                                <%}%>
+                              </tr>
+                            </tbody>
+                          </table>
+                        <input type="hidden" name="slotsPerDay" value="<%=batchDetails.routine.slotsPerDay%>">
+                        <input type="hidden" name="sessionId" value="<%=batchDetails.sessionId%>">
+                        <button class="btn btn-primary btn-block btn-small">Add Day Activity Data</button>
+                      </form>
+                  
+                <%}else{%>
+                  <div class="btn btn-lg btn-success btn-block">Routine Addition Complited</div>
+                <%}%>
+          </div>
+          <hr>
+          <%}%>
         </div>
-        <hr>
-        <%}%>
-        
-        
-        
+      </div>
+      <div class="col-lg-3">
+        <div class="item-container mb-2">
+          <strong ><i class="fas fa-user-tie"></i> All Subjects(<%=batchDetails.allSubjects.length%>)</strong>
+          <hr>
+          <%if(batchDetails.allSubjects.length==0){%>
+            <div class="btn btn-lg btn-warning btn-block">No student added!!</div>
+          <%}else{%>
+            <%batchDetails.allSubjects.forEach((subject)=>{%>
+              <div class="btn btn-outline-warning btn-block mb-1"><%=subject%></div>
+            <%})%>
+          <%}%>
+          <hr>
+          <strong ><i class="fas fa-user-tie"></i> All Professors (<%=batchDetails.allProfessors.length%>)</strong>
+          <hr>
+          <%if(batchDetails.allProfessors.length==0){%>
+            <div class="btn btn-lg btn-info btn-block">No student added!!</div>
+          <%}else{%>
+            <%batchDetails.allProfessors.forEach((professor)=>{%>
+              <li class="list-group-item  d-flex align-items-center">
+                <div class="mr-auto d-flex align-items-center"> 
+                  <div class="mr-2">
+                      <img class="member-avatar"  src="/image/<%=professor.regNumber%>" alt="">
+                  </div>
+                  <div>
+                      <span class="item-text d-block"><strong>Name : </strong><%=professor.userName%></span>
+                  </div>
+                </div>
+              </li>
+            <%})%>
+          <%}%>
+          
+        </div>
       </div>
     </div>
-    
-                  
-    <div class="col" ></div>
+    <hr>
+      <div class="colored-container  bolder">
+        <div >
+          <strong><i class="fas fa-user-tie"></i> Batch Details</strong>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-lg-6">
+            <p><strong>Department Name : <%=batchDetails.departmentName%></strong></p>
+            <p><strong>Department Code : <%=batchDetails.sessionId.slice(4,9)%></strong></p>
+          </div>
+          <div class="col-lg-6">
+            <p><strong>Session Year : <%=batchDetails.sessionYear%></strong></p>
+            <p><strong>Semester : <%=batchDetails.semesterStatus%></strong></p>
+          </div>
+          
+        </div>
+  
+      </div>
   </div>
+  <div class="col-lg notVisibleOnCollapse" >
+  </div>
+</div>
+
 <%- include('includes/footer') %>
