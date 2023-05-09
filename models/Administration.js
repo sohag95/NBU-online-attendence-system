@@ -104,7 +104,116 @@ Administration.prototype.administrationLoggingIn = function () {
         await administrationCollection.updateOne(
           { dataType: "attendanceCountData" },
           {
-             $inc: { "presentDayAttendance.students": newStudents } 
+             $inc: { 
+              "presentDayAttendance.students": newStudents 
+            } 
+          }
+        )
+        resolve()
+      } catch {
+        reject()
+      }
+    })
+  }
+
+  Administration.getIsCampusOpen=function(){
+    return new Promise(async(resolve, reject) => {
+      try {
+        let data=await administrationCollection.findOne({ dataType: "attendanceCountData" })
+        resolve(data.isCampusOpen)
+      } catch {
+        reject()
+      }
+    })
+  }
+
+  Administration.increaseProfessorCountOnCampus=function(){
+    return new Promise(async(resolve, reject) => {
+      try {
+        await administrationCollection.updateOne(
+          { dataType: "attendanceCountData" },
+          {
+             $inc: {
+               "presentDayAttendance.professors": 1 
+              } 
+          }
+        )
+        resolve()
+      } catch {
+        reject()
+      }
+    })
+  }
+
+  Administration.decreaseProfessorCountOnCampus=function(){
+    return new Promise(async(resolve, reject) => {
+      try {
+        await administrationCollection.updateOne(
+          { dataType: "attendanceCountData" },
+          {
+             $inc: {
+               "presentDayAttendance.professors": -1 
+              } 
+          }
+        )
+        resolve()
+      } catch {
+        reject()
+      }
+    })
+  }
+  Administration.openingCampus=function(){
+    return new Promise(async(resolve, reject) => {
+      try {
+        await administrationCollection.updateOne(
+          { dataType: "attendanceCountData" },
+          {
+             $set: {
+               "isCampusOpen": true 
+              } 
+          }
+        )
+        resolve()
+      } catch {
+        reject()
+      }
+    })
+  }
+  Administration.closingCampus=function(){
+    return new Promise(async(resolve, reject) => {
+      try {
+        let data=await administrationCollection.findOne({dataType:"attendanceCountData"})
+        let neededData=await administrationCollection.findOne({dataType:"neededData"})
+        
+        let updationPlace="attendanceHistory."+"Y"+neededData.presentSessionYear.slice(0,4)+neededData.presentSessionYear.slice(5,9)
+        await administrationCollection.updateOne(
+          { dataType: "attendanceHistoryData" },
+          {
+             $push: {
+               [updationPlace]:data.lastDayAttendance
+              } 
+          }
+        )
+
+        let lastDayAttendance={
+          students:data.presentDayAttendance.students,
+          professors:data.presentDayAttendance.professors,
+          fullAttendanceBatches:data.presentDayAttendance.fullAttendanceBatches,
+          date:new Date()
+        }
+        let presentDayAttendance={
+          students:0,
+          professors:0,
+          fullAttendanceBatches:[]
+        }
+        await administrationCollection.updateOne(
+          { dataType: "attendanceCountData" },
+          {
+             $set: {
+               "presentDayAttendance": presentDayAttendance,
+               "lastDayAttendance":lastDayAttendance,
+               "isCampusOpen":false
+              } 
           }
         )
         resolve()

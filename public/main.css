@@ -11,6 +11,10 @@ body, .tooltip
   right: 0;
 }
 
+.outerBGcolor{
+  background-color: #f0f2f5;
+}
+
 .header-bar {
   background-color: #403a61;
 }
@@ -1475,4 +1479,12 @@ div.feedbackButton{
 
 .container-scroll::-webkit-scrollbar{
   width: 0px;
+}
+
+
+.openCloseTag {
+  position: absolute;
+  top: 79%;
+  left: 1%;
+  font-weight: 700;
 }

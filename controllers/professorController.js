@@ -139,7 +139,6 @@ exports.professorHomePage =async function (req, res) {
   try{
       
       let professorData=await Professor.getProfessorDetailsByRegNumber(req.regNumber)
-      console.log("ProfessorData:",req.neededData)
       res.render('professor-home-page',{
         professorData:professorData,
         todaysClasses:req.todaysClasses,

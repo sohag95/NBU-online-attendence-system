@@ -32,7 +32,7 @@ Department.prototype.dataPreparation=function(){
           students:0,
           professors:[],
           classes:[],
-          date:null
+          date:new Date()
         },
         isDepartmentRunning:false,
         //true-during running time.hod/assistant will declare running department.
@@ -215,7 +215,7 @@ Department.prototype.addNewDepartment=function(){
   }
 
 
-  Department.openingDepartment=function(departmentCode){
+  Department.openingDepartment=function(departmentCode,runningBatchesIds){
     return new Promise(async (resolve, reject) => {
       try{
         await departmentsCollection.updateOne(
@@ -226,6 +226,7 @@ Department.prototype.addNewDepartment=function(){
             }
           }
         )
+        await SessionBatch.openBatchRunningStatus(runningBatchesIds)
         resolve()
       }catch{
         reject()
@@ -312,6 +313,7 @@ Department.prototype.addNewDepartment=function(){
             }
           }
         )
+        await Administration.increaseProfessorCountOnCampus()
         resolve()
       }catch{
         reject()
@@ -332,6 +334,8 @@ Department.prototype.addNewDepartment=function(){
             }
           }
         )
+        await Administration.decreaseProfessorCountOnCampus()
+        
         resolve()
       }catch{
         reject()

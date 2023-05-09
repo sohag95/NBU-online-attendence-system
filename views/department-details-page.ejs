@@ -16,6 +16,16 @@
         <span class="d-block">Of</span>
         <span class="d-block"><%=departmentDetails.departmentName%></span>
       </div>
+      <%if(departmentDetails.isDepartmentRunning){%>
+        <div class="openCloseTag">
+          <span style="color:#fff;" class="badge-pill badge-warning">Running</span>
+        </div>
+      <%}else{%>
+        <div class="openCloseTag">
+          <span class="badge-pill badge-secondary">Closed</span>
+        </div>
+      <%}%>
+      
       <%if(!user){%>
         <div class="logInBtn">
           <div class="dropdown">
@@ -53,18 +63,18 @@
             </div>
             <hr>
             <div class="p-4 bolder text-success text-center">
-              <h2><strong>Students : 90%</strong></h2>
-              <h2><strong>Professors : 100%</strong></h2>
-              <h2><strong>Date : 12/04/2023</strong></h2>
+              <h2><strong>Students : <%=attendanceData.presentStudents%></strong></h2>
+              <h2><strong>Professors : <%=attendanceData.presentProfessors%>%</strong></h2>
+              <h2><strong>Date : <%= attendanceData.date.getDate() %> <%=attendanceData.date.toLocaleString('default', { month: 'long' }) %> , <%= attendanceData.date.getFullYear() %></strong></h2>
             </div>
           </div>
           <hr>
           <div class="item-container mb-2">
             <div >
               <%if(departmentDetails.isDepartmentRunning){%>
-                <strong ><i class="fas fa-book"></i> Today's All Classes</strong>
+                <strong ><i class="fas fa-book"></i> Today's Taken Classes</strong>
               <%}else{%>
-                <strong ><i class="fas fa-book"></i> Last Day's All Classes</strong>
+                <strong ><i class="fas fa-book"></i> Last Day's Taken Classes</strong>
               <%}%>
             </div>
             <hr>
@@ -83,18 +93,24 @@
                         <p ><strong> Semester : <%=cls.semesterStatus%></strong></p>
                         <p ><strong> Timing : <%=cls.timing%></strong></p>
                         <p style="margin-bottom:.4rem;"><strong> Professor : <%=cls.professor.userName%></strong></p>
-                        <div class="m-2">
-                          <a href="/class/<%=cls.classId%>/details">
-                            <div class="btn btn-outline-secondary btn-sm btn-block">Go to class details</div>
-                          </a>
-                        </div>
+                        <%if(user){%>
+                          <div class="m-2">
+                            <a href="/class/<%=cls.classId%>/details">
+                              <div class="btn btn-outline-success btn-sm btn-block">Go to class details</div>
+                            </a>
+                          </div>
+                        <%}else{%>
+                          <div class="m-2">
+                            <div class="btn btn-outline-secondary btn-sm btn-block">Log-in to see details</div>
+                          </div>
+                        <%}%>
                       </div>
                     </div>
                   <%})%>
                 <%}%> 
               <%}else{%>
                 <%if(!departmentDetails.lastDayActivities.classes.length){%>
-                  <div class="btn btn-lg btn-block btn-info">No classes taken till now.</div>
+                  <div class="btn btn-lg btn-block btn-info">No classes had been taken!!</div>
                 <%}else{%>
                   <%departmentDetails.lastDayActivities.classes.forEach((cls)=>{%>
                     <div class="activity-link-container-small border ">
@@ -106,11 +122,17 @@
                         <p ><strong> Semester : <%=cls.semesterStatus%></strong></p>
                         <p ><strong> Timing : <%=cls.timing%></strong></p>
                         <p style="margin-bottom:.4rem;"><strong> Professor : <%=cls.professor.userName%></strong></p>
-                        <div class="m-2">
-                          <a href="/class/<%=cls.classId%>/details">
-                            <div class="btn btn-outline-secondary btn-sm btn-block">Go to class details</div>
-                          </a>
-                        </div>
+                        <%if(user){%>
+                          <div class="m-2">
+                            <a href="/class/<%=cls.classId%>/details">
+                              <div class="btn btn-outline-success btn-sm btn-block">Go to class details</div>
+                            </a>
+                          </div>
+                        <%}else{%>
+                          <div class="m-2">
+                            <div class="btn btn-outline-secondary btn-sm btn-block">Log-in to see details</div>
+                          </div>
+                        <%}%>
                       </div>
                     </div>
                   <%})%>
@@ -129,7 +151,7 @@
             <%if(!departmentDetails.HOD.userName){%>
               <div class="btn btn-lg btn-info btn-block">HOD has not added!!</div>
             <%}else{%>
-              <li class="list-group-item  d-flex align-items-center">
+              <li class="outerBGcolor list-group-item  d-flex align-items-center">
                 <div class="mr-auto d-flex align-items-center"> 
                   <div class="mr-2">
                       <img class="member-avatar"  src="/image/<%=departmentDetails.HOD.regNumber%>" alt="">
@@ -140,7 +162,7 @@
                   </div>
                 </div>
                 <%if(departmentDetails.isDepartmentRunning && user){%>
-                  <%if(presentProfessors.includes(departmentDetails.HOD.regNumber)){%>
+                  <%if(presentProfessorsRegs.includes(departmentDetails.HOD.regNumber)){%>
                     <div class="badge-pill badge-success">Present</div>
                   <%}else{%>
                     <div class="badge-pill badge-secondary">Absent</div>
@@ -159,7 +181,7 @@
             <%}else{%>
               <div class="container-scroll" style="max-height: 20.5rem;overflow: scroll;">
               <%departmentDetails.allProfessors.forEach((professor)=>{%>
-                <li class="list-group-item  d-flex align-items-center">
+                <li class="outerBGcolor list-group-item  d-flex align-items-center">
                   <div class="mr-auto d-flex align-items-center"> 
                     <div class="mr-2">
                         <img class="member-avatar"  src="/image/<%=professor.regNumber%>" alt="">
@@ -169,7 +191,7 @@
                     </div>
                   </div>
                   <%if(departmentDetails.isDepartmentRunning && user){%>
-                    <%if(presentProfessors.includes(professor.regNumber)){%>
+                    <%if(presentProfessorsRegs.includes(professor.regNumber)){%>
                       <div class="badge-pill badge-success">Present</div>
                     <%}else{%>
                       <div class="badge-pill badge-secondary">Absent</div>

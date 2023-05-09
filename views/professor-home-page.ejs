@@ -88,41 +88,42 @@
                       <div class="btn btn-block btn-info btn-lg">You have no class today!</div>
                     <%}else{%>
                         <%todaysClasses.forEach((todayClass)=>{%>
-                          <div class="activity-link-container-small border ">
-                            <div class="item-container">
-                              <span class=" d-block bolder text-warning text-center"><strong>Data Structure and Algorithm<%=todayClass.subject%></strong></span>
-                            </div>
-                              <div class="class-text-container bolder">
-                                <p ><strong> Period : <%=todayClass.period%></strong></p>
-                                <p ><strong> Semester : <%=todayClass.semesterStatus%> </strong></p>
-                                <p style="margin-bottom:.4rem;"><strong>Timing : <%=todayClass.timing%></strong></p>
-                                <%if(neededData.isDepartmentRunning){%>
-                                  <%if(neededData.isProfessorPresent){%>
-                                    <%if(neededData.takenClasses.includes(todayClass.classId)){%>
-                                      <div class="m-2">
-                                        <a href="/class/<%=todayClass.classId%>/details">
-                                          <div class="btn btn-outline-success btn-sm btn-block">See Class Details</div>
-                                        </a>
-                                      </div>
+                          <div class="col-lg-4 col-md-6 col-sm-12 pb-2 align-items-center">
+                            <div class="activity-link-container-small border ">
+                              <div class="item-container">
+                                <span class=" d-block bolder text-warning text-center"><strong><%=todayClass.subject%></strong></span>
+                              </div>
+                                <div class="class-text-container bolder">
+                                  <p ><strong> Period : <%=todayClass.period%></strong></p>
+                                  <p ><strong> Semester : <%=todayClass.semesterStatus%> </strong></p>
+                                  <p style="margin-bottom:.4rem;"><strong>Timing : <%=todayClass.timing%></strong></p>
+                                  <%if(neededData.isDepartmentRunning){%>
+                                    <%if(neededData.isProfessorPresent){%>
+                                      <%if(neededData.takenClasses.includes(todayClass.classId)){%>
+                                        <div class="m-2">
+                                          <a href="/class/<%=todayClass.classId%>/details">
+                                            <div class="btn btn-outline-success btn-sm btn-block">See Class Details</div>
+                                          </a>
+                                        </div>
+                                      <%}else{%>
+                                        <div class="m-2">
+                                          <a href="/class/<%=todayClass.classId%>/take-attendence">
+                                            <div class="btn btn-outline-secondary btn-sm btn-block">Take Attendence</div>
+                                          </a>
+                                        </div>
+                                      <%}%>
                                     <%}else{%>
                                       <div class="m-2">
-                                        <a href="/class/<%=todayClass.classId%>/take-attendence">
-                                          <div class="btn btn-outline-secondary btn-sm btn-block">Take Attendence</div>
-                                        </a>
+                                        <div class="btn btn-outline-danger btn-sm btn-block">You Are Absent</div>
                                       </div>
                                     <%}%>
                                   <%}else{%>
                                     <div class="m-2">
-                                      <div class="btn btn-outline-danger btn-sm btn-block">You Are Absent</div>
+                                      <div class="btn btn-outline-danger btn-sm btn-block">Departent has not opened!!</div>
                                     </div>
                                   <%}%>
-                                <%}else{%>
-                                  <div class="m-2">
-                                    <div class="btn btn-outline-danger btn-sm btn-block">Departent has not opened!!</div>
-                                  </div>
-                                <%}%>
-                                
-                              </div>
+                                </div>
+                            </div>
                           </div>
                         <%})%>
                     <%}%>

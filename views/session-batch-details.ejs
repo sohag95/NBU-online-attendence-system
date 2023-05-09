@@ -16,10 +16,24 @@
       <div class="banner-details-text text-center">
         <span class="d-block">BATCH : <%=batchDetails.sessionYear%> </span>
         <span class="d-block">SEMESTER : <%=batchDetails.semesterStatus%></span>
-        <span class="d-block">DEPARTMENT OF <%=batchDetails.departmentName%></span>
+        <span class="d-block"><a style="color:#fff;" href="/department/<%=batchDetails.departmentCode%>/details"> DEPARTMENT OF <%=batchDetails.departmentName%> </a></span>
       </div>
+      <%if(batchDetails.isBatchRunning){%>
+        <div class="openCloseTag">
+          <span style="color:#fff;" class="badge-pill badge-warning">Running</span>
+        </div>
+      <%}else{%>
+        <div class="openCloseTag">
+          <span class="badge-pill badge-secondary">Closed</span>
+        </div>
+      <%}%>
     </div>
-    <hr>
+
+    <hr style="margin-bottom: 0.4rem">
+    <div class="d-flex justify-content-center">
+      <a href="/department/<%= batchDetails.departmentCode%>/details"><span class="button">Go to Department</span></a>
+    </div>
+    <hr style="margin-top: 0.4rem">
       <div class="row">
         <div class="col-lg-7">
           <div class="item-container mb-2">
@@ -32,17 +46,17 @@
             </div>
             <hr>
             <div class="p-4 bolder text-success text-center">
-              <h2><strong>Students : 90%</strong></h2>
-              <h2><strong>Date : 12/04/2023</strong></h2>
+              <h2><strong>Students : <%=attendanceData.presentStudents%>%</strong></h2>
+              <h2><strong>Date : <%= attendanceData.date.getDate() %> <%=attendanceData.date.toLocaleString('default', { month: 'long' }) %> , <%= attendanceData.date.getFullYear() %></strong></h2>
             </div>
           </div>
           <hr>
           <div class="item-container">
             <div >
               <%if(batchDetails.isBatchRunning){%>
-                <strong ><i class="fas fa-book"></i> Today's All Classes</strong>
+                <strong ><i class="fas fa-book"></i> Today's Taken Classes</strong>
               <%}else{%>
-                <strong ><i class="fas fa-book"></i> Last Day's All Classes</strong>
+                <strong ><i class="fas fa-book"></i> Last Day's Taken Classes</strong>
               <%}%>
             </div>
             <hr>
@@ -60,18 +74,24 @@
                           <p ><strong> Period : <%=cls.period%></strong></p>
                           <p ><strong> Timing : <%=cls.timing%></strong></p>
                           <p style="margin-bottom:.4rem;"><strong> Professor : <%=cls.professor.userName%></strong></p>
-                          <div class="m-2">
-                            <a href="/class/<%=cls.classId%>/details">
-                              <div class="btn btn-outline-secondary btn-sm btn-block">Go to class details</div>
-                            </a>
-                          </div>
+                          <%if(user){%>
+                            <div class="m-2">
+                              <a href="/class/<%=cls.classId%>/details">
+                                <div class="btn btn-outline-success btn-sm btn-block">Go to class details</div>
+                              </a>
+                            </div>
+                          <%}else{%>
+                            <div class="m-2">
+                              <div class="btn btn-outline-secondary btn-sm btn-block">Log-in to see details</div>
+                            </div>
+                          <%}%>
                         </div>
                       </div>
                     <%})%>
                   <%}%> 
                 <%}else{%>
                     <%if(!batchDetails.lastDayActivities.classes.length){%>
-                      <div class="btn btn-lg btn-block btn-info">No classes taken till now.</div>
+                      <div class="btn btn-lg btn-block btn-info">No classes had been taken!!</div>
                     <%}else{%>
                       <%batchDetails.lastDayActivities.classes.forEach((cls)=>{%>
                         <div class="activity-link-container-small border ">
@@ -82,11 +102,17 @@
                             <p ><strong> Period : <%=cls.period%></strong></p>
                             <p ><strong> Timing : <%=cls.timing%></strong></p>
                             <p style="margin-bottom:.4rem;"><strong> Professor : <%=cls.professor.userName%></strong></p>
-                            <div class="m-2">
-                              <a href="/class/<%=cls.classId%>/details">
-                                <div class="btn btn-outline-secondary btn-sm btn-block">Go to class details</div>
-                              </a>
-                            </div>
+                            <%if(user){%>
+                              <div class="m-2">
+                                <a href="/class/<%=cls.classId%>/details">
+                                  <div class="btn btn-outline-success btn-sm btn-block">Go to class details</div>
+                                </a>
+                              </div>
+                            <%}else{%>
+                              <div class="m-2">
+                                <div class="btn btn-outline-secondary btn-sm btn-block">Log-in to see details</div>
+                              </div>
+                            <%}%>
                           </div>
                         </div>
                       <%})%>
@@ -107,7 +133,7 @@
             <%}else{%>
               <div class="container-scroll" style="max-height: 28rem;overflow: scroll;">
               <%batchDetails.allPresentStudents.forEach((student)=>{%>
-                <li class="list-group-item  d-flex align-items-center">
+                <li class="outerBGcolor list-group-item  d-flex align-items-center">
                   <div class="mr-auto d-flex align-items-center"> 
                     <div class="mr-2">
                         <img class="member-avatar"  src="/image/<%=student.regNumber%>" alt="">
@@ -116,6 +142,13 @@
                         <span class="item-text d-block"><strong>Name : </strong><%=student.userName%></span>
                     </div>
                   </div>
+                  <%if(batchDetails.isBatchRunning && user){%>
+                    <%if(presentStudentsRegs.includes(student.regNumber)){%>
+                      <div class="badge-pill badge-success">Present</div>
+                    <%}else{%>
+                      <div class="badge-pill badge-secondary">Absent</div>
+                    <%}%>
+                  <%}%>
                 </li>
               <%})%>
             </div>

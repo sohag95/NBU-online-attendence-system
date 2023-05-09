@@ -152,6 +152,7 @@ exports.isClassExists =async function (req, res,next) {
 }
 exports.getClassDetailsPage = function (req, res) {
   try{
+      console.log("Class Details:",req.classDetails)
       res.render('class-details-page',{
         classDetails:req.classDetails
       })

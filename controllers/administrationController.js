@@ -23,13 +23,53 @@ exports.administratorMustBeLoggedIn=function(req,res,next){
 exports.administrationHomePage=async function(req,res){
     try{
         let data=await Administration.getAdminHomeData()
-        console.log(data)
+        let isCampusOpen=await Administration.getIsCampusOpen()
+        console.log("isCampusOpen:",isCampusOpen)
         res.render("administration-home-page",{
-          data:data
+          data:data,
+          isCampusOpen:isCampusOpen
         })
     }catch{
         res.render('404')
     }
+}
+
+exports.openingCampus =async function (req, res) {
+  try{
+    if(req.body.open.toLowerCase()=="open"){
+      Administration.openingCampus().then(()=>{
+        req.flash("success", "Campus opened successfully!!")
+        req.session.save(() => res.redirect("/administration-home"))
+      }).catch(()=>{
+        req.flash("errors", "There is some problem.Try again..")
+        req.session.save(() => res.redirect("/administration-home"))    
+      })
+    }else{
+      req.flash("errors", "You have to type 'open' to opening the campus activity!")
+      req.session.save(() => res.redirect("/administration-home"))
+    }
+  }catch{
+    res.render("404")
+  }
+}
+
+exports.closingCampus =async function (req, res) {
+  try{
+    if(req.body.close.toLowerCase()=="close"){
+      Administration.closingCampus().then(()=>{
+        req.flash("success", "Campus closed successfully!!")
+        req.session.save(() => res.redirect("/administration-home"))
+      }).catch(()=>{
+        req.flash("errors", "There is some problem.Try again..")
+        req.session.save(() => res.redirect("/administration-home"))    
+      })
+    }else{
+      req.flash("errors", "You have to type 'close' to closing the campus activity!")
+      req.session.save(() => res.redirect("/administration-home"))
+    }
+  }catch{
+    res.render("404")
+  }
 }
 
 exports.addNewDepartment=function(req,res){

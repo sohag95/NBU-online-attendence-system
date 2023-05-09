@@ -57,7 +57,6 @@
                       <a href="/department/<%=studentData.departmentCode%>/details">
                         <div class="btn btn-block btn-md btn-info">Go to Department</div>
                       </a>
-                      
                     </div>
                     <div class="col-lg-6">
                       <a href="/session-batch/<%=user.regNumber.slice(0,9)%>/details">
@@ -72,44 +71,38 @@
                     <strong><i class="fas fa-book"></i> Today's Classes</strong>
                   </div>
                   <hr>
-                  <div class="d-flex ">
+                  <div class="row ">
                     <%if(!todaysClasses.length){%>
                       <div class="btn btn-block btn-info btn-lg">You have no class today!</div>
+                    <%}else{%>
+                      <%todaysClasses.forEach((todayClass)=>{%>
+                        <div class="col-lg-4 col-md-6 col-sm-12 pb-2 align-items-center">
+                          <div class="activity-link-container-small border m-2">
+                            <div class="item-container">
+                              <span class=" d-block bolder text-warning text-center"><strong><%=todayClass.subject%></strong></span>
+                            </div>
+                            <div class="class-text-container bolder">
+                              <p ><strong> Period : <%=todayClass.period%></strong></p>
+                              <p ><strong> Timing : <%=todayClass.timing%></strong></p>
+                              <p style="margin-bottom:.4rem;"><strong> Professor : <%=todayClass.professorName%></strong></p>
+                              <%if(neededData.takenClasses.includes(todayClass.classId)){%>
+                                <div class="m-2">
+                                  <a href="/class/<%=todayClass.classId%>/details">
+                                    <div class="btn btn-outline-success btn-sm btn-block">Go to class details</div>
+                                  </a>
+                                </div>
+                              <%}else{%>
+                                <div class="m-2">
+                                  <div class="btn btn-outline-danger btn-sm btn-block">Class has not taken yet!</div>
+                                </div>
+                              <%}%>
+
+                              
+                            </div>
+                          </div>
+                        </div>
+                      <%})%>
                     <%}%>
-            
-                    <%todaysClasses.forEach((todayClass)=>{%>
-                      <div class="activity-link-container-small border m-2">
-                        <div class="item-container">
-                          <span class=" d-block bolder text-warning text-center"><strong><%=todayClass.subject%></strong></span>
-                        </div>
-                        <div class="class-text-container bolder">
-                          <p ><strong> Period : <%=todayClass.period%></strong></p>
-                          <p ><strong> Timing : <%=todayClass.timing%></strong></p>
-                          <p style="margin-bottom:.4rem;"><strong> Professor : <%=todayClass.professorName%></strong></p>
-                          <div class="m-2">
-                            <a href="/class/<%=todayClass.classId%>/details">
-                              <div class="btn btn-outline-secondary btn-sm btn-block">Go to class details</div>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    <%})%>
-                    
-                    <!-- <a href="/class//details" style="text-decoration: none;">
-                      <div class="activity-link-container-small border m-2">
-                        <div class="item-container">
-                          <span class=" d-block bolder text-warning text-center"><strong>Data Structure and Algorithm</strong></span>
-                        </div>
-                        <div class="class-text-container bolder">
-                          <p ><strong> Period : 2nd</strong></p>
-                          <p ><strong> Timing : 12:00pm-02:00pm</strong></p>
-                          <p style="margin-bottom:.4rem;"><strong> Professor : Arindam Sarkar</strong></p>
-                          <div class="m-2">
-                            <div class="btn btn-outline-secondary btn-sm btn-block">Go to class details</div>
-                          </div>
-                        </div>
-                      </div>
-                    </a> -->
                   </div>
                 </div> 
                 <hr>

@@ -52,15 +52,52 @@
                   </h5>
               </div> 
               <hr> 
-              <!-- <div class="colored-container  bolder">
+              <div class="colored-container  bolder">
                 <div class="row">
                   <div class="col-lg-12 ">
-                    <div class="btn btn-block btn-md btn-info">Go to Department</div>
+                    <%if(!isCampusOpen){%>
+                      <div class="signUp-form-container mt-3 mb-4 text-center">   
+                        <h2 class="bolder">Open Campus</h2>
+                        <form action="/open-campus" method="POST" class="">
+                            <div class="form-group">
+                                <label for="open" class="text-muted mb-1"><small>Write "OPEN" to open campus activity :-</small></label>
+                                <input  name="open" id="open" class="form-control form-control-lg " type="text" placeholder="Write:'OPEN' here." required autocomplete="off">
+                            </div>
+                            <button class="btn btn-danger btn-block btn-lg">Open</button>
+                        </form>
+                    </div>
+                    <%}else{%>
+                      <div class="accordion" id="accordionExample">
+                        <div class="card">
+                          <div class="card-header" id="headingOne">
+                            <h2 class="mb-0">
+                              <button class="btn btn-block btn-lg btn-danger" type="button" data-toggle="collapse" data-target="#collapseClose" aria-expanded="true" aria-controls="collapseClose">
+                                Close Campus
+                              </button>
+                            </h2>
+                          </div>
+                      
+                          <div id="collapseClose" class="collapse " aria-labelledby="headingOne" data-parent="#accordionExample">
+                            <div class="card-body">
+                                <div class="signUp-form-container  text-center">   
+                                    <h2 class="bolder">Close Department</h2>
+                                    <form action="/close-campus" method="POST" class="">
+                                        <div class="form-group">
+                                            <label for="close" class="text-muted mb-1"><small>Write "CLOSE" to close departmental activity :-</small></label>
+                                            <input  name="close" id="close" class="form-control form-control-lg " type="text" placeholder="Write:'CLOSE' here." required autocomplete="off">
+                                        </div>
+                                        <button class="btn btn-danger btn-block btn-lg">Close</button>
+                                    </form>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <%}%>
                   </div>
-                  
                 </div>
               </div>
-              <hr> -->
+              <hr>
               <div class="row">
                 <div class="col-lg-5 ">
                   <div class="item-container">

@@ -166,8 +166,12 @@ exports.checkPreAttendenceUndoData = function (req, res,next) {
 
 exports.openingDepartment = function (req, res) {
   try{
+    let runningBatchesIds=req.departmentDetails.runningSessionBatches.map((batch)=>{
+      return batch.sessionId
+    })
+    console.log("Running batches:",runningBatchesIds)
     if(req.body.open.toLowerCase()=="open"){
-      Department.openingDepartment(req.regNumber).then(()=>{
+      Department.openingDepartment(req.regNumber,runningBatchesIds).then(()=>{
         req.flash("success", "Department opened successfully!!")
         req.session.save(() => res.redirect("/official-assistant-home"))
       }).catch(()=>{

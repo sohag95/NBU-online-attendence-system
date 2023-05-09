@@ -23,7 +23,23 @@ exports.studentMustBeLoggedIn=function(req,res,next){
 exports.getTodaysSubjectDetails =async function (req, res,next) {
   try{
     let today=new Date()
-    let routineDetails=await SessionBatch.getSessionBatchRoutineDetailsBySessionIds([req.regNumber.slice(0,9)])
+    let batchDetails=await SessionBatch.getBatchDetailsBySessionId(req.regNumber.slice(0,9))
+    
+    req.neededData={
+      isBatchRunning:batchDetails.isBatchRunning,
+      takenClasses:[]
+    }
+    if(batchDetails.isBatchRunning){
+      batchDetails.presentDayActivities.classes.forEach((cls)=>{
+        req.neededData.takenClasses.push(cls.classId)
+      })
+    }
+
+
+    let routineDetails=[{
+      sessionId:batchDetails.sessionId,
+      routine:batchDetails.routine
+    }]
 
     req.todaysClasses=[]
     var dayIndex=today.getDay()-1;//0,1,2,3,4,5,6
@@ -32,7 +48,6 @@ exports.getTodaysSubjectDetails =async function (req, res,next) {
     //classId=sessionId+date+dayIndex+classIndex
     if(dayIndex<=4){
       routineDetails.forEach((routineData)=>{
-        console.log("Day index:",routineData.routine.activities[dayIndex])
         if(routineData.routine){
           routineData.routine.activities[dayIndex].professors.forEach((professor,classIndex)=>{
             if(professor.regNumber!="NAN"){
@@ -69,10 +84,12 @@ exports.getTodaysSubjectDetails =async function (req, res,next) {
 
 exports.studentHomePage =async function (req, res) {
     try{
+      console.log("Needed data:",req.neededData)
         let studentData=await Student.getStudentDetailsByRegNumber(req.regNumber)
         res.render('student-home-page',{
           todaysClasses:req.todaysClasses,
-          studentData:studentData
+          studentData:studentData,
+          neededData:req.neededData
         })
     }catch{
         res.render('404')

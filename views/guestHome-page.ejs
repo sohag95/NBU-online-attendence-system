@@ -10,6 +10,15 @@
         <div class="banner-details-text text-center">
           <span class="d-block">NBU ONLINE ATTENDANCE SYSTEM </span>
         </div>
+        <%if(attendanceData.isCampusOpen){%>
+          <div class="openCloseTag">
+            <span style="color:#fff;" class="badge-pill badge-warning">Running</span>
+          </div>
+        <%}else{%>
+          <div class="openCloseTag">
+            <span class="badge-pill badge-secondary">Closed</span>
+          </div>
+        <%}%>
       </div>
       <hr>
         <div class="row">

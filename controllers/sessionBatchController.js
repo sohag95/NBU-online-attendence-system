@@ -33,10 +33,32 @@ exports.isSessionIdValid = function (req,res,next) {
 exports.getBatchDetailsPage =function (req, res) {
     try{
         let days=["Monday","Tuesday","Wednesday","Thursday","Friday"]
-        
-        console.log("batch details:",req.batchDetails)
+        let presentStudentsRegs=[]
+        if(req.batchDetails.isBatchRunning){
+            req.batchDetails.presentDayActivities.students.forEach((student)=>{
+                presentStudentsRegs.push(student.regNumber)
+            })
+        }
+        //-----attendence related data-----
+        let presentStudents
+        let date
+        if(req.batchDetails.isBatchRunning){
+            presentStudents=Math.round((req.batchDetails.presentDayActivities.students.length/req.batchDetails.allPresentStudents.length)*100)
+            date=new Date()
+        }else{
+            presentStudents=Math.round((req.batchDetails.lastDayActivities.students.length/req.batchDetails.allPresentStudents.length)*100)
+            date=req.batchDetails.lastDayActivities.date
+        }
+        attendanceData={
+            presentStudents:presentStudents,
+            date:date,
+        }
+        console.log("Attendance Data:",attendanceData)
+        //------------------------------------------
         res.render('session-batch-details',{
             batchDetails:req.batchDetails,
+            presentStudentsRegs:presentStudentsRegs,
+            attendanceData:attendanceData,
             days:days
         })
     }catch{

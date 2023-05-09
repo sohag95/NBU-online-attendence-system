@@ -31,10 +31,12 @@ SessionBatch.prototype.dataPreparation=function(){
                 },
                 lastDayActivities:{
                   students:[],
-                  classes:[]
+                  classes:[],
+                  date:new Date()
                 },
                 sessionCreatedDate:new Date(),
-                studentSerialNumber:0
+                studentSerialNumber:0,
+                isBatchRunning:false
             }
             this.sessionBatchActivities={
               sessionId:this.data.sessionId,
@@ -420,6 +422,28 @@ SessionBatch.prototype.addNewSessionBatch=function(){
             {
               $push:{
                 [updationField]:recordData
+              }
+            }
+          )
+
+        }
+        resolve()
+      }catch{
+        reject()
+      }
+    })
+  }
+
+  SessionBatch.openBatchRunningStatus = function (runningBatchesIds) {
+    return new Promise(async(resolve, reject) => {
+      try{  
+        for (let i=0;i<runningBatchesIds.length;i++){
+          let sessionId=runningBatchesIds[i]
+          await sessionBatchCollection.updateOne(
+            {sessionId:sessionId},
+            {
+              $set:{
+                "isBatchRunning":true,
               }
             }
           )

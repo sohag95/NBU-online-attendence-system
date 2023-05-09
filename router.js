@@ -39,6 +39,8 @@ router.get('/administration-handle/department/:departmentCode',administrationCon
 router.post('/add-professor/:departmentCode',administrationController.administratorMustBeLoggedIn,administrationController.addProfessor)
 router.post('/add-HOD/:departmentCode',administrationController.administratorMustBeLoggedIn,professorController.getProfessorDetails,administrationController.addHOD)
 router.post('/add-new-session-year',administrationController.administratorMustBeLoggedIn,administrationController.addNewSessionYear)
+router.post('/open-campus',administrationController.administratorMustBeLoggedIn,administrationController.openingCampus)
+router.post('/close-campus',administrationController.administratorMustBeLoggedIn,administrationController.closingCampus)
 
 //########################
 //Department related routers
@@ -64,7 +66,7 @@ router.post('/class/:classId/submit-attendence',professorController.professorMus
 router.get('/professor/:regNumber/activity-details',professorController.getProfessorActivityDetailsPage)
 
 //Class related router
-router.get('/class/:classId/details',userController.isClassExists,userController.getClassDetailsPage)
+router.get('/class/:classId/details',userController.userMustBeLoggedIn,userController.isClassExists,userController.getClassDetailsPage)
 
 //########################
 //HOD related routers

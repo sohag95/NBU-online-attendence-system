@@ -70,15 +70,37 @@ exports.professorMustBeDepartmentalHOD = async function (req, res,next) {
 
 exports.getDetailsPage = function (req, res) {
     try{
-        let presentProfessors=[]
+        console.log("Department Details:",req.departmentDetails)
+        let presentProfessorsRegs=[]
         if(req.departmentDetails.isDepartmentRunning){
             req.departmentDetails.presentDayActivities.professors.forEach((professor)=>{
-            presentProfessors.push(professor.regNumber)
+            presentProfessorsRegs.push(professor.regNumber)
             })
         }
+         //-----attendence related data-----
+         let presentStudents
+         let presentProfessors
+         let date
+         if(req.departmentDetails.isDepartmentRunning){
+             presentStudents=req.departmentDetails.presentDayActivities.students
+             presentProfessors=Math.round((req.departmentDetails.presentDayActivities.professors.length/req.departmentDetails.allProfessors.length)*100)
+             date=new Date()
+         }else{
+             presentStudents=req.departmentDetails.lastDayActivities.students
+             presentProfessors=Math.round((req.departmentDetails.lastDayActivities.professors.length/req.departmentDetails.allProfessors.length)*100)
+             date=req.departmentDetails.lastDayActivities.date
+         }
+         attendanceData={
+             presentStudents:presentStudents,
+             presentProfessors:presentProfessors,
+             date:date,
+         }
+         console.log("Attendance Data:",attendanceData)
+         //------------------------------------------
         res.render('department-details-page',{
             departmentDetails:req.departmentDetails,
-            presentProfessors:presentProfessors
+            attendanceData:attendanceData,
+            presentProfessorsRegs:presentProfessorsRegs
         })
     }catch{
         res.render('404')
