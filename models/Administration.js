@@ -97,7 +97,7 @@ Administration.prototype.administrationLoggingIn = function () {
     })
   }
 
-  Administration.increaseTotalStudentAttendenceCountGlobally=function(newStudents){
+  Administration.increaseTotalStudentAttendanceCountGlobally=function(newStudents){
     return new Promise(async(resolve, reject) => {
       try {
         console.log("Count:",newStudents)

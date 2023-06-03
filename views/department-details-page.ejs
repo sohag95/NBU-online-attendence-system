@@ -4,11 +4,7 @@
   <div class="col-lg notVisibleOnCollapse" >
   </div>
   <div class="col-lg-9 pt-1" >
-    <%if(user){%>
-      <%if(user.isHOD){%>
-        <%- include('includes/sections/hod-department-handle-panel') %>
-      <%}%>
-    <%}%>
+    
     <div style="position: relative;">
       <img class="header-banner-img"  src="/images/banner3.jpg" alt="">
       <div class="banner-details-text text-center">
@@ -257,8 +253,13 @@
             </div>
           <%}%>
         </div>
-        
       </div>
+      <hr>
+      <%if(user){%>
+        <%if(user.isHOD && user.regNumber.slice(4,9)==departmentDetails.departmentCode){%>
+          <%- include('includes/sections/hod-department-handle-panel') %>
+        <%}%>
+      <%}%>
   </div>
   <div class="col-lg notVisibleOnCollapse" >
   </div>

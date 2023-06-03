@@ -1,3 +1,4 @@
+const Administration = require('../models/Administration')
 const Department = require('../models/Department')
 
 exports.functionName =function (req, res) {
@@ -38,8 +39,28 @@ exports.getDepartmentDetails = async function (req, res,next) {
 
 exports.getDepartmentActivityDetailsPage = async function (req, res) {
     try{
-        
-        res.render("department-activity-details-page")
+        let departmentActivityInfo={
+            departmentName:req.departmentDetails.departmentName,
+            departmentCode:req.departmentDetails.departmentCode,
+            presentSessionYear:"",
+            sessionActivityRecords:[],
+            days:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    }
+        let presentSessionYear=await Administration.getPresentSessionYear()
+        let departmentalActivities=await Department.getDepartmentalActivityDetails(req.departmentDetails.departmentCode)
+        let matchKey="Y"+presentSessionYear.slice(0,4)+presentSessionYear.slice(5,9)
+        for (var key in departmentalActivities.allRecords) {
+            console.log(key);
+            if(key===matchKey){
+              console.log(key)
+              departmentActivityInfo.sessionActivityRecords=departmentalActivities.allRecords[key]
+            }
+          }
+          departmentActivityInfo.presentSessionYear=presentSessionYear
+          console.log("Dptactivities:",departmentActivityInfo)
+        res.render("department-activity-details-page",{
+            departmentActivityInfo:departmentActivityInfo
+        })
     }catch{
         res.render('404')
     }
@@ -77,7 +98,7 @@ exports.getDetailsPage = function (req, res) {
             presentProfessorsRegs.push(professor.regNumber)
             })
         }
-         //-----attendence related data-----
+         //-----attendance related data-----
          let presentStudents
          let presentProfessors
          let date

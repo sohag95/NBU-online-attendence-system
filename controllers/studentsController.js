@@ -99,7 +99,49 @@ exports.studentHomePage =async function (req, res) {
 
 exports.getStudentActivityDetailsPage = async function (req, res) {
   try{
-      res.render("student-activity-details-page")
+      //get attendance data
+      let attendanceInfo={
+        totalActiveDays:0,
+        totalClassesTaken:0,
+        semesterStatus:"",
+        days:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+        allClasses:[]
+      }
+      
+      let studentDetails=await Student.getStudentDetailsByRegNumber(req.regNumber)
+      let attendanceDetails=await Student.getStudentAttendanceDetails(req.regNumber)
+      let batchActivityDetails=await SessionBatch.getSessionBatchActivityDetails(req.regNumber.slice(0,9))
+      let semesterAllClasses=[]
+      //console.log("batch details:",batchActivityDetails)
+      // console.log("attendanceDetails:",attendanceDetails)
+      if(studentDetails.semesterStatus=="1st"){
+        attendanceInfo.semesterStatus="1st"
+        semesterAllClasses=batchActivityDetails.allRecords.firstSemester
+        attendanceInfo.allClasses=attendanceDetails.allClasses.firstSemester.reverse()
+      }else if(studentDetails.semesterStatus=="2nd"){
+        attendanceInfo.semesterStatus="2nd"
+        semesterAllClasses=batchActivityDetails.allRecords.secondSemester
+        attendanceInfo.allClasses=attendanceDetails.allClasses.secondSemester.reverse()
+      }else if(studentDetails.semesterStatus=="3rd"){
+        attendanceInfo.semesterStatus="3rd"
+        semesterAllClasses=batchActivityDetails.allRecords.thirdSemester
+        attendanceInfo.allClasses=attendanceDetails.allClasses.thirdSemester.reverse()
+      }else if(studentDetails.semesterStatus=="4th"){
+        attendanceInfo.semesterStatus="4th"
+        semesterAllClasses=batchActivityDetails.allRecords.forthSemester
+        attendanceInfo.allClasses=attendanceDetails.allClasses.forthSemester.reverse()
+      }else{
+        //will work later
+      }
+      attendanceInfo.totalActiveDays=semesterAllClasses.length
+      semesterAllClasses.forEach((days)=>{
+        attendanceInfo.totalClassesTaken+=days.record.classes.length
+      })
+      
+      console.log("Attendance info:",attendanceInfo)
+      res.render("student-activity-details-page",{
+        attendanceInfo:attendanceInfo
+      })
   }catch{
       res.render('404')
   }

@@ -290,7 +290,7 @@ Department.prototype.addNewDepartment=function(){
     })
   }
 
-  Department.takeProfessorAttendence=function(departmentCode,data){
+  Department.takeProfessorAttendance=function(departmentCode,data){
     return new Promise(async (resolve, reject) => {
       try{
 
@@ -322,7 +322,7 @@ Department.prototype.addNewDepartment=function(){
   }
 
 
-  Department.undoProfessorAttendence=function(departmentCode,newAttendenceList){
+  Department.undoProfessorAttendance=function(departmentCode,newAttendanceList){
     return new Promise(async (resolve, reject) => {
       try{
 
@@ -330,7 +330,7 @@ Department.prototype.addNewDepartment=function(){
           {departmentCode:departmentCode},
           {
             $set:{
-              "presentDayActivities.professors":newAttendenceList
+              "presentDayActivities.professors":newAttendanceList
             }
           }
         )
@@ -364,6 +364,20 @@ Department.prototype.addNewDepartment=function(){
       }
     })
   }
+
+  Department.getDepartmentalActivityDetails = function (departmentCode) {
+    return new Promise(async(resolve, reject) => {
+      try{
+        
+        //update HOD data on departmental page
+        let activityDetails=await departmentActivityCollection.findOne({departmentCode:departmentCode})
+        resolve(activityDetails)
+      }catch{
+        reject()
+      }
+    })
+  }
+
 
 module.exports=Department
 

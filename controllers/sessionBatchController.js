@@ -1,6 +1,5 @@
 const SessionBatch = require('../models/SessionBatch')
 
-
 exports.ifSessionBatchExists =async function (req, res,next) {
     try{
         let batchDetails=await SessionBatch.getBatchDetailsBySessionId(req.params.sessionId)
@@ -39,7 +38,7 @@ exports.getBatchDetailsPage =function (req, res) {
                 presentStudentsRegs.push(student.regNumber)
             })
         }
-        //-----attendence related data-----
+        //-----attendance related data-----
         let presentStudents
         let date
         if(req.batchDetails.isBatchRunning){
@@ -121,7 +120,39 @@ exports.addRoutineDayActivity =function (req, res) {
 
 exports.getBatchActivityDetailsPage = async function (req, res) {
     try{
-        res.render("session-batch-activity-details-page")
+        let batchActivityInfo={
+            semesterStatus:"",
+            semesterClassRecords:[],
+            days:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+        }
+        let batchDetails={
+            sessionId:req.batchDetails.sessionId,
+            sessionYear:req.batchDetails.sessionYear,
+            departmentName:req.batchDetails.departmentName,
+            semesterStatus:req.batchDetails.semesterStatus
+        }
+        let semesterStatus=req.batchDetails.semesterStatus
+        let batchActivityDetails=await SessionBatch.getSessionBatchActivityDetails(req.batchDetails.sessionId)
+        if(semesterStatus=="1st"){
+            batchActivityInfo.semesterStatus="1st"
+            batchActivityInfo.semesterClassRecords=batchActivityDetails.allRecords.firstSemester
+        }else if(semesterStatus=="2nd"){
+            batchActivityInfo.semesterStatus="2nd"
+            batchActivityInfo.semesterClassRecords=batchActivityDetails.allRecords.secondSemester
+        }else if(semesterStatus=="3rd"){
+            batchActivityInfo.semesterStatus="3rd"
+            batchActivityInfo.semesterClassRecords=batchActivityDetails.allRecords.thirdSemester
+        }else if(semesterStatus=="4th"){
+            batchActivityInfo.semesterStatus="4th"
+            batchActivityInfo.semesterClassRecords=batchActivityDetails.allRecords.forthSemester
+        }else{
+            //will work later
+        }
+        console.log("batchData:",batchActivityInfo)
+        res.render("session-batch-activity-details-page",{
+            batchActivityInfo:batchActivityInfo,
+            batchDetails:batchDetails
+        })
     }catch{
         res.render('404')
     }

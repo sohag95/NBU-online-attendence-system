@@ -1,4 +1,5 @@
-const ClassAttendence = require('../models/ClassAttendence')
+const Administration = require('../models/Administration')
+const ClassAttendance = require('../models/ClassAttendance')
 const Department = require('../models/Department')
 const Professor = require('../models/Professor')
 const SessionBatch = require('../models/SessionBatch')
@@ -151,7 +152,41 @@ exports.professorHomePage =async function (req, res) {
 
 exports.getProfessorActivityDetailsPage = async function (req, res) {
   try{
-      res.render("professor-activity-details-page")
+    let activityInfo={
+      totalActiveDays:0,
+      totalDepartmentalClasses:0,
+      classesTaken:0,
+      presentSessionYear:"",
+      allClasses:[],
+      days:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    }
+      let departmentalActivities=await Department.getDepartmentalActivityDetails(req.regNumber.slice(4,9))
+      console.log("dptactivity:",departmentalActivities)
+      let departmentRecords=[]
+      let presentSessionYear=await Administration.getPresentSessionYear()
+      activityInfo.presentSessionYear=presentSessionYear
+      let matchKey="Y"+presentSessionYear.slice(0,4)+presentSessionYear.slice(5,9)
+      let activityDetails=await Professor.getProfessorActivityDetails(req.regNumber)
+      for (var key in activityDetails.allRecords) {
+        console.log(key);
+        if(key===matchKey){
+          console.log(key)
+          departmentRecords=departmentalActivities.allRecords[key]
+          activityInfo.allClasses=activityDetails.allRecords[key]
+        }
+      }
+      console.log("records:",activityInfo.allClasses)
+      activityInfo.totalActiveDays=departmentRecords.length
+      departmentRecords.forEach((record)=>{
+        activityInfo.totalDepartmentalClasses+=record.record.classes.length
+      })
+      activityInfo.allClasses.forEach((cls)=>{
+        activityInfo.classesTaken+=cls.classes.length
+      })
+      console.log("activityDetails:",activityInfo)
+      res.render("professor-activity-details-page",{
+        activityInfo:activityInfo
+      })
   }catch{
       res.render('404')
   }
@@ -243,13 +278,13 @@ exports.getClassDetails =function (req, res,next) {
   }
 }
 
-exports.getClassAttendencePage =function (req, res) {
+exports.getClassAttendancePage =function (req, res) {
   try{
       //console.log("ClassData:",req.classData)
       let takenClassesIds=req.batchDetails.presentDayActivities.classes.map((cls)=>{
         return cls.classId
       })
-      res.render('class-attendence-page',{
+      res.render('class-attendance-page',{
         batchDetails:req.batchDetails,
         classData:req.classData,
         takenClassesIds:takenClassesIds
@@ -259,13 +294,13 @@ exports.getClassAttendencePage =function (req, res) {
   }
 }
 
-exports.submitClassAttendence =function (req, res) {
+exports.submitClassAttendance =function (req, res) {
   try{
       let data={
         classData:req.classData,
         presentStudents:JSON.parse(req.body.selectedStudents)
       }
-      let newAttendenceLists={
+      let newAttendanceLists={
         newStudentsCount:0,
         onBatch:req.batchDetails.presentDayActivities.students,
       }
@@ -280,20 +315,20 @@ exports.submitClassAttendence =function (req, res) {
           }
         })
         if(!present){
-          newAttendenceLists.onBatch.push(student)
-          newAttendenceLists.newStudentsCount+=1
+          newAttendanceLists.onBatch.push(student)
+          newAttendanceLists.newStudentsCount+=1
         }
       })
       
-      let classAttendence=new ClassAttendence(data,newAttendenceLists)
-      classAttendence.submitClassAttendence().then(()=>{
-        req.flash("success", "Attendence successfully taken.")
+      let classAttendance=new ClassAttendance(data,newAttendanceLists)
+      classAttendance.submitClassAttendance().then(()=>{
+        req.flash("success", "Attendance successfully taken.")
         req.session.save(function () {
-         res.redirect(`/class/${req.params.classId}/take-attendence`)
+         res.redirect(`/class/${req.params.classId}/take-attendance`)
         })
       }).catch((e)=>{
         req.flash("errors", e)
-        res.redirect(`/class/${req.params.classId}/take-attendence`)
+        res.redirect(`/class/${req.params.classId}/take-attendance`)
       })
   }catch{
       res.render('404')

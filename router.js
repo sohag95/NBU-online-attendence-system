@@ -56,13 +56,13 @@ router.get('/session-batch/:sessionId/activity-details',userController.userMustB
 //Student related routers
 router.post('/student-logging-in',userController.userMustNotLoggedIn,studentController.studentLoggingIn)
 router.get('/student-home',studentController.studentMustBeLoggedIn,studentController.getTodaysSubjectDetails,studentController.studentHomePage)
-router.get('/student/:regNumber/activity-details',studentController.getStudentActivityDetailsPage)
+router.get('/student/:regNumber/activity-details',studentController.studentMustBeLoggedIn,studentController.getStudentActivityDetailsPage)
 //--has to add permission middle-check-function
 //########################
 //Professors related routers
 router.get('/professor-home',professorController.professorMustBeLoggedIn,professorController.getProfessorDepartmentDetails,professorController.getTodaysSubjectDetails,professorController.professorHomePage)
-router.get('/class/:classId/take-attendence',professorController.professorMustBeLoggedIn,professorController.isClassValidOrNot,professorController.getClassDetails,professorController.getClassAttendencePage)
-router.post('/class/:classId/submit-attendence',professorController.professorMustBeLoggedIn,professorController.isClassValidOrNot,professorController.getClassDetails,professorController.submitClassAttendence)
+router.get('/class/:classId/take-attendance',professorController.professorMustBeLoggedIn,professorController.isClassValidOrNot,professorController.getClassDetails,professorController.getClassAttendancePage)
+router.post('/class/:classId/submit-attendance',professorController.professorMustBeLoggedIn,professorController.isClassValidOrNot,professorController.getClassDetails,professorController.submitClassAttendance)
 router.get('/professor/:regNumber/activity-details',professorController.getProfessorActivityDetailsPage)
 
 //Class related router
@@ -84,8 +84,8 @@ router.get('/official-assistant-home',officialAssistantController.officialAssist
 
 router.post('/department/:departmentCode/open',officialAssistantController.officialAssistantMustBeLoggedIn,departmentController.isDepartmentExists,officialAssistantController.checkPreOpeningData,officialAssistantController.openingDepartment)
 router.post('/department/:departmentCode/close',officialAssistantController.officialAssistantMustBeLoggedIn,departmentController.isDepartmentExists,officialAssistantController.checkPreClosingData,officialAssistantController.closingDepartment)
-router.post('/professor/:departmentCode/attendence',officialAssistantController.officialAssistantMustBeLoggedIn,departmentController.isDepartmentExists,officialAssistantController.checkPreAttendenceData,officialAssistantController.professorAttendence)
-router.post('/professor/:departmentCode/attendenceUndo',officialAssistantController.officialAssistantMustBeLoggedIn,departmentController.isDepartmentExists,officialAssistantController.checkPreAttendenceUndoData,officialAssistantController.professorAttendenceUndo)
+router.post('/professor/:departmentCode/attendance',officialAssistantController.officialAssistantMustBeLoggedIn,departmentController.isDepartmentExists,officialAssistantController.checkPreAttendanceData,officialAssistantController.professorAttendance)
+router.post('/professor/:departmentCode/attendanceUndo',officialAssistantController.officialAssistantMustBeLoggedIn,departmentController.isDepartmentExists,officialAssistantController.checkPreAttendanceUndoData,officialAssistantController.professorAttendanceUndo)
 
 
 

@@ -220,4 +220,17 @@ Professor.prototype.addNewProfessor=function(){
     })
   }
 
+  Professor.getProfessorActivityDetails=function(regNumber){
+    return new Promise(async (resolve, reject) => {
+      try{
+        let professorActivity=await professorActivityCollection.findOne({regNumber:regNumber})
+        
+        
+        resolve(professorActivity)
+      }catch{
+        reject()
+      }
+    })
+  }
+
 module.exports=Professor

@@ -7,87 +7,74 @@
       <div style="position: relative;">
         <img class="header-banner-img"  src="/images/banner3.jpg" alt="">
         <div class="banner-details-text text-center">
-          <span class="d-block">BATCH : 2022-2024 </span>
-          <span class="d-block">SEMESTER : 1ST</span>
-          <span class="d-block">DEPARTMENT OF BENGALI</span>
+          <span class="d-block">BATCH : <%=batchDetails.sessionYear%> </span>
+          <span class="d-block">SEMESTER : <%=batchDetails.semesterStatus%></span>
+          <span class="d-block">DEPARTMENT OF <%=batchDetails.departmentName%></span>
         </div>
       </div>
-      <hr>
+      
+      <hr style="margin-bottom: 0.4rem">
+      <div class="d-flex justify-content-center">
+        <a href="/session-batch/<%=batchDetails.sessionId%>/details"><span class="button">Go to Batch Details Page</span></a>
+          
+      </div>
+      <hr style="margin-top: 0.4rem">
         <div class="">
                 <div class="item-container">
                   <div >
-                    <strong><i class="fas fa-book"></i>  1st Semester All Classes</strong>
+                    <strong><i class="fas fa-book"></i>  <%=batchActivityInfo.semesterStatus%> Semester All Classes</strong>
                   </div>
                   <hr>
-                  <table class="table table-bordered table-hover">
-                    <thead>
-                      <tr class="text-center bolder">
-                        <th scope="col"><strong>Date</strong> </th>
-                        <th scope="col"><strong>Classes</strong> </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <th scope="row">
-                          <div>
-                            16/12/2023
-                          </div>
-                          <div>
-                            Wednesday
-                          </div>
-                        <td>
-                          <div class="colored-activity-container mb-1 ">
-                            <div class="row">
-                              <div class="col-lg-6">
-                                <p><strong>Subject : Data Structure and algorithm</strong></p>   
-                                <p><strong>Professor : Arindam Sarkar</strong></p>             
+                  <%if(batchActivityInfo.semesterClassRecords.length){%>
+                    
+                    <table class="table table-bordered table-hover">
+                      <thead>
+                        <tr class="text-center bolder">
+                          <th scope="col"><strong>Date</strong> </th>
+                          <th scope="col"><strong>Classes</strong> </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <%batchActivityInfo.semesterClassRecords.forEach((record)=>{%>
+                          <tr>
+                            <th scope="row">
+                              <div>
+                                <%= record.date.getDate() %>/<%= record.date.getMonth() + 1 %>/<%= record.date.getFullYear() %>
                               </div>
-                              <div class="col-lg-6">
-                                <p><strong>Timing : 10:30am-12:30pm</strong></p> 
-                                <p class="text-warning"><strong>Go to the class details</strong></p>
+                              <div>
+                                <%=batchActivityInfo.days[record.date.getDay()]%>
                               </div>
-                            </div>
-                          </div>
-                          <div class="colored-activity-container mb-1 ">
-                            <div class="row">
-                              <div class="col-lg-6">
-                                <p><strong>Subject : Data Structure and algorithm</strong></p>   
-                                <p><strong>Professor : Arindam Sarkar</strong></p>               
-                              </div>
-                              <div class="col-lg-6">
-                                <p><strong>Timing : 10:30am-12:30pm</strong></p> 
-                                <p class="text-warning"><strong>Go to the class details</strong></p>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">
-                          <div>
-                            16/12/2023
-                          </div>
-                          <div>
-                            Wednesday
-                          </div>
-                        </th>
-                        <td>
-                          <div class="colored-activity-container mb-1 ">
-                            <div class="row">
-                              <div class="col-lg-6">
-                                <p><strong>Subject : Data Structure and algorithm</strong></p>   
-                                <p><strong>Professor : Akash Goshwami</strong></p>               
-                              </div>
-                              <div class="col-lg-6">
-                                <p><strong>Timing : 10:30am-12:30pm</strong></p> 
-                                <p class="text-warning"><strong>Go to the class details</strong></p>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                            <td>
+                              <%if(record.record.classes.length){%>
+                                <%record.record.classes.forEach((cls)=>{%>
+                                  <div class="colored-activity-container mb-1 ">
+                                    <div class="row">
+                                      <div class="col-lg-6">
+                                        <p><strong>Subject : <%=cls.subject%></strong></p>   
+                                        <p><strong>Professor : <%=cls.professor.userName%></strong></p>             
+                                      </div>
+                                      <div class="col-lg-6">
+                                        <p><strong>Timing : <%=cls.timing%></strong></p>
+                                        <a href="/class/<%=cls.classId%>/details">
+                                          <p class="text-warning"><strong>Go to the class details</strong></p>
+                                        </a> 
+                                      </div>
+                                    </div>
+                                  </div>
+                                <%})%>
+                              <%}else{%>
+                                <div class="btn btn-lg btn-block btn-info">No classes taken!!</div>
+                              <%}%>
+                            </td>
+                          </tr>
+                        <%})%>
+                        
+                      </tbody>
+                    </table>
+                  <%}else{%>
+                    <div class="btn btn-block btn-info btn-lg">No classes conducted till now!!</div>
+                  <%}%>
+                  
                 </div>
   
           </div>    

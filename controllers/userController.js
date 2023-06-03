@@ -1,5 +1,5 @@
 const Administration = require('../models/Administration')
-const ClassAttendence = require('../models/ClassAttendence')
+const ClassAttendance = require('../models/ClassAttendance')
 const Professor = require('../models/Professor')
 const Department = require('../models/Department')
 
@@ -138,7 +138,7 @@ exports.getAllDepartments =async function (req, res) {
 
 exports.isClassExists =async function (req, res,next) {
   try{
-      let classDetails=await ClassAttendence.getClassDetailsByClassId(req.params.classId)
+      let classDetails=await ClassAttendance.getClassDetailsByClassId(req.params.classId)
       if(classDetails){
         req.classDetails=classDetails
         next()

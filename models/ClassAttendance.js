@@ -4,11 +4,11 @@ const Professor = require("./Professor")
 const SessionBatch = require("./SessionBatch")
 const Student = require("./Student")
 
-const classAttendenceCollection = require("../db").db().collection("Class_Attendences")
+const classAttendanceCollection = require("../db").db().collection("Class_Attendences")
 
-let ClassAttendence=function(data,newAttendenceLists){ 
+let ClassAttendance=function(data,newAttendanceLists){ 
     this.data=data
-    this.newAttendenceLists=newAttendenceLists
+    this.newAttendanceLists=newAttendanceLists
     this.departmentalClassData
     this.sessionBatchClassData
     this.professorClassData
@@ -16,7 +16,7 @@ let ClassAttendence=function(data,newAttendenceLists){
     this.studentsRegNumbers
 }
 
-ClassAttendence.prototype.dataPreparation=function(){
+ClassAttendance.prototype.dataPreparation=function(){
     this.data={
         classId:this.data.classData.classId,
         departmentName:this.data.classData.departmentName,
@@ -67,7 +67,7 @@ ClassAttendence.prototype.dataPreparation=function(){
     })
 }
 
-ClassAttendence.prototype.submitClassAttendence=function(){
+ClassAttendance.prototype.submitClassAttendance=function(){
     return new Promise(async (resolve, reject) => {
         try{
             this.dataPreparation()
@@ -76,22 +76,22 @@ ClassAttendence.prototype.submitClassAttendence=function(){
             console.log("session batch data:",this.sessionBatchClassData)
             console.log("professor class data:",this.professorClassData)
             console.log("Student class data:",this.studentClassData)
-            console.log("New attendence list:",this.newAttendenceLists)
-            //storing class data on class attendence table
-            await classAttendenceCollection.insertOne(this.data)
+            console.log("New attendance list:",this.newAttendanceLists)
+            //storing class data on class attendance table
+            await classAttendanceCollection.insertOne(this.data)
             //store class activity on sessionBatch
-            await SessionBatch.addClassDataOnSessionBatch(this.data.classId.slice(0,9),this.sessionBatchClassData,this.newAttendenceLists)
+            await SessionBatch.addClassDataOnSessionBatch(this.data.classId.slice(0,9),this.sessionBatchClassData,this.newAttendanceLists)
             //store class activity on department
-            await Department.addClassDataOnDepartment(this.data.departmentCode,this.departmentalClassData,this.newAttendenceLists.newStudentsCount)
+            await Department.addClassDataOnDepartment(this.data.departmentCode,this.departmentalClassData,this.newAttendanceLists.newStudentsCount)
             //store class data on professor daily activity
             await Professor.addClassDataOnPresentDayActivity(this.data.professor.regNumber,this.professorClassData)
-            //store attendence on student account
+            //store attendance on student account
             await Student.addClassDataOnPresentStudentsAccount(this.studentsRegNumbers,this.data.semesterStatus,this.studentClassData)
             //global count updation
-            console.log("count-",this.newAttendenceLists.newStudentsCount)
+            console.log("count-",this.newAttendanceLists.newStudentsCount)
                 
-            if(this.newAttendenceLists.newStudentsCount>0){
-                await Administration.increaseTotalStudentAttendenceCountGlobally(this.newAttendenceLists.newStudentsCount)
+            if(this.newAttendanceLists.newStudentsCount>0){
+                await Administration.increaseTotalStudentAttendanceCountGlobally(this.newAttendanceLists.newStudentsCount)
             }
             resolve()
         }catch{
@@ -101,14 +101,14 @@ ClassAttendence.prototype.submitClassAttendence=function(){
 }
 
 
-ClassAttendence.getClassDetailsByClassId=function(classId){
+ClassAttendance.getClassDetailsByClassId=function(classId){
     return new Promise(async (resolve, reject) => {
         try{
-            let classDetails=await classAttendenceCollection.findOne({classId:classId})
+            let classDetails=await classAttendanceCollection.findOne({classId:classId})
             resolve(classDetails)
         }catch{
             reject()
         } 
     })
 }
-module.exports=ClassAttendence
+module.exports=ClassAttendance

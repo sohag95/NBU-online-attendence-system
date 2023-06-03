@@ -9,20 +9,36 @@
                 <img class="home-cover-image" src="/images/banner.jpg"/>
             <div>
             <div style="position: relative;display: inline;">
-                <img class="home-profile-image" src="/image/h" />  
+                <img class="home-profile-image" src="/image/<%=user.regNumber%>" />  
             </div>
                 <div>
                     <h5 class="bolder text-secondary text-capetalize d-inline">
-                      <strong>Sohag Roy</strong></h5>
+                      <strong><%=user.userName%></strong></h5>
                     <h5 class="bolder d-inline float-right">
                       <i class="fas fa-user"></i> Student
                     </h5>
                 </div> 
-                <hr> 
-                
+                <hr>
+                <div class="item-container bg-info">
+                  <div >
+                    <strong><i class="fas fa-book"></i> Activity Details</strong>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <p><strong>Total Active Days : <%=attendanceInfo.totalActiveDays%> </strong></p>   
+                      <p><strong>Total Classes Taken : <%=attendanceInfo.totalClassesTaken%></strong></p>             
+                    </div>
+                    <div class="col-lg-6">
+                      <p><strong>Your Attended Classes : <%=attendanceInfo.allClasses.length%></strong></p>   
+                      <p><strong>Attendance Parcentage : <%=(attendanceInfo.allClasses.length*100)/attendanceInfo.totalClassesTaken%> %</strong></p>             
+                    </div>
+                  </div>
+                </div> 
+                <hr>
                 <div class="item-container">
                   <div >
-                    <strong><i class="fas fa-book"></i>  1st Semester All Classes</strong>
+                    <strong><i class="fas fa-book"></i> Your <%=attendanceInfo.semesterStatus%> Semester's All Classes </strong>
                   </div>
                   <hr>
                   <table class="table table-bordered table-hover">
@@ -33,65 +49,66 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row">
-                          <div>
-                            16/12/2023
-                          </div>
-                          <div>
-                            Wednesday
-                          </div>
-                        <td>
-                          <div class="colored-activity-container mb-1 ">
-                            <div class="row">
-                              <div class="col-lg-6">
-                                <p><strong>Subject : Data Structure and algorithm</strong></p>   
-                                <p><strong>Professor : Arindam Sarkar</strong></p>             
-                              </div>
-                              <div class="col-lg-6">
-                                <p><strong>Timing : 10:30am-12:30pm</strong></p> 
-                                <p class="text-warning"><strong>Go to the class details</strong></p>
+                      <!-- start -->
+                      <%for(let i=0;i<attendanceInfo.allClasses.length;i++){%>
+                        <tr>
+                          <th scope="row">
+                            <div>
+                              <%= attendanceInfo.allClasses[i].classDate.getDate() %>/<%= attendanceInfo.allClasses[i].classDate.getMonth() + 1 %>/<%= attendanceInfo.allClasses[i].classDate.getFullYear() %>
+                            </div>
+                            <div>
+                              <%=attendanceInfo.days[attendanceInfo.allClasses[i].classDate.getDay()]%>
+                            </div>
+                          <td>
+                            <div class="colored-activity-container mb-1 ">
+                              <div class="row">
+                                <div class="col-lg-6">
+                                  <p><strong>Subject : <%=attendanceInfo.allClasses[i].subject%></strong></p>   
+                                  <p><strong>Professor : <%=attendanceInfo.allClasses[i].professor.userName%></strong></p>             
+                                </div>
+                                <div class="col-lg-6">
+                                  <p><strong>Timing : <%=attendanceInfo.allClasses[i].timing%></strong></p> 
+                                  <a href="/class/<%=attendanceInfo.allClasses[i].classId%>/details">
+                                    <p class="text-warning"><strong>Go to the class details</strong></p>
+                                  </a>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div class="colored-activity-container mb-1 ">
-                            <div class="row">
-                              <div class="col-lg-6">
-                                <p><strong>Subject : Data Structure and algorithm</strong></p>   
-                                <p><strong>Professor : Arindam Sarkar</strong></p>               
-                              </div>
-                              <div class="col-lg-6">
-                                <p><strong>Timing : 10:30am-12:30pm</strong></p> 
-                                <p class="text-warning"><strong>Go to the class details</strong></p>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">
-                          <div>
-                            16/12/2023
-                          </div>
-                          <div>
-                            Wednesday
-                          </div>
-                        </th>
-                        <td>
-                          <div class="colored-activity-container mb-1 ">
-                            <div class="row">
-                              <div class="col-lg-6">
-                                <p><strong>Subject : Data Structure and algorithm</strong></p>   
-                                <p><strong>Professor : Akash Goshwami</strong></p>               
-                              </div>
-                              <div class="col-lg-6">
-                                <p><strong>Timing : 10:30am-12:30pm</strong></p> 
-                                <p class="text-warning"><strong>Go to the class details</strong></p>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
+                            <%let j=1%>
+                            <%while(j!=5){%>
+                              <%if(i+1<attendanceInfo.allClasses.length){%>
+                                <%if(attendanceInfo.allClasses[i].classDate.getDate()+attendanceInfo.allClasses[i].classDate.getMonth()+attendanceInfo.allClasses[i].classDate.getFullYear()==attendanceInfo.allClasses[i+1].classDate.getDate()+attendanceInfo.allClasses[i+1].classDate.getMonth()+attendanceInfo.allClasses[i+1].classDate.getFullYear()){%>
+                                <%i=i+1%>
+                                <div class="colored-activity-container mb-1 ">
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <p><strong>Subject : <%=attendanceInfo.allClasses[i].subject%></strong></p>   
+                                      <p><strong>Professor : <%=attendanceInfo.allClasses[i].professor.userName%></strong></p>             
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <p><strong>Timing : <%=attendanceInfo.allClasses[i].timing%></strong></p> 
+                                      <a href="/class/<%=attendanceInfo.allClasses[i].classId%>/details">
+                                        <p class="text-warning"><strong>Go to the class details</strong></p>
+                                      </a>
+                                    </div>
+                                  </div>
+                                </div>
+                                <%}else{%>
+                                  <%j=5%>
+                                <%}%>
+                              <%}else{%>
+                                <%j=5%>
+                              <%}%>
+                            <%}%>
+                            
+                            
+                          </td>
+                        </tr>
+                      <%}%>
+                      
+                      
+                      <!-- end -->
+                      
                     </tbody>
                   </table>
                 </div>

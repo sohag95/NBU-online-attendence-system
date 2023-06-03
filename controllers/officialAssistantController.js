@@ -102,7 +102,7 @@ exports.checkPreClosingData = function (req, res,next) {
 }
 
 
-exports.checkPreAttendenceData = function (req, res,next) {
+exports.checkPreAttendanceData = function (req, res,next) {
   if(req.regNumber==req.departmentDetails.departmentCode){
     if(req.departmentDetails.isDepartmentRunning){
       let professorPresent=false
@@ -121,7 +121,7 @@ exports.checkPreAttendenceData = function (req, res,next) {
         if(notAdded){
           next()
         }else{
-          req.flash("errors", "Professor's attendence has already been taken.")
+          req.flash("errors", "Professor's attendance has already been taken.")
           req.session.save(() => res.redirect("/official-assistant-home"))
         }
 
@@ -130,7 +130,7 @@ exports.checkPreAttendenceData = function (req, res,next) {
         req.session.save(() => res.redirect("/official-assistant-home"))  
       }
     }else{
-      req.flash("errors", "Department should open first to take attendence.")
+      req.flash("errors", "Department should open first to take attendance.")
       req.session.save(() => res.redirect("/official-assistant-home"))
     }
   }else{
@@ -139,7 +139,7 @@ exports.checkPreAttendenceData = function (req, res,next) {
   }
 }
 
-exports.checkPreAttendenceUndoData = function (req, res,next) {
+exports.checkPreAttendanceUndoData = function (req, res,next) {
   if(req.regNumber==req.departmentDetails.departmentCode){
     if(req.departmentDetails.isDepartmentRunning){
         let present=false
@@ -155,7 +155,7 @@ exports.checkPreAttendenceUndoData = function (req, res,next) {
           req.session.save(() => res.redirect("/official-assistant-home"))
         }
     }else{
-      req.flash("errors", "Department should open first to undo attendence.")
+      req.flash("errors", "Department should open first to undo attendance.")
       req.session.save(() => res.redirect("/official-assistant-home"))
     }
   }else{
@@ -212,10 +212,10 @@ exports.closingDepartment =async function (req, res) {
   }
 }
 
-exports.professorAttendence = function (req, res) {
+exports.professorAttendance = function (req, res) {
   try{
-    Department.takeProfessorAttendence(req.regNumber,req.body).then(()=>{
-        req.flash("success", "Professor's attendence added successfully!!")
+    Department.takeProfessorAttendance(req.regNumber,req.body).then(()=>{
+        req.flash("success", "Professor's attendance added successfully!!")
         req.session.save(() => res.redirect("/official-assistant-home"))
       }).catch(()=>{
         req.flash("errors", "There is some problem.Try again..")
@@ -227,15 +227,15 @@ exports.professorAttendence = function (req, res) {
   }
 }
 
-exports.professorAttendenceUndo = function (req, res) {
+exports.professorAttendanceUndo = function (req, res) {
   try{
-    let newAttendenceList=req.departmentDetails.presentDayActivities.professors.filter((professor)=>{
+    let newAttendanceList=req.departmentDetails.presentDayActivities.professors.filter((professor)=>{
       if(professor.regNumber!=req.body.regNumber){
         return professor
       }
     })
-    Department.undoProfessorAttendence(req.regNumber,newAttendenceList).then(()=>{
-        req.flash("success", "Professor's attendence undo successfully!!")
+    Department.undoProfessorAttendance(req.regNumber,newAttendanceList).then(()=>{
+        req.flash("success", "Professor's attendance undo successfully!!")
         req.session.save(() => res.redirect("/official-assistant-home"))
       }).catch(()=>{
         req.flash("errors", "There is some problem.Try again..")

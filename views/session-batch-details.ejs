@@ -6,11 +6,7 @@
   <div class="col-lg notVisibleOnCollapse" >
   </div>
   <div class="col-lg-9 pt-1" >
-    <%if(user){%>
-      <%if(user.isHOD){%>
-        <%- include('includes/sections/hod-batch-handle-panel') %>
-      <%}%>
-    <%}%>
+    
     <div style="position: relative;">
       <img class="header-banner-img"  src="/images/banner3.jpg" alt="">
       <div class="banner-details-text text-center">
@@ -232,6 +228,14 @@
         </div>
         
       </div>
+      <div>
+      </div>
+      <%if(user){%>
+        <%if(user.isHOD && user.regNumber.slice(4,9)==batchDetails.sessionId.slice(4,9)){%>
+          <hr>
+          <%- include('includes/sections/hod-batch-handle-panel') %>
+        <%}%>
+      <%}%>
   </div>
   <div class="col-lg notVisibleOnCollapse" >
   </div>

@@ -3,7 +3,7 @@ const SentEmail = require("./SentEmail")
 const SessionBatch = require("./SessionBatch")
 
 const studentsCollection = require("../db").db().collection("Students")
-const studentAttendenceCollection = require("../db").db().collection("Students_Attendence_Lists")
+const studentAttendanceCollection = require("../db").db().collection("Students_Attendence_Lists")
 
 let Student=function(data){ 
     this.data=data
@@ -21,6 +21,7 @@ Student.prototype.dataPreparation=function(){
         departmentCode:this.data.departmentCode,
         sessionYear:"20"+regNumber.slice(0,2)+"-"+"20"+regNumber.slice(2,4),
         departmentName:this.data.departmentName,
+        semesterStatus:"1st",
         dateOfBirth:new Date(this.data.dateOfBirth),
         email:this.data.email,
         createdDate:new Date()
@@ -140,7 +141,7 @@ Student.prototype.studentLoggingIn = function () {
         }else if(semesterStatus=="4th"){
           classDataStoreField="allClasses.fourthSemester"
         }
-        await studentAttendenceCollection.updateMany(
+        await studentAttendanceCollection.updateMany(
           { regNumber: { $in: regNumbers } },
           {
             $push:{
@@ -165,6 +166,17 @@ Student.prototype.studentLoggingIn = function () {
       try{
         let studentData=await studentsCollection.findOne({regNumber:regNumber})
         resolve(studentData)
+      }catch{
+        reject()
+      }
+    })
+  }
+
+  Student.getStudentAttendanceDetails=function(regNumber){
+    return new Promise(async (resolve, reject) => {
+      try{
+        let attendanceDetails=await studentAttendanceCollection.findOne({regNumber:regNumber})
+        resolve(attendanceDetails)
       }catch{
         reject()
       }

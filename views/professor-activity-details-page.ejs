@@ -9,20 +9,37 @@
                 <img class="home-cover-image" src="/images/banner.jpg"/>
             <div>
             <div style="position: relative;display: inline;">
-                <img class="home-profile-image" src="/image/s" />  
+                <img class="home-profile-image" src="/image/<%=user.regNumber%>" />  
             </div>
                 <div>
                     <h5 class="bolder text-secondary text-capetalize d-inline">
-                      <strong>Arindam Sarkar</strong></h5>
+                      <strong><%=user.userName%></strong></h5>
                     <h5 class="bolder d-inline float-right">
                       <i class="fas fa-user"></i> Professor
                     </h5>
+                </div> 
+                <hr>
+                <div class="item-container bg-info">
+                  <div >
+                    <strong><i class="fas fa-book"></i> Session Year "<%=activityInfo.presentSessionYear%>" Activity Details</strong>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-lg-6">
+                      <p><strong>Your Working Days : <%=activityInfo.allClasses.length%>/<%=activityInfo.totalActiveDays%> </strong></p>   
+                      <p><strong>Total Departmental Classses : <%=activityInfo.totalDepartmentalClasses%></strong></p>             
+                    </div>
+                    <div class="col-lg-6">
+                      <p><strong>Classes Taken by You: <%=activityInfo.classesTaken%></strong></p>   
+                      <p><strong>Your Class Contribution : <%=(activityInfo.classesTaken*100)/activityInfo.totalDepartmentalClasses%> %</strong></p>             
+                    </div>
+                  </div>
                 </div> 
                 <hr> 
                 
                 <div class="item-container">
                   <div >
-                    <strong><i class="fas fa-book"></i>  Session Year "2021-2022" All Classes</strong>
+                    <strong><i class="fas fa-book"></i>  Session Year "<%=activityInfo.presentSessionYear%>" All Classes</strong>
                   </div>
                   <hr>
                   <table class="table table-bordered table-hover">
@@ -33,66 +50,48 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row">
-                          <div>
-                            16/12/2023
-                          </div>
-                          <div>
-                            Wednesday
-                          </div>
-                        </th>
-                        <td>
-                          <div class="colored-activity-container mb-1 ">
-                            <div class="row">
-                              <div class="col-lg-6">
-                                <p><strong>Subject : Data Structure and algorithm</strong></p>   
-                                <p><strong>Timing : 10:30am-12:30pm</strong></p>               
-                              </div>
-                              <div class="col-lg-6">
-                                <p><strong>Semester : 1st</strong></p>
-                                <p class="text-warning"><strong>Go to the class details</strong></p>
-                              </div>
+                      <!-- start -->
+                    <%if(activityInfo.allClasses.length){%>
+                      <%activityInfo.allClasses.forEach((cls)=>{%>
+                        <tr>
+                          <th scope="row">
+                            <div>
+                              <%= cls.date.getDate() %>/<%= cls.date.getMonth() + 1 %>/<%= cls.date.getFullYear() %>
                             </div>
-                          </div>
-                          <div class="colored-activity-container mb-1 ">
-                            <div class="row">
-                              <div class="col-lg-6">
-                                <p><strong>Subject : Data Structure and algorithm</strong></p>   
-                                <p><strong>Timing : 10:30am-12:30pm</strong></p>               
-                              </div>
-                              <div class="col-lg-6">
-                                <p><strong>Semester : 1st</strong></p>
-                                <p class="text-warning"><strong>Go to the class details</strong></p>
-                              </div>
+                            <div>
+                              <%=activityInfo.days[cls.date.getDay()]%>
                             </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <th scope="row">
-                          <div>
-                            16/12/2023
-                          </div>
-                          <div>
-                            Wednesday
-                          </div>
-                        </th>
-                        <td>
-                          <div class="colored-activity-container mb-1 ">
-                            <div class="row">
-                              <div class="col-lg-6">
-                                <p><strong>Subject : Data Structure and algorithm</strong></p>   
-                                <p><strong>Timing : 10:30am-12:30pm</strong></p>               
-                              </div>
-                              <div class="col-lg-6">
-                                <p><strong>Semester : 1st</strong></p>
-                                <p class="text-warning"><strong>Go to the class details</strong></p>
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
+                          </th>
+                          <td>
+                            <%if(cls.classes.length){%>
+                              <%cls.classes.forEach((classDetails)=>{%>
+                                <div class="colored-activity-container mb-1 ">
+                                  <div class="row">
+                                    <div class="col-lg-6">
+                                      <p><strong>Subject : <%=classDetails.subject%></strong></p>   
+                                      <p><strong>Timing : <%=classDetails.timing%></strong></p>               
+                                    </div>
+                                    <div class="col-lg-6">
+                                      <p><strong>Semester : <%=classDetails.semesterStatus%></strong></p>
+                                      <a href="/class/<%=classDetails.classId%>/details">
+                                        <p class="text-warning"><strong>Go to the class details</strong></p>
+                                      </a>
+                                    </div>
+                                  </div>
+                                </div>
+                              <%})%>
+                            <%}else{%>
+                              <div class="btn btn-lg btn-block btn-info">No classes taken!!</div>
+                            <%}%>
+                        
+                          </td>
+                        </tr>
+                      <%})%>
+                      <!-- end -->
+                    <%}else{%>
+                      <div class="btn btn-lg btn-block btn-info">No Activity recorded on this session!!</div>    
+                    <%}%>
+                      
                     </tbody>
                   </table>
                 </div>

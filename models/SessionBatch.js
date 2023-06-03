@@ -3,7 +3,6 @@ const sessionBatchActivityCollection = require("../db").db().collection("Session
 const Department = require("./Department")
 const IdCreation = require('./IdCreation')
 
-
 let SessionBatch=function(data){ 
     this.data=data
     this.errors=[]
@@ -346,7 +345,7 @@ SessionBatch.prototype.addNewSessionBatch=function(){
     })
   }
 
-  SessionBatch.addClassDataOnSessionBatch=function(sessionId,classData,newAttendenceLists){
+  SessionBatch.addClassDataOnSessionBatch=function(sessionId,classData,newAttendanceLists){
     return new Promise(async (resolve, reject) => {
       try{
 
@@ -358,12 +357,12 @@ SessionBatch.prototype.addNewSessionBatch=function(){
             }
           }
         )
-        if(newAttendenceLists.newStudentsCount){
+        if(newAttendanceLists.newStudentsCount){
           await sessionBatchCollection.updateOne(
             {sessionId:sessionId},
             {
               $set:{
-                "presentDayActivities.students":newAttendenceLists.onBatch
+                "presentDayActivities.students":newAttendanceLists.onBatch
               }
             }
           )
@@ -433,7 +432,16 @@ SessionBatch.prototype.addNewSessionBatch=function(){
       }
     })
   }
-
+  SessionBatch.getSessionBatchActivityDetails = function (sessionId) {
+    return new Promise(async(resolve, reject) => {
+      try{  
+        let batchActivityDetails=await sessionBatchActivityCollection.findOne({sessionId:sessionId})
+        resolve(batchActivityDetails)
+      }catch{
+        reject()
+      }
+    })
+  }
   SessionBatch.openBatchRunningStatus = function (runningBatchesIds) {
     return new Promise(async(resolve, reject) => {
       try{  
