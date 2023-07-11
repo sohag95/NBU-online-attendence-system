@@ -24,7 +24,7 @@ exports.administrationHomePage=async function(req,res){
     try{
         let data=await Administration.getAdminHomeData()
         let isCampusOpen=await Administration.getIsCampusOpen()
-        console.log("isCampusOpen:",isCampusOpen)
+        //console.log("isCampusOpen:",isCampusOpen)
         res.render("administration-home-page",{
           data:data,
           isCampusOpen:isCampusOpen
@@ -93,7 +93,7 @@ exports.addNewDepartment=function(req,res){
 
 exports.departmentalHandlePage=function(req,res){
   try{
-    console.log("Department Details :",req.departmentDetails)
+    //console.log("Department Details :",req.departmentDetails)
     req.departmentDetails.departmentOfficial=null
     res.render("handle-department-page",{
       departmentDetails:req.departmentDetails
@@ -123,7 +123,7 @@ exports.addProfessor=function(req,res){
 }
 
 exports.addHOD=function(req,res){
-  console.log("Data:",req.body)
+  //console.log("Data:",req.body)
   Department
     .addNewHOD(req.body.joiningDate,req.professorDetails)
     .then(() => {

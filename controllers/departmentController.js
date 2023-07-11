@@ -50,14 +50,14 @@ exports.getDepartmentActivityDetailsPage = async function (req, res) {
         let departmentalActivities=await Department.getDepartmentalActivityDetails(req.departmentDetails.departmentCode)
         let matchKey="Y"+presentSessionYear.slice(0,4)+presentSessionYear.slice(5,9)
         for (var key in departmentalActivities.allRecords) {
-            console.log(key);
+            //console.log(key);
             if(key===matchKey){
-              console.log(key)
+              //console.log(key)
               departmentActivityInfo.sessionActivityRecords=departmentalActivities.allRecords[key]
             }
           }
           departmentActivityInfo.presentSessionYear=presentSessionYear
-          console.log("Dptactivities:",departmentActivityInfo)
+          //console.log("Dptactivities:",departmentActivityInfo)
         res.render("department-activity-details-page",{
             departmentActivityInfo:departmentActivityInfo
         })
@@ -91,7 +91,7 @@ exports.professorMustBeDepartmentalHOD = async function (req, res,next) {
 
 exports.getDetailsPage = function (req, res) {
     try{
-        console.log("Department Details:",req.departmentDetails)
+        //console.log("Department Details:",req.departmentDetails)
         let presentProfessorsRegs=[]
         if(req.departmentDetails.isDepartmentRunning){
             req.departmentDetails.presentDayActivities.professors.forEach((professor)=>{
@@ -116,7 +116,7 @@ exports.getDetailsPage = function (req, res) {
              presentProfessors:presentProfessors,
              date:date,
          }
-         console.log("Attendance Data:",attendanceData)
+         //console.log("Attendance Data:",attendanceData)
          //------------------------------------------
         res.render('department-details-page',{
             departmentDetails:req.departmentDetails,

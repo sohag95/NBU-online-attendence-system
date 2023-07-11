@@ -1,6 +1,6 @@
 <div class="colored-container bg-warning">
     <div>
-      <h3><strong ><i class="fas fa-users"></i> HOD Batch Handle Panel</strong></h3>
+      <h3><strong ><i class="fas fa-user-tie"></i> HOD Batch Handle Panel</strong></h3>
     </div>
     <hr>
     <div >
@@ -36,6 +36,7 @@
                     <label for="dateOfBirth" class="text-muted mb-1"><small>Date of birth :-</small></label>
                     <input  name="dateOfBirth" id="dateOfBirth" class="form-control form-control-sm " type="date" placeholder="Sellect DOB"required autocomplete="off">
                 </div>
+                <input type="hidden" name="semesterStatus" value="<%=batchDetails.semesterStatus%>">
                 <input type="hidden" name="sessionId" value="<%=batchDetails.sessionId%>">
                 <button class="btn btn-primary btn-block btn-small">Add Student</button>
               </form>

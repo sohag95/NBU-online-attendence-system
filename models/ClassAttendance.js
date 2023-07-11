@@ -71,12 +71,6 @@ ClassAttendance.prototype.submitClassAttendance=function(){
     return new Promise(async (resolve, reject) => {
         try{
             this.dataPreparation()
-            console.log("classData:",this.data)
-            console.log("department class data:",this.departmentalClassData)
-            console.log("session batch data:",this.sessionBatchClassData)
-            console.log("professor class data:",this.professorClassData)
-            console.log("Student class data:",this.studentClassData)
-            console.log("New attendance list:",this.newAttendanceLists)
             //storing class data on class attendance table
             await classAttendanceCollection.insertOne(this.data)
             //store class activity on sessionBatch
@@ -88,7 +82,7 @@ ClassAttendance.prototype.submitClassAttendance=function(){
             //store attendance on student account
             await Student.addClassDataOnPresentStudentsAccount(this.studentsRegNumbers,this.data.semesterStatus,this.studentClassData)
             //global count updation
-            console.log("count-",this.newAttendanceLists.newStudentsCount)
+            //console.log("count-",this.newAttendanceLists.newStudentsCount)
                 
             if(this.newAttendanceLists.newStudentsCount>0){
                 await Administration.increaseTotalStudentAttendanceCountGlobally(this.newAttendanceLists.newStudentsCount)

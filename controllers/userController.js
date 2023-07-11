@@ -64,7 +64,7 @@ exports.userLoggingIn = function (req, res,next) {
             })
           })
           .catch(function (e) {
-            console.log("E val:",e)
+            //console.log("E val:",e)
             req.flash("errors", e)
             req.session.save(function () {
               res.redirect('/log-in')
@@ -90,6 +90,7 @@ exports.loggingOut = function (req, res) {
 exports.guestHomePage =async function (req, res) {
   try{
       let attendanceData=await Administration.getAttendanceCountData()
+      //console.log("Attendance data:",attendanceData)
       let presentStudents
       let presentProfessors
       let date
@@ -114,7 +115,7 @@ exports.guestHomePage =async function (req, res) {
         totalStudents:attendanceData.allStudents,
         totalProfessors:attendanceData.allProfessors
       }
-      console.log("Attendance Data:",attendanceData)
+      //console.log("Attendance Data:",attendanceData)
       res.render('guestHome-page',{
         attendanceData:attendanceData
       })
@@ -152,7 +153,7 @@ exports.isClassExists =async function (req, res,next) {
 }
 exports.getClassDetailsPage = function (req, res) {
   try{
-      console.log("Class Details:",req.classDetails)
+      //console.log("Class Details:",req.classDetails)
       res.render('class-details-page',{
         classDetails:req.classDetails
       })
@@ -183,4 +184,4 @@ exports.test = function (req, res) {
 // let sentEmail=new SentEmail()
 // await sentEmail.sendingToSingleAccountType("roysohag95@gmail.com")
 // await sentEmail.sendingToMultipleAccountType(["roysohag95@gmail.com"])
-// console.log("email sent successfully!")
+// //console.log("email sent successfully!")

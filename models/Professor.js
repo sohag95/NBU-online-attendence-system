@@ -1,5 +1,9 @@
 const professorsCollection = require("../db").db().collection("Professors")
 const professorActivityCollection=require("../db").db().collection("Professors_Activities")
+
+const departmentsCollection = require("../db").db().collection("Departments")
+
+const Administration = require("./Administration")
 const Department = require("./Department")
 const IdCreation = require('./IdCreation')
 const SentEmail = require('./SentEmail')
@@ -30,7 +34,7 @@ Professor.prototype.dataPreparation=function(){
                 joiningDate:new Date(this.data.joiningDate),
             }
             this.professorActivities={
-              regNumber:this.data.regNumebr,
+              regNumber:this.data.regNumber,
               allRecords:{}
             }
             resolve()
@@ -62,11 +66,11 @@ Professor.prototype.validate=function(){
                 this.errors.push("Every professor should contain unique email id.")
             }
           }
-          console.log("This code is running")
+          //console.log("This code is running")
           resolve()
           
       }catch{
-        console.log("This code is running2")
+        //console.log("This code is running2")
         this.errors.push("Sorry,there is some problem!")
         reject()
       }
@@ -81,18 +85,30 @@ Professor.prototype.addNewProfessor=function(){
         await this.validate()
         if (!this.errors.length) {
             //increase serial number on neededData
-            await Department.increaseProfessorSerialNumber(this.data.regNumber.slice(0,9))
-            //store professor details data
-            await professorsCollection.insertOne(this.data)
-            await professorActivityCollection.insertOne(this.professorActivities)
-            //store professor id on departmental professor list
+            //await Department.increaseProfessorSerialNumber(this.data.regNumber.slice(4,9))
             let professorData={
               userName:this.data.userName,
               regNumber:this.data.regNumber,
               joiningDate:this.data.joiningDate
             }
-            await Department.addProfessorOnDepartment(this.data.regNumber.slice(4,9),professorData)
-            
+            //console.log("ProfessorData:",professorData,this.data)
+            //belowed function should be added on department class
+            await departmentsCollection.updateMany(
+              {departmentCode:this.data.regNumber.slice(4,9)},
+              {
+                $push:{
+                  "allProfessors":professorData
+                },
+                $inc:{
+                  "professorSerialNumber":1
+                }
+              }
+            )
+            //store professor details data
+            await professorsCollection.insertOne(this.data)
+            await professorActivityCollection.insertOne(this.professorActivities)
+            //store professor id on departmental professor list
+            await Administration.increaseTotalProfessorsCount()
             //send registration number and password to professor's email id
             let sentEmail=new SentEmail()
             this.rawData.regNumber=this.data.regNumber

@@ -15,7 +15,7 @@ Administration.prototype.administrationLoggingIn = function () {
       if (typeof this.data.password != "string") {
         reject("Try with valide data!")
       } 
-      console.log("Auth data :",this.data)
+      //console.log("Auth data :",this.data)
       administrationCollection
         .findOne({ dataType:"administrator" }
         )
@@ -100,7 +100,7 @@ Administration.prototype.administrationLoggingIn = function () {
   Administration.increaseTotalStudentAttendanceCountGlobally=function(newStudents){
     return new Promise(async(resolve, reject) => {
       try {
-        console.log("Count:",newStudents)
+        //console.log("Count:",newStudents)
         await administrationCollection.updateOne(
           { dataType: "attendanceCountData" },
           {
@@ -121,6 +121,40 @@ Administration.prototype.administrationLoggingIn = function () {
       try {
         let data=await administrationCollection.findOne({ dataType: "attendanceCountData" })
         resolve(data.isCampusOpen)
+      } catch {
+        reject()
+      }
+    })
+  }
+  Administration.increaseTotalProfessorsCount=function(){
+    return new Promise(async(resolve, reject) => {
+      try {
+        await administrationCollection.updateOne(
+          { dataType: "attendanceCountData" },
+          {
+             $inc: {
+               "allProfessors": 1 
+              } 
+          }
+        )
+        resolve()
+      } catch {
+        reject()
+      }
+    })
+  }
+  Administration.increaseTotalStudentsCount=function(){
+    return new Promise(async(resolve, reject) => {
+      try {
+        await administrationCollection.updateOne(
+          { dataType: "attendanceCountData" },
+          {
+             $inc: {
+               "allStudents": 1 
+              } 
+          }
+        )
+        resolve()
       } catch {
         reject()
       }

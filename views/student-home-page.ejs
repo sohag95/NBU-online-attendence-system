@@ -7,7 +7,7 @@
     <div class="col-lg-9 pt-1" >
         <div class="">
             <div style="width: 100%;position: relative;">
-                <img class="home-cover-image" src="/images/banner.jpg"/>
+                <img class="home-cover-image" src="/images/banner3.jpg"/>
             <div>
             <div style="position: relative;display: inline;">
                 <img class="home-profile-image" src="/image/<%=user.regNumber%>" />
@@ -84,7 +84,7 @@
                             <div class="class-text-container bolder">
                               <p ><strong> Period : <%=todayClass.period%></strong></p>
                               <p ><strong> Timing : <%=todayClass.timing%></strong></p>
-                              <p style="margin-bottom:.4rem;"><strong> Professor : <%=todayClass.professorName%></strong></p>
+                              <p style="margin-bottom:.4rem;"><strong> Instructor : <%=todayClass.professorName%></strong></p>
                               <%if(neededData.takenClasses.includes(todayClass.classId)){%>
                                 <div class="m-2">
                                   <a href="/class/<%=todayClass.classId%>/details">
@@ -122,7 +122,7 @@
                     </div>
                     <div class="col-12">
                       <a href="/student/<%=studentData.regNumber%>/activity-details">
-                        <div class=" btn btn-md btn-block btn-warning"><strong>See All Attendence Details</strong> </div>
+                        <div class=" btn btn-md btn-block btn-warning"><strong>See All Attendance Details</strong> </div>
                       </a>
                     </div>
                   </div>

@@ -6,7 +6,7 @@
   <div class="col-lg-9 pt-1" >
       <div class="">
           <div style="width: 100%;position: relative;">
-              <img class="home-cover-image" src="/images/banner.jpg"/>
+              <img class="home-cover-image" src="/images/banner3.jpg"/>
           <div>
             <div style="position: relative;display: inline;">
               <img class="home-profile-image" src="/image/<%=user.regNumber%>" />
@@ -46,7 +46,7 @@
                   <h5 class="bolder text-secondary text-capetalize d-inline">
                     <strong><%=user.userName%></strong></h5>
                   <h5 class="bolder d-inline float-right">
-                    <i class="fas fa-user"></i> Departmental Assistant
+                    <i class="fas fa-user"></i> Department Assistant
                   </h5>
               </div> 
               <hr> 
@@ -108,7 +108,7 @@
                   </div>
                   <hr>
                   <div >
-                    <strong><i class="fas fa-user-tie"></i> Register Professor's Attendence</strong>
+                    <strong><i class="fas fa-user-tie"></i> Register Faculties Attendance</strong>
                   </div>
                   <hr>
                 <%departmentDetails.allProfessors.forEach((professor)=>{%>
@@ -125,7 +125,7 @@
                           <%if(presentProfessors.includes(professor.regNumber)){%>
                               <button  class="disable btn btn-info btn-sm">Added</button>
                           <%}else{%>
-                              <form action="/professor/<%=departmentDetails.departmentCode%>/attendence" method="post">
+                              <form action="/professor/<%=departmentDetails.departmentCode%>/attendance" method="post">
                                   <input type="hidden" name="regNumber" value="<%=professor.regNumber%>" >
                                   <input type="hidden" name="userName" value="<%=professor.userName%>" >
                                   <button  class=" btn btn-primary btn-sm">Click to mark present</button>
@@ -143,14 +143,14 @@
         <div class="col-lg-5">
           <div class="item-container">
             <div >
-              <strong><i class="fas fa-user-tie"></i> Present Professors</strong>
+              <strong><i class="fas fa-user-tie"></i> Present Faculties</strong>
             </div>
             <hr>
             <%if(!departmentDetails.isDepartmentRunning){%>
               <div class="btn btn-block btn-danger">Department is closed!</div>
             <%}else{%>
               <%if(!departmentDetails.todaysPresentProfessors.length){%>
-                <div class="btn btn-block btn-info">No professor present!</div>
+                <div class="btn btn-block btn-info">No faculty present!</div>
               <%}else{%>
                 <%departmentDetails.todaysPresentProfessors.forEach((professor)=>{%>
                   <li class="list-group-item  d-flex align-items-center">
@@ -163,9 +163,9 @@
                       </div>
                     </div>
                     <div>
-                      <form action="/professor/<%=departmentDetails.departmentCode%>/attendenceUndo" method="post">
+                      <form action="/professor/<%=departmentDetails.departmentCode%>/attendanceUndo" method="post">
                           <input type="hidden" name="regNumber" value="<%=professor.regNumber%>" >
-                          <button  class=" btn btn-warning btn-sm">Undo Attendence</button>
+                          <button  class=" btn btn-warning btn-sm">Undo Attendance</button>
                       </form>
                   </div>
                   </li>

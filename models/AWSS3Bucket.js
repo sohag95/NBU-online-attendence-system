@@ -62,7 +62,7 @@ let AWSS3Bucket=function(){
   
         resolve(response.Body)
       }catch{
-        console.log("I am from getPhoto error.")
+        //console.log("I am from getPhoto error.")
         reject()
       }
     })

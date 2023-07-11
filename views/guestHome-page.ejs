@@ -25,24 +25,24 @@
           <div class="col-lg-7">
             <div class="item-container mb-2">
               <div >
-                <strong ><i class="fas fa-user-tie"></i><%=attendanceData.isCampusOpen?"Today's":"Last Day's"%> Attendance Details</strong>
+                <strong ><i class="fas fa-book"></i><%=attendanceData.isCampusOpen?"Today's":"Last Day's"%> Attendance Details</strong>
               </div>
               <hr>
               <div class="p-3 bolder text-success text-center">
                 <h2><strong>Students : <%=attendanceData.presentStudents%>%</strong></h2>
-                <h2><strong>Professors : <%=attendanceData.presentProfessors%>%</strong></h2>
+                <h2><strong>Faculties : <%=attendanceData.presentProfessors%>%</strong></h2>
                 <h2><strong>Date : <%= attendanceData.date.getDate() %> <%=attendanceData.date.toLocaleString('default', { month: 'long' }) %> , <%= attendanceData.date.getFullYear() %></strong></h2>
               </div>
             </div>
             <hr>
             <div class="item-container mb-2">
               <div >
-                <strong ><i class="fas fa-user-tie"></i> All Members</strong>
+                <strong ><i class="fas fa-users"></i> All NBU Active Members</strong>
               </div>
               <hr>
               <div class="p-3 bolder text-success text-center">
                 <h2><strong>Total Students : <%=attendanceData.totalStudents%></strong></h2>
-                <h2><strong>Total Professors : <%=attendanceData.totalProfessors%></strong></h2>
+                <h2><strong>Total Faculties : <%=attendanceData.totalProfessors%></strong></h2>
               </div>
             </div>
           </div>
@@ -50,7 +50,7 @@
           <div class="col-lg-5 ">
             <div class="item-container">
               <div >
-                <strong ><i class="fas fa-user-tie"></i> Batches with 100% attendance</strong>
+                <strong ><i class="fas fa-book"></i> Batches with 100% attendance</strong>
               </div>
               <hr>
               <div class="container-scroll" style="max-height: 25.5rem;overflow: scroll;">
@@ -59,8 +59,8 @@
                 <%}else{%>
                   <%attendanceData.fullAttendanceBatches.forEach((batch)=>{%>
                     <a href="/session-batch/<%=batch.sessionId%>/details">
-                      <div class=" border bg-secondary mb-1">
-                        <div class="text-center bolder text-warning">
+                      <div class=" border bg-info mb-1">
+                        <div class="text-center text-white">
                           <span class=" d-block "><strong>Department of <%=batch.departmentName%></strong></span>
                           <span class=" d-block "><strong>Semester : <%=batch.semesterStatus%></strong></span>
                         </div>

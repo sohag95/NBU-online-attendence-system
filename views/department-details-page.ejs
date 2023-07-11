@@ -14,11 +14,11 @@
       </div>
       <%if(departmentDetails.isDepartmentRunning){%>
         <div class="openCloseTag">
-          <span style="color:#fff;" class="badge-pill badge-warning">Running</span>
+          <span style="color:#fff;" class="badge-pill badge-warning">Running (opening time - <%=departmentDetails.departmentOpeningClosingTime.getHours()%>:<%=departmentDetails.departmentOpeningClosingTime.getMinutes()%>)</span>
         </div>
       <%}else{%>
         <div class="openCloseTag">
-          <span class="badge-pill badge-secondary">Closed</span>
+          <span class="badge-pill badge-secondary">Closed (closing time - <%=departmentDetails.departmentOpeningClosingTime.getHours()%>:<%=departmentDetails.departmentOpeningClosingTime.getMinutes()%>)</span>
         </div>
       <%}%>
       
@@ -52,15 +52,15 @@
           <div class="item-container mb-2">
             <div >
               <%if(departmentDetails.isDepartmentRunning){%>
-                <strong ><i class="fas fa-user-tie"></i> Today's Attendence Details</strong>
+                <strong ><i class="fas fa-user-tie"></i> Today's Attendance Details</strong>
               <%}else{%>
-                <strong ><i class="fas fa-user-tie"></i> Last Day's Attendence Details</strong>
+                <strong ><i class="fas fa-user-tie"></i> Last Day's Attendance Details</strong>
               <%}%>
             </div>
             <hr>
             <div class="p-4 bolder text-success text-center">
               <h2><strong>Students : <%=attendanceData.presentStudents%></strong></h2>
-              <h2><strong>Professors : <%=attendanceData.presentProfessors%>%</strong></h2>
+              <h2><strong>Faculties : <%=attendanceData.presentProfessors%>%</strong></h2>
               <h2><strong>Date : <%= attendanceData.date.getDate() %> <%=attendanceData.date.toLocaleString('default', { month: 'long' }) %> , <%= attendanceData.date.getFullYear() %></strong></h2>
             </div>
           </div>
@@ -88,7 +88,7 @@
                         <p ><strong> Period : <%=cls.period%></strong></p>
                         <p ><strong> Semester : <%=cls.semesterStatus%></strong></p>
                         <p ><strong> Timing : <%=cls.timing%></strong></p>
-                        <p style="margin-bottom:.4rem;"><strong> Professor : <%=cls.professor.userName%></strong></p>
+                        <p style="margin-bottom:.4rem;"><strong> Instructor : <%=cls.professor.userName%></strong></p>
                         <%if(user){%>
                           <div class="m-2">
                             <a href="/class/<%=cls.classId%>/details">
@@ -117,7 +117,7 @@
                         <p ><strong> Period : <%=cls.period%></strong></p>
                         <p ><strong> Semester : <%=cls.semesterStatus%></strong></p>
                         <p ><strong> Timing : <%=cls.timing%></strong></p>
-                        <p style="margin-bottom:.4rem;"><strong> Professor : <%=cls.professor.userName%></strong></p>
+                        <p style="margin-bottom:.4rem;"><strong> Instructor : <%=cls.professor.userName%></strong></p>
                         <%if(user){%>
                           <div class="m-2">
                             <a href="/class/<%=cls.classId%>/details">
@@ -169,7 +169,7 @@
             <%}%>
           <hr>
             <div >
-              <strong ><i class="fas fa-users"></i> All Professors (<%=departmentDetails.allProfessors.length%>)</strong>
+              <strong ><i class="fas fa-users"></i> All Faculties (<%=departmentDetails.allProfessors.length%>)</strong>
             </div>
             <hr>
             <%if(departmentDetails.allProfessors.length==0){%>
@@ -204,7 +204,7 @@
       <hr>
       <div class="colored-container  bolder">
         <div >
-          <strong><i class="fas fa-user-tie"></i> Identity</strong>
+          <strong><i class="fas fa-book"></i> Department Details</strong>
         </div>
         <hr>
         <div class="row">
@@ -223,7 +223,7 @@
           <div class="col-lg-6">
             <div class="item-container mb-2">
               <div >
-                <strong class="bolder"><i class="fas fa-user-tie"></i> All X-Batches</strong>
+                <strong class="bolder"><i class="fas fa-book"></i> All X-Batches</strong>
               </div>
               <hr>
               <div class="teacher-banner-container bolder text-center">
@@ -254,9 +254,10 @@
           <%}%>
         </div>
       </div>
-      <hr>
+      
       <%if(user){%>
         <%if(user.isHOD && user.regNumber.slice(4,9)==departmentDetails.departmentCode){%>
+          <hr>
           <%- include('includes/sections/hod-department-handle-panel') %>
         <%}%>
       <%}%>

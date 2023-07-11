@@ -7,7 +7,7 @@
     <div class="col-lg-9 pt-1" >
         <div class="">
             <div style="width: 100%;position: relative;">
-                <img class="home-cover-image" src="/images/banner6.jpg"/>
+                <img class="home-cover-image" src="/images/banner3.jpg"/>
             <div>
             <div style="position: relative;display: inline;">
                 <img class="home-profile-image" src="/image/<%=user.regNumber%>" />
@@ -45,39 +45,16 @@
                 </div>
                 <div>
                     <h5 class="bolder text-secondary text-capetalize d-inline">
-                      <strong><%=user.userName%></strong></h5>
+                      <strong><%=user.userName%> </strong>
+                      <%if(user.isHOD){%>
+                      <span class="text-info">(HOD)</span>
+                      <%}%></h5>
                     <h5 class="bolder d-inline float-right">
-                      <i class="fas fa-user"></i> Professor
+                      <i class="fas fa-user"></i> Faculty
                     </h5>
                 </div> 
                 <hr> 
-                <%if(user.isHOD){%>
-                  <div class="colored-container  bg-warning">
-                    <div>
-                      <h5><strong ><i class="fas fa-users"></i> You are the HOD of the <%=professorData.departmentName%> department</strong></h5>
-                    </div>
-                    <hr>
-                    <div class="row">
-                      <div class="col-12">
-                        <a href="/department/<%=user.regNumber.slice(4,9)%>/details">
-                          <div class="btn btn-block btn-md btn-info">Go to Handle Department</div>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                <%}else{%>
-                  <div class="colored-container  bolder">
-                    <div class="row">
-                      <div class="col-12">
-                        <a href="/department/<%=user.regNumber.slice(4,9)%>/details">
-                          <div class="btn btn-block btn-md btn-info">Go to Department</div>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                <%}%>
                 
-                <hr>
                 <div class="item-container">
                   <div >
                     <strong><i class="fas fa-book"></i> Today's Classes</strong>
@@ -107,7 +84,7 @@
                                         </div>
                                       <%}else{%>
                                         <div class="m-2">
-                                          <a href="/class/<%=todayClass.classId%>/take-attendence">
+                                          <a href="/class/<%=todayClass.classId%>/take-attendance">
                                             <div class="btn btn-outline-secondary btn-sm btn-block">Take Attendence</div>
                                           </a>
                                         </div>
@@ -146,6 +123,32 @@
 
                   </div>
                 </div>
+                <hr>
+                <%if(user.isHOD){%>
+                  <div class="colored-container  bg-warning">
+                    <div>
+                      <h5><strong ><i class="fas fa-users"></i> You are the HOD of the <%=professorData.departmentName%> department</strong></h5>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-12">
+                        <a href="/department/<%=user.regNumber.slice(4,9)%>/details">
+                          <div class="btn btn-block btn-md btn-info">Go to Handle Department</div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                <%}else{%>
+                  <div class="colored-container  bolder">
+                    <div class="row">
+                      <div class="col-12">
+                        <a href="/department/<%=user.regNumber.slice(4,9)%>/details">
+                          <div class="btn btn-block btn-md btn-info">Go to Department</div>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                <%}%>
                 <hr>
                 <div class="colored-container  bolder">
                   <div >

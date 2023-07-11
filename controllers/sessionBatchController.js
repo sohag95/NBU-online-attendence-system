@@ -52,7 +52,7 @@ exports.getBatchDetailsPage =function (req, res) {
             presentStudents:presentStudents,
             date:date,
         }
-        console.log("Attendance Data:",attendanceData)
+        //console.log("Attendance Data:",attendanceData)
         //------------------------------------------
         res.render('session-batch-details',{
             batchDetails:req.batchDetails,
@@ -69,7 +69,7 @@ exports.getCreateRoutinePage =function (req, res) {
     try{
         let days=["Monday","Tuesday","Wednesday","Thursday","Friday"]
         req.batchDetails.allProfessors=req.departmentDetails.allProfessors
-        console.log("batch:",req.batchDetails)
+        //console.log("batch:",req.batchDetails)
         res.render('create-new-routine-page',{
             batchDetails:req.batchDetails,
             days:days
@@ -81,7 +81,7 @@ exports.getCreateRoutinePage =function (req, res) {
 
 exports.addRoutineInitialData =function (req, res) {
     try{
-        console.log("body data:",req.body)
+        //console.log("body data:",req.body)
         let sessionBatch=new SessionBatch(req.body)
         sessionBatch.addInitialRoutineData(req.body.sessionId).then(()=>{
             req.flash("success", "Initial routine data added successfully.")
@@ -100,7 +100,7 @@ exports.addRoutineInitialData =function (req, res) {
 }
 exports.addRoutineDayActivity =function (req, res) {
     try{
-        console.log("body data:",req.body)
+        //console.log("body data:",req.body)
         let sessionBatch=new SessionBatch(req.body)
         sessionBatch.addRoutineDayActivity(req.body.sessionId,req.departmentDetails.allProfessors).then(()=>{
             req.flash("success", "Routine data added successfully.")
@@ -144,11 +144,11 @@ exports.getBatchActivityDetailsPage = async function (req, res) {
             batchActivityInfo.semesterClassRecords=batchActivityDetails.allRecords.thirdSemester
         }else if(semesterStatus=="4th"){
             batchActivityInfo.semesterStatus="4th"
-            batchActivityInfo.semesterClassRecords=batchActivityDetails.allRecords.forthSemester
+            batchActivityInfo.semesterClassRecords=batchActivityDetails.allRecords.fourthSemester
         }else{
             //will work later
         }
-        console.log("batchData:",batchActivityInfo)
+        //console.log("batchData:",batchActivityInfo)
         res.render("session-batch-activity-details-page",{
             batchActivityInfo:batchActivityInfo,
             batchDetails:batchDetails

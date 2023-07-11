@@ -84,7 +84,7 @@ exports.getTodaysSubjectDetails =async function (req, res,next) {
 
 exports.studentHomePage =async function (req, res) {
     try{
-      console.log("Needed data:",req.neededData)
+      //console.log("Needed data:",req.neededData)
         let studentData=await Student.getStudentDetailsByRegNumber(req.regNumber)
         res.render('student-home-page',{
           todaysClasses:req.todaysClasses,
@@ -110,10 +110,11 @@ exports.getStudentActivityDetailsPage = async function (req, res) {
       
       let studentDetails=await Student.getStudentDetailsByRegNumber(req.regNumber)
       let attendanceDetails=await Student.getStudentAttendanceDetails(req.regNumber)
+      //console.log("Attendance details:",attendanceDetails,studentDetails)
       let batchActivityDetails=await SessionBatch.getSessionBatchActivityDetails(req.regNumber.slice(0,9))
       let semesterAllClasses=[]
-      //console.log("batch details:",batchActivityDetails)
-      // console.log("attendanceDetails:",attendanceDetails)
+      ////console.log("batch details:",batchActivityDetails)
+      // //console.log("attendanceDetails:",attendanceDetails)
       if(studentDetails.semesterStatus=="1st"){
         attendanceInfo.semesterStatus="1st"
         semesterAllClasses=batchActivityDetails.allRecords.firstSemester
@@ -128,8 +129,8 @@ exports.getStudentActivityDetailsPage = async function (req, res) {
         attendanceInfo.allClasses=attendanceDetails.allClasses.thirdSemester.reverse()
       }else if(studentDetails.semesterStatus=="4th"){
         attendanceInfo.semesterStatus="4th"
-        semesterAllClasses=batchActivityDetails.allRecords.forthSemester
-        attendanceInfo.allClasses=attendanceDetails.allClasses.forthSemester.reverse()
+        semesterAllClasses=batchActivityDetails.allRecords.fourthSemester
+        attendanceInfo.allClasses=attendanceDetails.allClasses.fourthSemester.reverse()
       }else{
         //will work later
       }
@@ -138,7 +139,7 @@ exports.getStudentActivityDetailsPage = async function (req, res) {
         attendanceInfo.totalClassesTaken+=days.record.classes.length
       })
       
-      console.log("Attendance info:",attendanceInfo)
+      //console.log("Attendance info:",attendanceInfo)
       res.render("student-activity-details-page",{
         attendanceInfo:attendanceInfo
       })

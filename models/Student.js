@@ -1,3 +1,4 @@
+const Administration = require("./Administration")
 const IdCreation = require("./IdCreation")
 const SentEmail = require("./SentEmail")
 const SessionBatch = require("./SessionBatch")
@@ -9,6 +10,7 @@ let Student=function(data){
     this.data=data
     this.errors=[]
     this.DOB=data.dateOfBirth
+    this.activitiesTable
 }
 
 Student.prototype.dataPreparation=function(){
@@ -21,18 +23,25 @@ Student.prototype.dataPreparation=function(){
         departmentCode:this.data.departmentCode,
         sessionYear:"20"+regNumber.slice(0,2)+"-"+"20"+regNumber.slice(2,4),
         departmentName:this.data.departmentName,
-        semesterStatus:"1st",
+        semesterStatus:this.data.semesterStatus,
         dateOfBirth:new Date(this.data.dateOfBirth),
         email:this.data.email,
         createdDate:new Date()
+      }
+      this.activitiesTable={
+        regNumber:this.data.regNumber,
+        allClasses:{
+          firstSemester:[],
+          secondSemester:[],
+          thirdSemester:[],
+          fourthSemester:[]
+        }
       }
       resolve()
     }catch{
       reject()
     }
   })
-  
-    
 }
 
 
@@ -59,7 +68,7 @@ Student.prototype.validate=function(){
         resolve()
         
     }catch{
-      console.log("This code is running2")
+      //console.log("This code is running2")
       this.errors.push("Sorry,there is some problem!")
       reject()
     }
@@ -72,18 +81,20 @@ Student.prototype.addNewStudent=function(hodName){
       await this.dataPreparation()
       await this.validate()
       if (!this.errors.length) {
-        console.log("Student Data:",this.data)
+        //console.log("Student Data:",this.data)
           //increase serial number on neededData
           await SessionBatch.increaseStudentSerialNumber(this.data.regNumber.slice(0,9))
           //store student details data
           await studentsCollection.insertOne(this.data)
+          
+          await studentAttendanceCollection.insertOne(this.activitiesTable)
           //store professor id on session batch allPresentStudents list
           let studentData={
             regNumber:this.data.regNumber,
             userName:this.data.userName,
           }
           await SessionBatch.addStudentOnSessionBatch(this.data.regNumber.slice(0,9),studentData)
-          
+          await Administration.increaseTotalStudentsCount()
           //send registration number and password to professor's email id
           let sentEmail=new SentEmail()
           await sentEmail.studentAccountCreation(this.data,this.DOB,hodName)
@@ -100,18 +111,19 @@ Student.prototype.addNewStudent=function(hodName){
 }
 
 Student.prototype.studentLoggingIn = function () {
-    return new Promise((resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
       if (typeof this.data.regNumber != "string") {
         reject("Try with valide data!")
       }
       if (typeof this.data.password != "string") {
         reject("Try with valide data!")
       } 
+      
       studentsCollection
         .findOne({ regNumber:this.data.regNumber.toUpperCase() })
         .then(async(userData) => {
           if (String(userData.dateOfBirth)===String(new Date(this.data.password))) {
-            console.log("I am here")
+            //console.log("I am here")
             this.data = {
               regNumber:userData.regNumber,
               userName:userData.userName,

@@ -35,6 +35,7 @@ Department.prototype.dataPreparation=function(){
           date:new Date()
         },
         isDepartmentRunning:false,
+        departmentOpeningClosingTime:new Date(),
         //true-during running time.hod/assistant will declare running department.
         //false-->ssistant will declare closing department.
         departmentOfficial:null,
@@ -68,7 +69,7 @@ Department.prototype.validate=function(){
     })
 }
     
-Department.prototype.addNewDepartment=function(){
+  Department.prototype.addNewDepartment=function(){
     return new Promise(async (resolve, reject) => {
       try{
         // Step #1: Validate user data
@@ -101,7 +102,7 @@ Department.prototype.addNewDepartment=function(){
           {departmentCode:this.data.departmentCode},
           {
             $set:{
-              "departmentOffitial":assistantDetails
+              "departmentOfficial":assistantDetails
             }
           }
         )
@@ -149,14 +150,17 @@ Department.prototype.addNewDepartment=function(){
   }
 
   
-  Department.addProfessorOnDepartment = function (departmentCode,professorData) {
+  Department.addProfessorOnDepartmentPage = function (departmentCode,professorData) {
     return new Promise(async(resolve, reject) => {
       try{
-        await departmentsCollection.updateOne(
+        await departmentsCollection.updateMany(
           {departmentCode:departmentCode},
           {
             $push:{
               "allProfessors":professorData
+            },
+            $inc:{
+              "professorSerialNumber":1
             }
           }
         )
@@ -222,7 +226,8 @@ Department.prototype.addNewDepartment=function(){
           {departmentCode:departmentCode},
           {
             $set:{
-              "isDepartmentRunning":true
+              "isDepartmentRunning":true,
+              "departmentOpeningClosingTime":new Date()
             }
           }
         )
@@ -252,6 +257,7 @@ Department.prototype.addNewDepartment=function(){
           {
             $set:{
               "isDepartmentRunning":false,
+              "departmentOpeningClosingTime":new Date(),
               "presentDayActivities":presentActivities,
               "lastDayActivities":lastActivities
             }
@@ -274,6 +280,7 @@ Department.prototype.addNewDepartment=function(){
       }
     })
   }
+
   Department.closingDepartment=function(departmentCode,departmentData,runningSessionYear){
     return new Promise(async (resolve, reject) => {
       try{

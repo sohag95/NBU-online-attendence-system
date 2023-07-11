@@ -9,7 +9,7 @@ exports.getProfessorDetails =async function (req, res,next) {
         let professorDetails=await Professor.getProfessorDetailsByRegNumber(req.body.regNumber)
         if(professorDetails){
             req.professorDetails=professorDetails
-            console.log("professor details:",req.professorDetails)
+            //console.log("professor details:",req.professorDetails)
             next()
         }else{
             req.flash("errors", "Professor does not exists.")
@@ -26,7 +26,7 @@ exports.ifProfessorExists =async function (req, res,next) {
         let professorDetails=await Professor.getProfessorDetailsByRegNumber(req.params.regNumber)
         if(professorDetails){
             req.professorDetails=professorDetails
-            console.log("professor details:",req.professorDetails)
+            //console.log("professor details:",req.professorDetails)
             next()
         }else{
             req.flash("errors", "Professor does not exists.")
@@ -126,10 +126,10 @@ exports.getTodaysSubjectDetails =async function (req, res,next) {
         
       })
     }
-    //console.log("Todays Classes:",req.todaysClasses)
+    ////console.log("Todays Classes:",req.todaysClasses)
     next()
     }catch{
-      console.log("I am from here sohag")
+      //console.log("I am from here sohag")
       res.render('404')
   }
 }
@@ -161,21 +161,21 @@ exports.getProfessorActivityDetailsPage = async function (req, res) {
       days:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
     }
       let departmentalActivities=await Department.getDepartmentalActivityDetails(req.regNumber.slice(4,9))
-      console.log("dptactivity:",departmentalActivities)
+      //console.log("dptactivity:",departmentalActivities)
       let departmentRecords=[]
       let presentSessionYear=await Administration.getPresentSessionYear()
       activityInfo.presentSessionYear=presentSessionYear
       let matchKey="Y"+presentSessionYear.slice(0,4)+presentSessionYear.slice(5,9)
       let activityDetails=await Professor.getProfessorActivityDetails(req.regNumber)
       for (var key in activityDetails.allRecords) {
-        console.log(key);
+        //console.log(key);
         if(key===matchKey){
-          console.log(key)
+          //console.log(key)
           departmentRecords=departmentalActivities.allRecords[key]
           activityInfo.allClasses=activityDetails.allRecords[key]
         }
       }
-      console.log("records:",activityInfo.allClasses)
+      //console.log("records:",activityInfo.allClasses)
       activityInfo.totalActiveDays=departmentRecords.length
       departmentRecords.forEach((record)=>{
         activityInfo.totalDepartmentalClasses+=record.record.classes.length
@@ -183,7 +183,7 @@ exports.getProfessorActivityDetailsPage = async function (req, res) {
       activityInfo.allClasses.forEach((cls)=>{
         activityInfo.classesTaken+=cls.classes.length
       })
-      console.log("activityDetails:",activityInfo)
+      //console.log("activityDetails:",activityInfo)
       res.render("professor-activity-details-page",{
         activityInfo:activityInfo
       })
@@ -196,7 +196,7 @@ exports.isClassValidOrNot =async function (req, res,next) {
   try{
    let sessionId=req.params.classId.slice(0,9)
     let batchDetails=await SessionBatch.getBatchDetailsBySessionId(sessionId)
-    //console.log("batchDetails:",batchDetails)
+    ////console.log("batchDetails:",batchDetails)
     req.batchDetails=batchDetails
     let today=new Date()
     let dateString=String(today.getDate())+String(today.getMonth()+1)+String(today.getFullYear())
@@ -240,7 +240,7 @@ exports.isClassValidOrNot =async function (req, res,next) {
       }
            
   }catch{
-    console.log("i am here")
+    //console.log("i am here")
       res.render('404')
   }
 }
@@ -273,14 +273,14 @@ exports.getClassDetails =function (req, res,next) {
     }
     next()
   }catch{
-    console.log("I am from classData")
+    //console.log("I am from classData")
     res.render('404')
   }
 }
 
 exports.getClassAttendancePage =function (req, res) {
   try{
-      //console.log("ClassData:",req.classData)
+      ////console.log("ClassData:",req.classData)
       let takenClassesIds=req.batchDetails.presentDayActivities.classes.map((cls)=>{
         return cls.classId
       })

@@ -1,5 +1,8 @@
 const sessionBatchCollection = require("../db").db().collection("Session_Batches")
 const sessionBatchActivityCollection = require("../db").db().collection("Session_Batch_Activities")
+
+const departmentsCollection = require("../db").db().collection("Departments")
+
 const Department = require("./Department")
 const IdCreation = require('./IdCreation')
 
@@ -39,11 +42,16 @@ SessionBatch.prototype.dataPreparation=function(){
             }
             this.sessionBatchActivities={
               sessionId:this.data.sessionId,
-              allRecords:{}
+              allRecords:{
+                firstSemester:[],
+                secondSemester:[],
+                thirdSemester:[],
+                fourthSemester:[]
+              }
             }
             resolve()
         }catch{
-          console.log("I am here")
+          //console.log("I am here")
             this.errors.push("Sorry,there is some problem!")
             reject()
           }
@@ -73,7 +81,7 @@ SessionBatch.prototype.validate=function(){
           resolve()
           
       }catch{
-        console.log("This code is running2")
+        //console.log("This code is running2")
         this.errors.push("Sorry,there is some problem!")
         reject()
       }
@@ -94,15 +102,22 @@ SessionBatch.prototype.addNewSessionBatch=function(){
               sessionId:this.data.sessionId,
               semesterStatus:this.data.semesterStatus
             }
-            await Department.addSessionOnDepartmentAsCurrentBatch(batchData,this.data.departmentCode)
-            
-            resolve()
+            //await Department.addSessionOnDepartmentAsCurrentBatch(batchData,this.data.departmentCode)
+            await departmentsCollection.updateOne(
+              {departmentCode:this.data.departmentCode},
+              {
+                $push:{
+                  "runningSessionBatches":batchData
+                }
+              }
+            )
+            resolve(this.data.sessionId)
         } else {
             reject(this.errors)
         }
       }catch{
       
-        reject()
+        reject("There is some problem!")
       }
     })
   }
@@ -160,7 +175,7 @@ SessionBatch.prototype.addNewSessionBatch=function(){
                 }
               }
             )
-            console.log("Data:",this.data)
+            //console.log("Data:",this.data)
             resolve()
         } else {
             reject(this.errors)
@@ -265,7 +280,7 @@ SessionBatch.prototype.addNewSessionBatch=function(){
                 }
               }
             )
-            console.log("Data:",this.data)
+            //console.log("Data:",this.data)
             resolve()
         } else {
             reject(this.errors)
@@ -337,7 +352,7 @@ SessionBatch.prototype.addNewSessionBatch=function(){
         }
         return data
       })
-      console.log("routineDetails:",routineDetails)
+      //console.log("routineDetails:",routineDetails)
       resolve(routineDetails)
       }catch{
         reject()
@@ -378,16 +393,16 @@ SessionBatch.prototype.addNewSessionBatch=function(){
   SessionBatch.storeAndCleanPresentDayActivities = function (sessionIds) {
     return new Promise(async(resolve, reject) => {
       try{  
-        console.log("ids:",sessionIds)
+        //console.log("ids:",sessionIds)
         for (let i=0;i<sessionIds.length;i++){
           let sessionId=sessionIds[i].sessionId
           let batchDetails=await sessionBatchCollection.findOne({sessionId:sessionId})
-          console.log("batchDetails:",batchDetails)
+          //console.log("batchDetails:",batchDetails)
           let recordData={
             date:new Date(),
             record:batchDetails.presentDayActivities
           }
-          console.log("RecordData:",recordData)
+          //console.log("RecordData:",recordData)
           let lastActivities=batchDetails.presentDayActivities
           lastActivities.date=new Date()
           let presentActivities={

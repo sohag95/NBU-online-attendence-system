@@ -74,7 +74,7 @@
                                     <input name="joiningDate" id="joiningDate" class="form-control form-control-lg " type="date" placeholder="Select joining date"  autocomplete="off" />
                                 </div>
                                 <div style="text-align: center;">
-                                  <button class="btn btn-success btn-sm ">Add Professor</button>
+                                  <button class="btn btn-success btn-sm ">Add HOD</button>
                                 </div>
                             </form>
                           </div>
@@ -83,11 +83,11 @@
                     </div>
                     <hr>
                     <div >
-                      <strong ><i class="fas fa-users"></i> All Professors(<%=departmentDetails.allProfessors.length%>)</strong>
+                      <strong ><i class="fas fa-users"></i> All Faculties(<%=departmentDetails.allProfessors.length%>)</strong>
                     </div>
                     <hr>
                     <%if(!departmentDetails.allProfessors.length){%>
-                      <div class="btn btn-block btn-info">No professor added!</div>
+                      <div class="btn btn-block btn-info">No faculty added!</div>
                     <%}else{%>
                       <%departmentDetails.allProfessors.forEach((professor)=>{%>
                         <li class="list-group-item  d-flex align-items-center">
@@ -107,12 +107,12 @@
                 <div class="col-lg-7">
                   <div class="item-container mb-2">
                     <div class="signUp-form-container ">   
-                      <h2 class="bolder text-center">Add New Professor</h2>
+                      <h2 class="bolder text-center">Add New Faculty</h2>
                       <form action="/add-professor/<%=departmentDetails.departmentCode%>" method="POST" id="add-department-form">
                         
                           <div class="form-group">
-                            <label for="userName" class="text-muted"><small>Professor Name</small></label>
-                            <input name="userName" id="userName" class="form-control form-control-lg " type="text" placeholder="Professor full name."  autocomplete="off" />
+                            <label for="userName" class="text-muted"><small> Name</small></label>
+                            <input name="userName" id="userName" class="form-control form-control-lg " type="text" placeholder="Faculty member's full name."  autocomplete="off" />
                           </div>
                           <div class="form-group">
                               <label for="email" class="text-muted"><small>Email Id</small></label>
@@ -126,7 +126,7 @@
                           <input type="hidden" name="departmentName" value="<%=departmentDetails.departmentName%>">
                           
                           <div style="text-align: center;">
-                            <button class="btn btn-success btn-lg ">Add Professor</button>
+                            <button class="btn btn-success btn-lg ">Add Faculty</button>
                           </div>
                       </form>
                     </div>

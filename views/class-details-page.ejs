@@ -19,13 +19,13 @@
         <div class="col-lg-7">
           <div class="item-container mb-2">
             <div >
-              <strong ><i class="fas fa-user-tie"></i> Class Details</strong>
+              <strong ><i class="fas fa-book"></i> Class Details</strong>
             </div>
             <hr>
             <div class="class-teacher-title ">
               <img class="class-teacher-image" src="/image/<%=classDetails.professor.regNumber%>" alt="">
               <hr>
-              <p><strong>Professor : <%=classDetails.professor.userName%></strong> </p>
+              <p><strong><i>Instructor : <%=classDetails.professor.userName%></i> </strong> </p>
               <p>Subject : <%=classDetails.subject%></p>
               <p>Timing : <%=classDetails.timing%></p>
               <p>Class Date : <%= classDetails.classDate.getDate() %> <%=classDetails.classDate.toLocaleString('default', { month: 'short' }) %> , <%= classDetails.classDate.getFullYear() %> at <%=classDetails.classDate.getHours()%>:<%=classDetails.classDate.getMinutes()%></p>
@@ -61,7 +61,7 @@
       <hr>
       <div class="colored-container  bolder">
         <div >
-          <strong><i class="fas fa-user-tie"></i> Identity</strong>
+          <strong><i class="fas fa-book"></i> Batch Details</strong>
         </div>
         <hr>
         <div class="row">
@@ -71,7 +71,7 @@
           </div>
           <div class="col-lg-6">
             <p><strong>Department Name: <%=classDetails.departmentName%></strong></p>
-            <p><strong>Department Code : <%=classDetails.departmentCode%></strong></p>
+            <p><strong>Batch Id : <%=classDetails.classId.slice(0,9)%></strong></p>
           </div>
           <div class="col-12">
             <a href="/session-batch/<%=classDetails.classId.slice(0,9)%>/details">

@@ -23,8 +23,8 @@ exports.officialAssistantLogIn = function (req, res) {
       
         //regNumber=departmentCode for offitial assistant
         let assistantData=req.departmentDetails.departmentOfficial
-        console.log("Data:",req.body)
-        console.log("assistantData Details:",assistantData)
+        //console.log("Data:",req.body)
+        //console.log("assistantData Details:",assistantData)
       if(assistantData.email==req.body.email && assistantData.password==req.body.password){
         req.session.user = { regNumber:req.departmentDetails.departmentCode, userName: assistantData.userName,accountType: "officialAssistant" }
         req.session.save(function () {
@@ -61,7 +61,7 @@ exports.getOfficialAssistantHome =async function (req, res) {
           presentProfessors.push(professor.regNumber)
         })
       } 
-      console.log("Department:",departmentalDetails)
+      //console.log("Department:",departmentalDetails)
 
       res.render("official-assistant-home-page",{
         departmentDetails:departmentalDetails,
@@ -169,7 +169,7 @@ exports.openingDepartment = function (req, res) {
     let runningBatchesIds=req.departmentDetails.runningSessionBatches.map((batch)=>{
       return batch.sessionId
     })
-    console.log("Running batches:",runningBatchesIds)
+    //console.log("Running batches:",runningBatchesIds)
     if(req.body.open.toLowerCase()=="open"){
       Department.openingDepartment(req.regNumber,runningBatchesIds).then(()=>{
         req.flash("success", "Department opened successfully!!")

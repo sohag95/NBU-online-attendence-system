@@ -25,7 +25,7 @@ SentEmail.prototype.sentEmailToSingleAccount=function(emailId){
         await this.transporter.sendMail(this.mailOptions)
         resolve()
       }catch{
-        console.log("This code ran.")
+        //console.log("This code ran.")
         reject()
       }
     })
@@ -40,7 +40,7 @@ SentEmail.prototype.sentEmailToSingleAccount=function(emailId){
         }
         resolve()
       }catch{
-        console.log("This code ran.")
+        //console.log("This code ran.")
         reject()
       }
     })
@@ -58,7 +58,7 @@ SentEmail.prototype.sentEmailToSingleAccount=function(emailId){
         await this.sentEmailToSingleAccount(emailId)
         resolve()
       }catch{
-        console.log("This code ran.")
+        //console.log("This code ran.")
         reject()
       }
     })
@@ -72,7 +72,7 @@ SentEmail.prototype.sentEmailToSingleAccount=function(emailId){
         await this.sentEmailToMultipleAccount(emailIds)
         resolve()
       }catch{
-        console.log("This code ran.")
+        //console.log("This code ran.")
         reject()
       }
     })
@@ -85,7 +85,7 @@ SentEmail.prototype.sentEmailToSingleAccount=function(emailId){
         
         let message=`  
         <div>
-          <h3>Hello Sir,Your account has been created on NBU Online Attendence System.</h3>
+          <h3>Hello Sir,Your account has been created on NBU Online Attendance System.</h3>
           <hr>
           <h3>Your Details :</h3>
           <p><strong>Name : ${accountData.userName}</strong></p>
@@ -97,18 +97,18 @@ SentEmail.prototype.sentEmailToSingleAccount=function(emailId){
           <p><strong>Password : ${password}</strong></p>
           <p><strong>[This password is auto generated.You can change your password after logging in on the application.]</p>
           <hr>
-          <h3>NBU Online Attendence System</h3>
+          <h3>NBU Online Attendance System</h3>
           <p><strong>-Administrator</strong></p>
           <p><strong>-Name : Sohag Roy</strong></p>
           <p><strong>-Phone : 7468987072</strong></p>
           <p><strong>[For any correction,please contact with administrator.]</p>
         </div>`
-        this.mailOptions.subject="Account Created on NBU Online Attendence System!!!",
+        this.mailOptions.subject="Account Created on NBU Online Attendance System!!!",
         this.mailOptions.html=message
         await this.sentEmailToSingleAccount(accountData.email)
         resolve()
       }catch{
-        console.log("This code ran.")
+        //console.log("This code ran.")
         reject()
       }
     })
@@ -130,7 +130,7 @@ SentEmail.prototype.sentEmailToSingleAccount=function(emailId){
           <hr>
           <h3>Please Log-in again to access your functionalities on application.</h3>
           <hr>
-          <h3>NBU Online Attendence System</h3>
+          <h3>NBU Online Attendance System</h3>
           <p><strong>-Administrator</strong></p>
           <p><strong>-Name : Sohag Roy</strong></p>
           <p><strong>-Phone : 7468987072</strong></p>
@@ -141,7 +141,7 @@ SentEmail.prototype.sentEmailToSingleAccount=function(emailId){
         await this.sentEmailToSingleAccount(HODData.email)
         resolve()
       }catch{
-        console.log("This code ran.")
+        //console.log("This code ran.")
         reject()
       }
     })
@@ -151,11 +151,11 @@ SentEmail.prototype.sentEmailToSingleAccount=function(emailId){
   SentEmail.prototype.studentAccountCreation=function(studentData,dob,hodName){
     return new Promise(async (resolve, reject) => {
       try{
-        console.log("All Data:",studentData,dob,hodName)
+        //console.log("All Data:",studentData,dob,hodName)
         let sessionYear="20"+studentData.regNumber.slice(0,2)+"-"+"20"+studentData.regNumber.slice(2,4)
         let message=`  
         <div>
-          <h3>Dear ${studentData.userName},Your account has been created on NBU Online Attendence System.</h3>
+          <h3>Dear ${studentData.userName},Your account has been created on NBU Online Attendance System.</h3>
           <hr>
           <h3>Your Details :</h3>
           <p><strong>Name : ${studentData.userName}</strong></p>
@@ -167,18 +167,18 @@ SentEmail.prototype.sentEmailToSingleAccount=function(emailId){
           <p><strong>Registration Number : ${studentData.regNumber}</strong></p>
           <p><strong>Password : 'Your Date Of Birth'</strong></p>
           <hr>
-          <h3>NBU Online Attendence System</h3>
+          <h3>NBU Online Attendance System</h3>
           <h4>Department of ${studentData.departmentName}</h4>
           <p><strong>-Head Of The Department</strong></p>
           <p><strong>-Name : ${hodName}</strong></p>
           <p><strong>[For any correction,please contact(offline) to the Head of the department.]</p>
         </div>`
-        this.mailOptions.subject="Registered on NBU Online Attendence System!!!",
+        this.mailOptions.subject="Registered on NBU Online Attendance System!!!",
         this.mailOptions.html=message
         await this.sentEmailToSingleAccount(studentData.email)
         resolve()
       }catch{
-        console.log("This code ran.")
+        //console.log("This code ran.")
         reject()
       }
     })
@@ -201,18 +201,18 @@ SentEmail.prototype.sentEmailToSingleAccount=function(emailId){
           <p><strong>[This password is auto generated.You can change your password after logging in on the application.]</p>
           
           <hr>
-          <h3>NBU Online Attendence System</h3>
+          <h3>NBU Online Attendance System</h3>
           <h4>Department of ${departmentData.departmentName}</h4>
           <p><strong>-Head Of The Department</strong></p>
           <p><strong>-Name : ${departmentData.hod}</strong></p>
           <p><strong>[For any correction,please contact(offline) to the Head of the department.]</p>
         </div>`
-        this.mailOptions.subject="Registered on NBU Online Attendence System!!!",
+        this.mailOptions.subject="Registered on NBU Online Attendance System!!!",
         this.mailOptions.html=message
         await this.sentEmailToSingleAccount(assistantData.email)
         resolve()
       }catch{
-        console.log("This code ran.")
+        //console.log("This code ran.")
         reject()
       }
     })

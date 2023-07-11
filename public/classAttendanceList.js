@@ -8,7 +8,7 @@
 //   {regNumber:"2022COMSC0007",userName:"Apurba Ghosh"}
 // ]
 
-         
+   
 
 let allPresentStudents=allStudents
 
@@ -78,7 +78,7 @@ document.addEventListener("click", function(e) {
     let userName=e.target.parentElement.parentElement.querySelector("button").value
     let regNumber=e.target.parentElement.parentElement.querySelector("button").getAttribute('id')
         
-    if (confirm(`Do you really want to remove ${userName} from the attendence list?`)) {
+    if (confirm(`Do you really want to remove ${userName} from the attendance list?`)) {
         let student={
           regNumber:regNumber,
           userName:userName
@@ -99,7 +99,7 @@ document.addEventListener("click", function(e) {
 
 
 
-document.getElementById("submitAttendenceListButton").addEventListener("click", function(e) {
+document.getElementById("submitAttendanceListButton").addEventListener("click", function(e) {
   e.preventDefault()
   
     let totalPresentStudents=presentStudents.length
@@ -107,7 +107,7 @@ document.getElementById("submitAttendenceListButton").addEventListener("click", 
       let allPresentStudents=JSON.stringify(presentStudents);
       console.log("All presentStudents :",presentStudents)
       document.getElementById("selectedStudents").value=allPresentStudents
-      document.getElementById("addStudentsOnAttendenceList").submit()
+      document.getElementById("addStudentsOnAttendanceList").submit()
     }
   
 })

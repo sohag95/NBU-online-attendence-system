@@ -1,0 +1,81 @@
+
+<%- include('includes/header') %> 
+<%- include('includes/flash') %>
+
+<div style="display: flex;flex-wrap: wrap;">
+  <div class="col-lg"></div>
+  <div class="col-lg-8">
+
+    <div style="position: relative;">
+      <img class="header-banner-img"  src="/images/banner3.jpg" alt="">
+      <div class="banner-details-text text-center">
+        <span class="d-block">BATCH : <%=batchDetails.sessionYear%> </span>
+        <span class="d-block">SEMESTER : <%=batchDetails.semesterStatus%></span>
+        <span class="d-block"><a style="color:#fff;" href="/department/<%=batchDetails.departmentCode%>/details"> DEPARTMENT OF <%=batchDetails.departmentName%> </a></span>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="item-container mb-2">
+          <div >
+            <strong ><i class="fas fa-user-tie"></i> Class Details</strong>
+          </div>
+          <hr>
+          <p><strong>Semester : <%=batchDetails.semesterStatus%></strong></p>   
+          <p><strong>Subject Name : <%=classData.subject%></strong></p>
+          <p><strong>Class Timing : <%=classData.timing%></strong></p>
+          <p><strong>Period Number : <i><%=classData.period%></i></strong></p>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="item-container">
+          <div >
+            <strong ><i class="fas fa-user-tie"></i> Instructor Details</strong>
+          </div>
+          <hr>
+          <div class=" class-teacher-title">
+            <img class="class-teacher-image" src="/image/<%=classData.professor.regNumber%>" alt="">
+            <p class="mt-1"><strong>Name : <i><%=classData.professor.userName%></i></strong> </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+      <div class="single-batch-container">
+      <div class="single-batch-data pt-2 pb-4">
+        <div>
+          <%if(takenClassesIds.includes(classData.classId)){%>
+            <div class="btn btn-lg btn-block btn-success p-2">Class attendance has been taken successfully!!</div>
+            <hr>
+            <a href="/class/<%=classData.classId%>/details">
+              <div class="btn btn-sm btn-info btn-block p-2">Go to class attendance details-></div>
+            </a>
+          <%}else{%>
+            <h4 class="text-center "><strong>All Class Students (<%=batchDetails.allPresentStudents.length%>)</strong> </h4>
+            <ul id="allPresentStudents" class="list-group pb-2">
+            </ul>
+            <form id="addStudentsOnAttendanceList" class="card" action="/class/<%=classData.classId%>/submit-attendance" method="POST">
+              <h4 class="text-center "><strong>Attendance List :</strong> </h4>
+              <ul id="addedStudents" class="list-group ">
+              </ul>
+              <input hidden type="text" id="selectedStudents" name="selectedStudents">
+              <button id="submitAttendanceListButton" class="btn btn-primary">Submit Attendance</button>
+            </form>
+          <%}%>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="col-lg"></div>
+</div>
+<script>
+  let allStudents = <%-JSON.stringify(batchDetails.allPresentStudents)%>
+</script>
+<script src="/classAttendanceList.js"></script>
+
+<%- include('includes/footer') %>
+
+
